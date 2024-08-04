@@ -8,18 +8,18 @@ import me.udnek.toughasnailsu.data.PlayerDatabase;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
-public class Hud implements CustomHud {
+public class MainHud implements CustomHud {
     
-    private static Hud instance;
+    private static MainHud instance;
     private final PlayerDatabase database;
 
-    private Hud(){
+    private MainHud(){
         CustomHudManager.addTicket(ToughAsNailsU.getInstance(), this);
         database = PlayerDatabase.getInstance();
     }
 
-    public static Hud getInstance() {
-        if (instance == null) instance = new Hud();
+    public static MainHud getInstance() {
+        if (instance == null) instance = new MainHud();
         return instance;
         
     }

@@ -1,35 +1,31 @@
 package me.udnek.toughasnailsu;
 
-import me.udnek.itemscoreu.customhud.CustomHudManager;
-import me.udnek.itemscoreu.utils.LogUtils;
+import me.udnek.itemscoreu.resourcepack.ResourcePackablePlugin;
 import me.udnek.toughasnailsu.data.DataTicker;
 import me.udnek.toughasnailsu.data.PlayerDatabase;
-import me.udnek.toughasnailsu.hud.Hud;
+import me.udnek.toughasnailsu.hud.MainHud;
+import me.udnek.toughasnailsu.util.EventsListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class ToughAsNailsU extends JavaPlugin {
-
-    private DataTicker dataTicker;
-
+public final class ToughAsNailsU extends JavaPlugin implements ResourcePackablePlugin {
     private static ToughAsNailsU instance;
-
     public static ToughAsNailsU getInstance() {
         return instance;
     }
 
-
-
     @Override
     public void onEnable() {
         instance = this;
+
+        new EventsListener(this);
+
         PlayerDatabase.getInstance();
-        dataTicker = new DataTicker();
-        dataTicker.start(this);
-        Hud.getInstance();
+        DataTicker.getInstance().start(this);
+        MainHud.getInstance();
     }
 
     @Override
     public void onDisable() {
-        dataTicker.stop();
+        DataTicker.getInstance().stop();
     }
 }
