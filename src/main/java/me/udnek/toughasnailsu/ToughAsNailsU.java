@@ -1,9 +1,11 @@
 package me.udnek.toughasnailsu;
 
+import me.udnek.itemscoreu.customitem.CustomItem;
 import me.udnek.itemscoreu.resourcepack.ResourcePackablePlugin;
 import me.udnek.toughasnailsu.data.DataTicker;
 import me.udnek.toughasnailsu.data.PlayerDatabase;
 import me.udnek.toughasnailsu.hud.MainHud;
+import me.udnek.toughasnailsu.item.Items;
 import me.udnek.toughasnailsu.util.EventsListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,6 +18,8 @@ public final class ToughAsNailsU extends JavaPlugin implements ResourcePackableP
     @Override
     public void onEnable() {
         instance = this;
+
+        CustomItem test = Items.TEST;
 
         new EventsListener(this);
 

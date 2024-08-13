@@ -4,11 +4,13 @@ import me.udnek.itemscoreu.nms.DownfallType;
 import me.udnek.itemscoreu.nms.Nms;
 import me.udnek.itemscoreu.serializabledata.SerializableData;
 import me.udnek.itemscoreu.serializabledata.SerializableDataManager;
+import me.udnek.itemscoreu.utils.ComponentU;
 import me.udnek.toughasnailsu.ToughAsNailsU;
 import me.udnek.toughasnailsu.util.RangedValue;
 import me.udnek.toughasnailsu.util.Utils;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -23,7 +25,7 @@ import org.bukkit.util.Vector;
 
 public class PlayerData implements SerializableData {
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     private final Player player;
     private Location location;
@@ -31,7 +33,6 @@ public class PlayerData implements SerializableData {
 
     private Temperature temperature;
     private Thirst thirst;
-    private final Hud hud = new Hud();
     private final Debug debug = new Debug();
 
     private PlayerData(Player player){
@@ -40,14 +41,10 @@ public class PlayerData implements SerializableData {
         this.thirst = new Thirst();
         debug.initialize();
     }
-
     public Temperature getTemperature() {return temperature;}
     public Thirst getThirst() {return thirst;}
-
     public void tick(){
         if (Bukkit.getCurrentTick() % 5 != 0) return;
-
-
         debug.prepare();
 
         temperature.tick();
@@ -56,11 +53,15 @@ public class PlayerData implements SerializableData {
         debug.debug();
         step++;
     }
-    public Component getHud(){return hud.get();}
-    public boolean shouldSkipTick(int every, int ticket){
-        return (step%every == ticket);
+    public Component getHud(){
+        return temperature.hud.get().append(thirst.hud.get());
     }
-
+    public boolean shouldSkipTick(int tickEvery, int ticket){
+        return (step%tickEvery != ticket);
+    }
+    public boolean shouldSkipTick(int tickEvery){
+        return (step%tickEvery != 0);
+    }
     ///////////////////////////////////////////////////////////////////////////
     // TECHNICAL
     ///////////////////////////////////////////////////////////////////////////
@@ -102,49 +103,12 @@ public class PlayerData implements SerializableData {
     ///////////////////////////////////////////////////////////////////////////
     // SUBS
     ///////////////////////////////////////////////////////////////////////////
-    public class Hud{
-        public static final Key FONT = Key.key("toughasnailsu:temperature");
-        public static final int FRAMES = 21;
-        public static final Vector FREEZE_COLOR = new Vector(20, 78, 112).multiply((double) 1/255);
-        public static final Vector HEAT_COLOR = new Vector(217, 131, 44).multiply((double) 1/255);
-
-        int animation = -1;
-        public Component get(){
-            if (animation == -1 && (temperature.justStartedRising || temperature.justStartedDropping)){
-                animation = 0;
-            }
-            if (animation >= FRAMES) animation = -1;
-
-            return getIcon().font(FONT).color(getColor());
-        }
-        public Component getIcon(){
-            if (temperature.stabilizing) {
-                return Component.translatable("image.toughasnailsu.temperature.stabilizing");
-            }
-            String type = temperature.lastImpact > 0 ? "rise" : "drop";
-            if (animation == -1) {
-                return Component.translatable("image.toughasnailsu.temperature."+type);
-            } else {
-                return Component.translatable("animation.toughasnailsu.temperature." + type +'.' + animation++);
-            }
-        }
-        public TextColor getColor(){
-            double normalized = temperature.getNormalized();
-            Vector color;
-            if (normalized < 0.5){
-                color = new Vector(1,1,1).subtract(FREEZE_COLOR.clone()).multiply(1-normalized*2);
-            } else {
-                color = new Vector(1,1,1).subtract(HEAT_COLOR.clone()).multiply((normalized-0.5)*2);
-            }
-            color = new Vector(1,1,1).subtract(color);
-            return TextColor.color((float) color.getX(), (float) color.getY(), (float) color.getZ());
-        }
-
-    }
     public class Thirst extends RangedValue{
         public static final double MAX = 20;
         public static final double MIN = 0;
         public static final double DEFAULT = 20;
+
+        Hud hud = new Hud();
 
         public Thirst(double value){set(value);}
         public Thirst(){this(DEFAULT);}
@@ -153,8 +117,30 @@ public class PlayerData implements SerializableData {
         @Override
         public double getMin() {return MIN;}
 
+        double adding = -0.2;
         public void tick(){
+            add(adding);
+            if (value == 0 || value == 20) adding*=-1;
+        }
 
+        public boolean isThirsty(){
+            return player.hasPotionEffect(PotionEffectType.LUCK);
+        }
+
+        public class Hud{
+            public static final Key FONT_NORMAL = Key.key("toughasnailsu:thirst");
+            public static final Key FONT_THIRSTY = Key.key("toughasnailsu:thirst_thirsty");
+            public static final int SIZE = 82;
+            public static final int OFFSET = 11;
+
+            public Component get(){
+                Key font = isThirsty() ? FONT_THIRSTY : FONT_NORMAL;
+                return ComponentU.textWithNoSpace(
+                        OFFSET,
+                        Component.translatable("hud.toughasnailsu.thirst.level."+((int) value)).font(font).color(ComponentU.NO_SHADOW_COLOR),
+                        SIZE
+                );
+            }
         }
 
     }
@@ -168,6 +154,8 @@ public class PlayerData implements SerializableData {
         public static final double ADAPTATION_MULTIPLIER = 0.5;
         public static final double NATURAL_RESTORE_VALUE = 5;
         public static final double NATURAL_RESTORE_RANGE = 10;
+
+        Hud hud = new Hud();
 
         double biomeHumidity;
         double biomeTemperature;
@@ -187,11 +175,9 @@ public class PlayerData implements SerializableData {
         public double getMax() {return MAX;}
         @Override
         public double getMin() {return MIN;}
-
         public double getNormalized(){
             return (value-MIN)/(MAX-MIN);
         }
-
         public void tick(){
             updateAll();
             double newImpact = calculateImpact();
@@ -205,7 +191,6 @@ public class PlayerData implements SerializableData {
             add(newImpact);
             lastImpact = newImpact;
         }
-
         public void updateBiomeData(){
             biomeHumidity = location.getBlock().getHumidity();
             biomeTemperature = location.getBlock().getTemperature();
@@ -257,7 +242,6 @@ public class PlayerData implements SerializableData {
 
             return impact * IMPACT_SPEED;
         }
-
         public double calculateExternalImpact(){
             double impactSum =
                             + (biomeTemperature - 0.8)* 5 * (biomeHumidity + 0.5)
@@ -268,18 +252,62 @@ public class PlayerData implements SerializableData {
 
             return impactSum * EXTERNAL_IMPACT_MULTIPLIER;
         }
+        public class Hud{
+            public static final Key FONT = Key.key("toughasnailsu:temperature");
+            public static final int FRAMES = 21;
+            public static final Vector FREEZE_COLOR = new Vector(20, 78, 112).multiply((double) 1/255);
+            public static final Vector HEAT_COLOR = new Vector(217, 131, 44).multiply((double) 1/255);
+            public static final int SIZE = 14;
+            public static final int OFFSET = -7;
 
-        public double calculateWeather(){
-/*            addDebug("weatherDuration", location.getWorld().getWeatherDuration());
-            addDebug("clearWeatherDuration", location.getWorld().getClearWeatherDuration());
-            addDebug("hasStorm", location.getWorld().hasStorm());
-            addDebug("isThunder", location.getWorld().isThundering());*/
-            if (!location.getWorld().hasStorm()) return 0;
-            if (Nms.get().getDownfallType(location) == DownfallType.NONE) return 0;
-            double highestY = location.getWorld().getHighestBlockAt((int) location.x(), (int) location.z()).getY();
-            if (highestY > location.getY()) return 0;
-            debug.addLine("underRoof", highestY > location.getY());
-            return 1;
+            int animation = -1;
+            Component icon;
+            TextColor color;
+            public Component get(){
+                if (animation == -1 && (temperature.justStartedRising || temperature.justStartedDropping)){
+                    animation = 0;
+                }
+                if (animation >= FRAMES) animation = -1;
+
+                updateComponents();
+                return ComponentU.textWithNoSpace(OFFSET, icon.font(FONT).color(color), SIZE);
+            }
+            public void updateComponents(){
+                if (temperature.stabilizing) {
+                    icon = Component.translatable("image.toughasnailsu.temperature.stabilizing");
+                    color = smoothColor();
+                    return;
+                }
+                else if (temperature.getValue() == Temperature.MAX){
+                    icon = Component.translatable("image.toughasnailsu.temperature.heat");
+                    color = NamedTextColor.WHITE;
+                    return;
+                }
+                else if (temperature.getValue() == Temperature.MIN){
+                    icon = Component.translatable("image.toughasnailsu.temperature.freeze");
+                    color = NamedTextColor.WHITE;
+                    return;
+                }
+
+                String type = temperature.lastImpact > 0 ? "rise" : "drop";
+                if (animation == -1) {
+                    icon = Component.translatable("image.toughasnailsu.temperature."+type);
+                } else {
+                    icon = Component.translatable("animation.toughasnailsu.temperature." + type +'.' + animation++);
+                }
+                color = smoothColor();
+            }
+            public TextColor smoothColor(){
+                double normalized = temperature.getNormalized();
+                Vector color;
+                if (normalized < 0.5){
+                    color = new Vector(1,1,1).subtract(FREEZE_COLOR.clone()).multiply(1-normalized*2);
+                } else {
+                    color = new Vector(1,1,1).subtract(HEAT_COLOR.clone()).multiply((normalized-0.5)*2);
+                }
+                color = new Vector(1,1,1).subtract(color);
+                return TextColor.color((float) color.getX(), (float) color.getY(), (float) color.getZ());
+            }
         }
     }
     public class Debug{
@@ -316,7 +344,7 @@ public class PlayerData implements SerializableData {
             addLine("jsRising", temperature.justStartedRising);
             addLine("jsDropping", temperature.justStartedDropping);
             addLine("stabilizing", temperature.stabilizing);
-            addLine("anim", hud.animation);
+            addLine("anim", temperature.hud.animation);
             addLine("tempNormalized", temperature.getNormalized());
         }
         private void addLine(String name, Object value){
