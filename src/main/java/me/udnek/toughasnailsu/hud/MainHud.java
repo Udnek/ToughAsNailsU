@@ -4,18 +4,18 @@ import me.udnek.itemscoreu.customhud.CustomHud;
 import me.udnek.itemscoreu.customhud.CustomHudManager;
 import me.udnek.toughasnailsu.ToughAsNailsU;
 import me.udnek.toughasnailsu.data.PlayerData;
-import me.udnek.toughasnailsu.data.PlayerDatabase;
+import me.udnek.toughasnailsu.data.Database;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
 public class MainHud implements CustomHud {
     
     private static MainHud instance;
-    private final PlayerDatabase database;
+    private final Database database;
 
     private MainHud(){
         CustomHudManager.addTicket(ToughAsNailsU.getInstance(), this);
-        database = PlayerDatabase.getInstance();
+        database = Database.getInstance();
     }
 
     public static MainHud getInstance() {

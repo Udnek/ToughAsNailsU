@@ -11,20 +11,19 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.Serializable;
 import java.util.HashMap;
 
-public class PlayerDatabase extends SelfRegisteringListener {
+public class Database extends SelfRegisteringListener {
 
     private final HashMap<Player, PlayerData> database = new HashMap<>();
-    private static PlayerDatabase instance;
+    private static Database instance;
 
-    public PlayerDatabase(JavaPlugin plugin) {
+    public Database(JavaPlugin plugin) {
         super(plugin);
     }
 
-    public static PlayerDatabase getInstance() {
-        if (instance == null) instance = new PlayerDatabase(ToughAsNailsU.getInstance());
+    public static Database getInstance() {
+        if (instance == null) instance = new Database(ToughAsNailsU.getInstance());
         return instance;
 
     }

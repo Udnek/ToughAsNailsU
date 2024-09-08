@@ -5,7 +5,7 @@ import me.udnek.itemscoreu.utils.TickingTask;
 public class DataTicker extends TickingTask {
 
     public static final int DELAY = 1;
-    PlayerDatabase database = PlayerDatabase.getInstance();
+    Database database = Database.getInstance();
     
     private static DataTicker instance;
     private DataTicker(){}

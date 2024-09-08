@@ -1,4 +1,9 @@
 {
+	"lore.drinkable.effect": "%s %s (%s)",
+	
+	"effect.drinkable.cooling": "Cooling",
+	"effect.drinkable.heating": "Heating",
+	
 	"animation.toughasnailsu.temperature.rise.0": "a",
 	"animation.toughasnailsu.temperature.rise.1": "b",
 	"animation.toughasnailsu.temperature.rise.2": "c",
