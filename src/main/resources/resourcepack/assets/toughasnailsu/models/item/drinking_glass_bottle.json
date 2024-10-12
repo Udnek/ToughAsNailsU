@@ -1,0 +1,7 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "toughasnailsu:item/drinking_glass_bottle",
+		"layer1": "toughasnailsu:item/drinking_glass_bottle"
+	}
+}

@@ -21,8 +21,6 @@ public class DataTicker extends TickingTask {
 
     @Override
     public void run() {
-        for (PlayerData playerData : database.getAllData().values()) {
-            playerData.tick();
-        }
+        database.getAllData().values().forEach(PlayerData::tick);
     }
 }

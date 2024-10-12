@@ -1,7 +1,7 @@
 package me.udnek.toughasnailsu.item;
 
 import me.udnek.itemscoreu.customitem.CustomItem;
-import me.udnek.itemscoreu.customitem.CustomItemRegistry;
+import me.udnek.itemscoreu.customregistry.CustomRegistries;
 import me.udnek.toughasnailsu.ToughAsNailsU;
 
 public class Items {
@@ -21,6 +21,6 @@ public class Items {
     public static final CustomItem GREEN_SUGAR_TEA_BOTTLE = register(ConstructableDrinkableItem.normal("green_sugar_tea_bottle", 500202, 6, 1, 20*20));
 
     public static CustomItem register(CustomItem customItem){
-        return CustomItemRegistry.getInstance().register(ToughAsNailsU.getInstance(), customItem);
+        return CustomRegistries.ITEM.register(ToughAsNailsU.getInstance(), customItem);
     }
 }

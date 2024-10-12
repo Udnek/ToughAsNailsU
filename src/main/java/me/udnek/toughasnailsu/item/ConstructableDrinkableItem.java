@@ -2,6 +2,7 @@ package me.udnek.toughasnailsu.item;
 
 import me.udnek.itemscoreu.customitem.ConstructableCustomItem;
 import me.udnek.itemscoreu.customitem.CustomItem;
+import me.udnek.toughasnailsu.component.DrinkItemComponent;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
@@ -10,11 +11,12 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ConstructableDrinkableItem extends ConstructableCustomItem implements DrinkableItem, ToughAsNailsUCustomItem {
+public class ConstructableDrinkableItem extends ConstructableCustomItem implements ToughAsNailsUCustomItem {
 
     protected final Material material;
     protected final String rawId;
     protected final Integer customModelData;
+
     protected final int thirstRestoration;
     protected final boolean inflictsThirst;
     protected final double temperatureImpact;
@@ -30,22 +32,18 @@ public class ConstructableDrinkableItem extends ConstructableCustomItem implemen
         this.temperatureImpactDuration = temperatureImpactDuration;
     }
 
+    @Override
+    public void afterInitialization() {
+        super.afterInitialization();
+        setComponent(new DrinkItemComponent(thirstRestoration, inflictsThirst, temperatureImpact, temperatureImpactDuration));
+    }
+
     public static CustomItem normal(String rawId, Integer customModelData, int thirstRestoration, double temperatureImpact, int temperatureImpactDuration){
         return new ConstructableDrinkableItem(Material.POTION, rawId, customModelData, thirstRestoration, false, temperatureImpact, temperatureImpactDuration);
     }
     public static CustomItem dirty(String rawId, Integer customModelData, int thirstRestoration, double temperatureImpact, int temperatureImpactDuration){
         return new ConstructableDrinkableItem(Material.POTION, rawId, customModelData, thirstRestoration, true, temperatureImpact, temperatureImpactDuration);
     }
-    @Override
-    public double getTemperatureImpact(){return temperatureImpact;}
-    @Override
-    public int getTemperatureImpactDuration() {return temperatureImpactDuration;}
-
-    @Override
-    public double getThirstRestoration() {return thirstRestoration;}
-
-    @Override
-    public boolean inflictsThirst() {return inflictsThirst;}
     @Override
     public @NotNull String getRawId() {return rawId;}
     @Override

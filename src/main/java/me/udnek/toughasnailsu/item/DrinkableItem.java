@@ -1,3 +1,4 @@
+/*
 package me.udnek.toughasnailsu.item;
 
 import me.udnek.itemscoreu.customitem.CustomItem;
@@ -93,3 +94,4 @@ public interface DrinkableItem extends CustomItem, CustomItemProperties {
         return food;
     }
 }
+*/

@@ -1,7 +1,8 @@
 package me.udnek.toughasnailsu.data;
 
 import me.udnek.itemscoreu.utils.ComponentU;
-import me.udnek.toughasnailsu.item.DrinkableItem;
+import me.udnek.toughasnailsu.attribute.Attributes;
+import me.udnek.toughasnailsu.component.DrinkItemComponent;
 import me.udnek.toughasnailsu.util.RangedValue;
 import me.udnek.toughasnailsu.util.Utils;
 import net.kyori.adventure.key.Key;
@@ -22,7 +23,7 @@ public class Temperature extends RangedValue {
     public static final double DEFAULT = 0;
 
     public static final double EXTERNAL_IMPACT_MULTIPLIER = 5;
-    public static final double IMPACT_SPEED = 1;
+    public static final double IMPACT_SPEED = 0.1;
     public static final double ADAPTATION_MULTIPLIER = 0.5;
     public static final double NATURAL_RESTORE_VALUE = 5;
     public static final double NATURAL_RESTORE_RANGE = 10;
@@ -52,9 +53,12 @@ public class Temperature extends RangedValue {
     double sun; // [0 ... 1]
     double activity; // [0, 1]
     double wet; // [0, 1]
-    double weather; // [0, 1]
+    double rain; // [0, 1]
     double blockAroundImpact = 0;
     double blockUnderImpact = 0;
+
+    double heatResistance = 1;
+    double coldResistance = 1;
 
     double foodImpact = 0;
     int foodDuration = 0;
@@ -109,17 +113,22 @@ public class Temperature extends RangedValue {
             sun =  (double) surfaceLight / 15;
         }
     }
+    public void updateAttributes(){
+        coldResistance = Attributes.COLD_RESISTANCE.calculate(data.player);
+        heatResistance = Attributes.HEAT_RESISTANCE.calculate(data.player);
+    }
     public void updateAll(){
-
         activity = (data.player.isSprinting() || data.player.isSwimming()) ? 1 : 0;
         wet = data.player.isInWater() ? 1 : 0;
-        weather = data.player.isInRain() ? 1 : 0;
+        rain = data.player.isInRain() ? 1 : 0;
         blockUnderImpact = UNDER_BLOCK_MAP.getOrDefault(data.location.clone().subtract(0, 0.1, 0).getBlock().getType(), 0d);
         updateBiomeData();
         updateSun();
-        if (!data.shouldSkipTick(20*4)){
-            blockAroundImpact = calculateAroundBlocksImpact();
-        }
+        if (!data.shouldSkipTick(20*3)) blockAroundImpact = calculateAroundBlocksImpact();
+        if (!data.shouldSkipTick(20, 123)) updateAttributes();
+
+
+
     }
     public double calculateImpact(){
         double externalImpact = calculateExternalImpact();
@@ -127,9 +136,9 @@ public class Temperature extends RangedValue {
 
         double impact = externalImpact + internalImpact;
 
-        data.debug.addLine("externalImpact", externalImpact + " (" + externalImpact/EXTERNAL_IMPACT_MULTIPLIER + ")");
-        data.debug.addLine("internalImpact", internalImpact + " (" + internalImpact/INTERNAL_IMPACT_MULTIPLIER + ")");
-        data.debug.addLine("impact", impact);
+        data.debugger.addLine("externalImpact", externalImpact + " (" + externalImpact/EXTERNAL_IMPACT_MULTIPLIER + ")");
+        data.debugger.addLine("internalImpact", internalImpact + " (" + internalImpact/INTERNAL_IMPACT_MULTIPLIER + ")");
+        data.debugger.addLine("impact", impact);
 
         if (impact < 0) impact += NATURAL_RESTORE_VALUE;
         else            impact -= NATURAL_RESTORE_VALUE;
@@ -150,7 +159,7 @@ public class Temperature extends RangedValue {
             stabilizing = false;
         }
 
-        data.debug.addLine("finalImpact", impact);
+        data.debugger.addLine("finalImpact", impact);
 
         return impact * IMPACT_SPEED;
     }
@@ -160,16 +169,18 @@ public class Temperature extends RangedValue {
                 + sun
                 + activity * 2.5
                 + wet * -10
-                + weather * -1
+                + rain * -1
                 + blockAroundImpact
                 + blockUnderImpact;
 
+        if (impactSum < 0) impactSum *= 1 - (coldResistance-1);
+        else               impactSum *= 1 - (heatResistance-1);
 
         return impactSum * EXTERNAL_IMPACT_MULTIPLIER;
     }
     public double calculateInternalImpact(){
-        data.debug.addLine("foodImpact", foodImpact);
-        data.debug.addLine("foodImpactDuration", DrinkableItem.generateEffectDuration(foodDuration) + " (" + foodDuration +")");
+        data.debugger.addLine("foodImpact", foodImpact);
+        data.debugger.addLine("foodImpactDuration", DrinkItemComponent.generateEffectDuration(foodDuration) + " (" + foodDuration +")");
         return foodImpact * FOOD_MULTIPLIER * INTERNAL_IMPACT_MULTIPLIER;
     }
     public double calculateAroundBlocksImpact(){

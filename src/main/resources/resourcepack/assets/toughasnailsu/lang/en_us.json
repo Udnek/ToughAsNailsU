@@ -3,7 +3,10 @@
 	
 	"effect.drinkable.cooling": "Cooling",
 	"effect.drinkable.heating": "Heating",
-	
+
+	"attribute.toughasnailsu.name.cold_resistance": "Cold Resistance",
+	"attribute.toughasnailsu.name.heat_resistance": "Heat Resistance",
+
 	"animation.toughasnailsu.temperature.rise.0": "a",
 	"animation.toughasnailsu.temperature.rise.1": "b",
 	"animation.toughasnailsu.temperature.rise.2": "c",

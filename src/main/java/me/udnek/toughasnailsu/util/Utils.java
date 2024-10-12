@@ -6,4 +6,8 @@ public class Utils {
         return a*b >= 0;
     }
 
+    public static String roundForDebug(Double v){
+        return String.format("%.2f", v);
+    }
+
 }
