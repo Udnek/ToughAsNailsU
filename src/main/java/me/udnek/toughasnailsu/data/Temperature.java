@@ -33,8 +33,8 @@ public class Temperature extends RangedValue {
     public static final double FOOD_MULTIPLIER = 40;
     public static final double INTERNAL_IMPACT_MULTIPLIER = 1;
 
-    static final EnumMap<Material, Double> AROUND_BLOCK_MAP = new EnumMap<>(Material.class);
-    static final EnumMap<Material, Double> UNDER_BLOCK_MAP = new EnumMap<>(Material.class);
+    public static final EnumMap<Material, Double> AROUND_BLOCK_MAP = new EnumMap<>(Material.class);
+    public static final EnumMap<Material, Double> UNDER_BLOCK_MAP = new EnumMap<>(Material.class);
 
     static {
         AROUND_BLOCK_MAP.put(Material.LAVA, 15d);
