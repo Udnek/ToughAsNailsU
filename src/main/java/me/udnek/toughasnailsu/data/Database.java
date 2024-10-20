@@ -1,7 +1,7 @@
 package me.udnek.toughasnailsu.data;
 
 import me.udnek.itemscoreu.serializabledata.SerializableDataManager;
-import me.udnek.itemscoreu.utils.SelfRegisteringListener;
+import me.udnek.itemscoreu.util.SelfRegisteringListener;
 import me.udnek.toughasnailsu.ToughAsNailsU;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

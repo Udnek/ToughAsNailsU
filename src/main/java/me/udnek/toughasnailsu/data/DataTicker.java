@@ -1,6 +1,6 @@
 package me.udnek.toughasnailsu.data;
 
-import me.udnek.itemscoreu.utils.TickingTask;
+import me.udnek.itemscoreu.util.TickingTask;
 
 public class DataTicker extends TickingTask {
 

@@ -4,11 +4,12 @@ import me.udnek.itemscoreu.customattribute.CustomAttributesContainer;
 import me.udnek.itemscoreu.customcomponent.instance.CustomItemAttributesComponent;
 import me.udnek.itemscoreu.customequipmentslot.CustomEquipmentSlot;
 import me.udnek.itemscoreu.customevent.CustomItemGeneratedEvent;
-import me.udnek.itemscoreu.customevent.GlobalInitializationEndEvent;
+import me.udnek.itemscoreu.customevent.InitializationEvent;
 import me.udnek.itemscoreu.customitem.CustomItem;
 import me.udnek.itemscoreu.customitem.VanillaBasedCustomItem;
-import me.udnek.itemscoreu.utils.SelfRegisteringListener;
-import me.udnek.itemscoreu.utils.VanillaItemManager;
+import me.udnek.itemscoreu.util.InitializationProcess;
+import me.udnek.itemscoreu.util.SelfRegisteringListener;
+import me.udnek.itemscoreu.util.VanillaItemManager;
 import me.udnek.toughasnailsu.attribute.Attributes;
 import me.udnek.toughasnailsu.component.ComponentTypes;
 import org.bukkit.Material;
@@ -33,7 +34,8 @@ public class EventsListener extends SelfRegisteringListener {
         customItem.getComponentOrDefault(ComponentTypes.DRINK_ITEM).modifyItem(event);
     }
     @EventHandler
-    public void afterInit(GlobalInitializationEndEvent event){
+    public void afterInit(InitializationEvent event){
+        if (event.getStep() != InitializationProcess.Step.END) return;
         VanillaBasedCustomItem replaced = VanillaItemManager.getReplaced(Material.LEATHER_CHESTPLATE);
         replaced.setComponent(
                 new CustomItemAttributesComponent(

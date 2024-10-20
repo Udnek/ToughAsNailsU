@@ -1,6 +1,6 @@
 package me.udnek.toughasnailsu.data;
 
-import me.udnek.itemscoreu.utils.ComponentU;
+import me.udnek.itemscoreu.util.ComponentU;
 import me.udnek.toughasnailsu.util.RangedValue;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;

@@ -3,7 +3,7 @@ package me.udnek.toughasnailsu.item;
 
 import me.udnek.itemscoreu.customitem.CustomItem;
 import me.udnek.itemscoreu.customitem.CustomItemProperties;
-import me.udnek.itemscoreu.utils.ComponentU;
+import me.udnek.itemscoreu.util.ComponentU;
 import me.udnek.toughasnailsu.data.PlayerData;
 import me.udnek.toughasnailsu.data.Database;
 import net.kyori.adventure.key.Key;

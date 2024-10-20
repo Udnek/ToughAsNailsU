@@ -4,8 +4,6 @@ import me.udnek.itemscoreu.customitem.CustomItem;
 import me.udnek.itemscoreu.customregistry.CustomRegistries;
 import me.udnek.toughasnailsu.ToughAsNailsU;
 
-import java.util.Iterator;
-
 public class Items {
 
     public static final CustomItem DIRTY_WATER_BOTTLE = register(ConstructableDrinkableItem.dirty("dirty_water_bottle", 500000, 6, 1, 20*10));

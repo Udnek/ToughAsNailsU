@@ -3,7 +3,7 @@ package me.udnek.toughasnailsu;
 import me.udnek.itemscoreu.customattribute.CustomAttribute;
 import me.udnek.itemscoreu.customitem.CustomItem;
 import me.udnek.itemscoreu.resourcepack.ResourcePackablePlugin;
-import me.udnek.itemscoreu.utils.VanillaItemManager;
+import me.udnek.itemscoreu.util.VanillaItemManager;
 import me.udnek.toughasnailsu.attribute.Attributes;
 import me.udnek.toughasnailsu.command.DebugCommand;
 import me.udnek.toughasnailsu.data.DataTicker;
