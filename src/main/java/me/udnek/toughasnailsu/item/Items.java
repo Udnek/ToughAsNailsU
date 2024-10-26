@@ -6,8 +6,10 @@ import me.udnek.toughasnailsu.ToughAsNailsU;
 
 public class Items {
 
+    public static final CustomItem  DRINKING_GLASS_BOTTLE = register(new DrinkingGlassBottle());
+
     public static final CustomItem DIRTY_WATER_BOTTLE = register(ConstructableDrinkableItem.dirty("dirty_water_bottle", 500000, 6, 1, 20*10));
-    public static final CustomItem SEA_WATER_BOTTLE = register(ConstructableDrinkableItem.normal("sea_water_bottle", 500001, 6, -1, 20*20));
+    public static final CustomItem SEA_WATER_BOTTLE = register(ConstructableDrinkableItem.dirty("sea_water_bottle", 500001, 6, -1, 20*20));
     public static final CustomItem PURE_WATER_BOTTLE = register(ConstructableDrinkableItem.normal("pure_water_bottle", 500002, 6, 1, 20*20));
     public static final CustomItem BOILING_WATER_BOTTLE = register(ConstructableDrinkableItem.normal("boiling_water_bottle", 500003, 6, 1, 20*20));
 
