@@ -5,7 +5,7 @@ import me.udnek.itemscoreu.customitem.CustomItem;
 import me.udnek.itemscoreu.resourcepack.ResourcePackablePlugin;
 import me.udnek.itemscoreu.util.VanillaItemManager;
 import me.udnek.toughasnailsu.attribute.Attributes;
-import me.udnek.toughasnailsu.command.Deb;
+import me.udnek.toughasnailsu.command.TestCommand;
 import me.udnek.toughasnailsu.command.DebugCommand;
 import me.udnek.toughasnailsu.data.DataTicker;
 import me.udnek.toughasnailsu.data.Database;
@@ -41,7 +41,7 @@ public final class ToughAsNailsU extends JavaPlugin implements ResourcePackableP
 
         new EventsListener(this);
         getCommand("tanudebug").setExecutor(new DebugCommand());
-        getCommand("deb").setExecutor(new Deb());
+        getCommand("testcommand").setExecutor(new TestCommand());
         Database.getInstance();
         DataTicker.getInstance().start(this);
         MainHud.getInstance();

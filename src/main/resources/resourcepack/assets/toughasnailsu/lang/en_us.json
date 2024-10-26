@@ -102,8 +102,11 @@
 	"lore.toughasnailsu.thirst.level.0": "",
 
 	"item.toughasnailsu.drinking_glass_bottle": "Drinking Glass Bottle",
+	"item.toughasnailsu.amethyst_water_bottle": "Amethyst Water Bottle",
 	"item.toughasnailsu.pure_water_bottle": "Pure Water Bottle",
 	"item.toughasnailsu.dirty_water_bottle": "Dirty Water Bottle",
 	"item.toughasnailsu.sea_water_bottle": "Sea Water Bottle",
-	"item.toughasnailsu.boiling_water_bottle": "Boiling Water Bottle"
+	"item.toughasnailsu.boiling_water_bottle": "Boiling Water Bottle",
+	"item.toughasnailsu.carrot_juice_bottle": "Carrot Juice Bottle",
+	"item.toughasnailsu.sweet_berry_juice_bottle": "Sweet Berry Juice Bottle"
 }
