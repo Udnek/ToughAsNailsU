@@ -35,15 +35,34 @@ public class Temperature extends RangedValue {
     public static final double INTERNAL_IMPACT_MULTIPLIER = 1;
 
     public static final EnumMap<Material, Double> AROUND_BLOCK_MAP = new EnumMap<>(Material.class);
+    public static final EnumMap<Material, Double> AROUND_LIT_BLOCK_MAP = new EnumMap<>(Material.class);
     public static final EnumMap<Material, Double> UNDER_BLOCK_MAP = new EnumMap<>(Material.class);
 
     static {
-        AROUND_BLOCK_MAP.put(Material.LAVA, 15d);
-        AROUND_BLOCK_MAP.put(Material.CAMPFIRE, 15d);
+        AROUND_BLOCK_MAP.put(Material.MAGMA_BLOCK, 0.5d);
+        AROUND_BLOCK_MAP.put(Material.LAVA, 12d);
+        AROUND_BLOCK_MAP.put(Material.FIRE, 5d);
+        AROUND_BLOCK_MAP.put(Material.SOUL_FIRE, 10d);
+        AROUND_BLOCK_MAP.put(Material.LAVA_CAULDRON, 11d);
+        AROUND_BLOCK_MAP.put(Material.SMALL_AMETHYST_BUD, -3d);
+        AROUND_BLOCK_MAP.put(Material.MEDIUM_AMETHYST_BUD, -7d);
+        AROUND_BLOCK_MAP.put(Material.LARGE_AMETHYST_BUD, -10d);
+        AROUND_BLOCK_MAP.put(Material.AMETHYST_CLUSTER, -15d);
 
-        UNDER_BLOCK_MAP.put(Material.ICE, -1d);
-        UNDER_BLOCK_MAP.put(Material.PACKED_ICE, -2d);
-        UNDER_BLOCK_MAP.put(Material.BLUE_ICE, -5d);
+        AROUND_LIT_BLOCK_MAP.put(Material.SOUL_CAMPFIRE, 14d);
+        AROUND_LIT_BLOCK_MAP.put(Material.CAMPFIRE, 9d);
+        AROUND_LIT_BLOCK_MAP.put(Material.FURNACE, 9d);
+        AROUND_LIT_BLOCK_MAP.put(Material.SMOKER, 9d);
+        AROUND_LIT_BLOCK_MAP.put(Material.BLAST_FURNACE, 9d);
+
+        UNDER_BLOCK_MAP.put(Material.POWDER_SNOW, -6d);
+        UNDER_BLOCK_MAP.put(Material.SNOW_BLOCK, -3d);
+        UNDER_BLOCK_MAP.put(Material.MAGMA_BLOCK, 3d);
+        UNDER_BLOCK_MAP.put(Material.ICE, -3d);
+        UNDER_BLOCK_MAP.put(Material.PACKED_ICE, -5d);
+        UNDER_BLOCK_MAP.put(Material.BLUE_ICE, -10d);
+        UNDER_BLOCK_MAP.put(Material.AMETHYST_BLOCK, -5d);
+        UNDER_BLOCK_MAP.put(Material.BUDDING_AMETHYST, -15d);
     }
 
     final PlayerData data;
