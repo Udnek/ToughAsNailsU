@@ -11,6 +11,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -57,8 +58,8 @@ public class Temperature extends RangedValue {
     double blockAroundImpact = 0;
     double blockUnderImpact = 0;
 
-    double heatResistance = 1;
-    double coldResistance = 1;
+    double heatResistanceAttribute = 1;
+    double coldResistanceAttribute = 1;
 
     double foodImpact = 0;
     int foodDuration = 0;
@@ -114,9 +115,13 @@ public class Temperature extends RangedValue {
         }
     }
     public void updateAttributes(){
-        coldResistance = Attributes.COLD_RESISTANCE.calculate(data.player);
-        heatResistance = Attributes.HEAT_RESISTANCE.calculate(data.player);
+        coldResistanceAttribute = Attributes.COLD_RESISTANCE.calculate(data.player);
+        heatResistanceAttribute = Attributes.HEAT_RESISTANCE.calculate(data.player);
     }
+    public double attributeToResistanceMultiplier(double attribute){
+        return 1-attribute;
+    }
+
     public void updateAll(){
         activity = (data.player.isSprinting() || data.player.isSwimming()) ? 1 : 0;
         wet = data.player.isInWater() ? 1 : 0;
@@ -138,6 +143,8 @@ public class Temperature extends RangedValue {
 
         data.debugger.addLine("externalImpact", externalImpact + " (" + externalImpact/EXTERNAL_IMPACT_MULTIPLIER + ")");
         data.debugger.addLine("internalImpact", internalImpact + " (" + internalImpact/INTERNAL_IMPACT_MULTIPLIER + ")");
+        data.debugger.addLine("coldRes: (attr, mul) = (" + coldResistanceAttribute +", " + attributeToResistanceMultiplier(coldResistanceAttribute) + ")");
+        data.debugger.addLine("heatRes: (attr, mul) = (" + heatResistanceAttribute +", " + attributeToResistanceMultiplier(heatResistanceAttribute) + ")");
         data.debugger.addLine("impact", impact);
 
         if (impact < 0) impact += NATURAL_RESTORE_VALUE;
@@ -173,8 +180,8 @@ public class Temperature extends RangedValue {
                 + blockAroundImpact
                 + blockUnderImpact;
 
-        if (impactSum < 0) impactSum *= 1 - (coldResistance-1);
-        else               impactSum *= 1 - (heatResistance-1);
+        if (impactSum < 0) impactSum *= attributeToResistanceMultiplier(coldResistanceAttribute);
+        else               impactSum *= attributeToResistanceMultiplier(heatResistanceAttribute);
 
         return impactSum * EXTERNAL_IMPACT_MULTIPLIER;
     }

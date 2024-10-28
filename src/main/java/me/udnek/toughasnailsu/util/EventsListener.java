@@ -42,7 +42,7 @@ public class EventsListener extends SelfRegisteringListener {
             replacedLeatherChestplate.setComponent(
                     new CustomItemAttributesComponent(
                             new CustomAttributesContainer.Builder()
-                                    .add(Attributes.COLD_RESISTANCE, 0.5, AttributeModifier.Operation.MULTIPLY_SCALAR_1, CustomEquipmentSlot.CHEST)
+                                    .add(Attributes.COLD_RESISTANCE, 0.1, AttributeModifier.Operation.ADD_NUMBER, CustomEquipmentSlot.CHEST)
                                     .build()
                     )
             );
@@ -51,7 +51,7 @@ public class EventsListener extends SelfRegisteringListener {
             replacedLeatherHelmet.setComponent(
                     new CustomItemAttributesComponent(
                             new CustomAttributesContainer.Builder()
-                                    .add(Attributes.COLD_RESISTANCE, 0.5, AttributeModifier.Operation.MULTIPLY_SCALAR_1, CustomEquipmentSlot.HEAD)
+                                    .add(Attributes.COLD_RESISTANCE, 0.1, AttributeModifier.Operation.ADD_NUMBER, CustomEquipmentSlot.HEAD)
                                     .build()
                     )
             );
@@ -60,7 +60,7 @@ public class EventsListener extends SelfRegisteringListener {
             replacedLeatherLeggings.setComponent(
                     new CustomItemAttributesComponent(
                             new CustomAttributesContainer.Builder()
-                                    .add(Attributes.COLD_RESISTANCE, 0.5, AttributeModifier.Operation.MULTIPLY_SCALAR_1, CustomEquipmentSlot.LEGS)
+                                    .add(Attributes.COLD_RESISTANCE, 0.1, AttributeModifier.Operation.ADD_NUMBER, CustomEquipmentSlot.LEGS)
                                     .build()
                     )
             );
@@ -69,7 +69,7 @@ public class EventsListener extends SelfRegisteringListener {
             replacedLeatherBoots.setComponent(
                     new CustomItemAttributesComponent(
                             new CustomAttributesContainer.Builder()
-                                    .add(Attributes.COLD_RESISTANCE, 0.5, AttributeModifier.Operation.MULTIPLY_SCALAR_1, CustomEquipmentSlot.FEET)
+                                    .add(Attributes.COLD_RESISTANCE, 0.1, AttributeModifier.Operation.ADD_NUMBER, CustomEquipmentSlot.FEET)
                                     .build()
                     )
             );
@@ -78,7 +78,7 @@ public class EventsListener extends SelfRegisteringListener {
             replacedChainmailChestplate.setComponent(
                     new CustomItemAttributesComponent(
                             new CustomAttributesContainer.Builder()
-                                    .add(Attributes.HEAT_RESISTANCE, 0.5, AttributeModifier.Operation.MULTIPLY_SCALAR_1, CustomEquipmentSlot.CHEST)
+                                    .add(Attributes.HEAT_RESISTANCE, 0.5, AttributeModifier.Operation.ADD_SCALAR, CustomEquipmentSlot.CHEST)
                                     .build()
                     )
             );
@@ -87,7 +87,7 @@ public class EventsListener extends SelfRegisteringListener {
             replacedChainmailHelmet.setComponent(
                     new CustomItemAttributesComponent(
                             new CustomAttributesContainer.Builder()
-                                    .add(Attributes.HEAT_RESISTANCE, 0.5, AttributeModifier.Operation.MULTIPLY_SCALAR_1, CustomEquipmentSlot.HEAD)
+                                    .add(Attributes.HEAT_RESISTANCE, 0.5, AttributeModifier.Operation.ADD_SCALAR, CustomEquipmentSlot.HEAD)
                                     .build()
                     )
             );
@@ -96,7 +96,7 @@ public class EventsListener extends SelfRegisteringListener {
             replacedChainmailLeggings.setComponent(
                     new CustomItemAttributesComponent(
                             new CustomAttributesContainer.Builder()
-                                    .add(Attributes.HEAT_RESISTANCE, 0.5, AttributeModifier.Operation.MULTIPLY_SCALAR_1, CustomEquipmentSlot.LEGS)
+                                    .add(Attributes.HEAT_RESISTANCE, 0.5, AttributeModifier.Operation.ADD_SCALAR, CustomEquipmentSlot.LEGS)
                                     .build()
                     )
             );
@@ -105,7 +105,7 @@ public class EventsListener extends SelfRegisteringListener {
             replacedChainmailBoots.setComponent(
                     new CustomItemAttributesComponent(
                             new CustomAttributesContainer.Builder()
-                                    .add(Attributes.HEAT_RESISTANCE, 0.5, AttributeModifier.Operation.MULTIPLY_SCALAR_1, CustomEquipmentSlot.FEET)
+                                    .add(Attributes.HEAT_RESISTANCE, 0.5, AttributeModifier.Operation.ADD_SCALAR, CustomEquipmentSlot.FEET)
                                     .build()
                     )
             );

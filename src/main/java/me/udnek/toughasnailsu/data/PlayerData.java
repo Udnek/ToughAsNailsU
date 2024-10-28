@@ -131,8 +131,8 @@ public class PlayerData implements SerializableData {
             addLine("stabilizing", temperature.stabilizing);
             addLine("anim", temperature.hud.animation);
             addLine("tempNormalized", temperature.getNormalized());
-            addLine("coldResistance", temperature.coldResistance);
-            addLine("heatResistance", temperature.heatResistance);
+            addLine("coldResistance", temperature.coldResistanceAttribute);
+            addLine("heatResistance", temperature.heatResistanceAttribute);
         }
         void addLine(String name, Object ...value){
             addLine(name + ": " + Arrays.toString(value));
