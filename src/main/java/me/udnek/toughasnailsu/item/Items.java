@@ -23,8 +23,8 @@ public class Items{
 
     public static final CustomItem AMETHYST_WATER_BOTTLE = register(ConstructableDrinkableItem.normal("amethyst_water_bottle", 500110, 10, -0.35, 20*(40+60)));
 
-    public static final CustomItem MILK_CACAO_BOTTLE = register(ConstructableDrinkableItem.normal("milk_cacao_bottle", 500300, 8, 1, 20*50));
-    public static final CustomItem RAW_MILK_CACAO_BOTTLE = register(ConstructableDrinkableItem.normal("raw_milk_cacao_bottle", 500301, 10, 1, 20*(40+60)));
+    public static final CustomItem MILK_CACAO_BOTTLE = register(ConstructableDrinkableItem.normal("milk_cacao_bottle", 500300, 8, -0.15, 20*50));
+    public static final CustomItem RAW_MILK_CACAO_BOTTLE = register(ConstructableDrinkableItem.normal("raw_milk_cacao_bottle", 500301, 10, 0.3, 20*(40+60)));
 
     public static CustomItem register(CustomItem customItem){
         return CustomRegistries.ITEM.register(ToughAsNailsU.getInstance(), customItem);

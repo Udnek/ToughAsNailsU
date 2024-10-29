@@ -60,15 +60,17 @@ public class DrinkingGlassBottle extends ConstructableCustomItem implements Toug
             Player player = event.getPlayer();
             PlayerInventory inventory = player.getInventory();
             RayTraceResult rayTraceResult = player.rayTraceBlocks(player.getAttribute(Attribute.PLAYER_BLOCK_INTERACTION_RANGE).getValue(), FluidCollisionMode.ALWAYS);
-            if (rayTraceResult == null){return;}
+            if (rayTraceResult == null) return;
             Block block = rayTraceResult.getHitBlock();
             EquipmentSlot hand = event.getHand();
-            if (block == null || hand == null){return;}
+            if (block == null || hand == null) return;
             Location location = block.getLocation();
             Biome biome = location.getWorld().getBiome(location);
-            if (!(block.getBlockData() instanceof Waterlogged) && !(WATER_BLOCK.contains(block.getType()))){return;}
-            ItemStack bottle;
+            if (!(block.getBlockData() instanceof Waterlogged waterlogged)) return;
+            if (!waterlogged.isWaterlogged()) return;
+            if (!WATER_BLOCK.contains(block.getType())) return;
 
+            ItemStack bottle;
 
             if (PURE_WATER_BIOMES.contains(biome)) {bottle = Items.PURE_WATER_BOTTLE.getItem();}
             else if (SEA_WATER_BIOMES.contains(biome)) {bottle = Items.SEA_WATER_BOTTLE.getItem();}
