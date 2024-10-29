@@ -66,10 +66,10 @@ public class DrinkingGlassBottle extends ConstructableCustomItem implements Toug
             if (block == null || hand == null) return;
             Location location = block.getLocation();
             Biome biome = location.getWorld().getBiome(location);
-            if (!(block.getBlockData() instanceof Waterlogged waterlogged)) return;
-            if (!waterlogged.isWaterlogged()) return;
-            if (!WATER_BLOCK.contains(block.getType())) return;
-
+            if (!(WATER_BLOCK.contains(block.getType())) && !(block.getBlockData() instanceof Waterlogged)) return;
+            if (block.getBlockData() instanceof Waterlogged waterlogged){
+                if (!waterlogged.isWaterlogged()) return;
+            }
             ItemStack bottle;
 
             if (PURE_WATER_BIOMES.contains(biome)) {bottle = Items.PURE_WATER_BOTTLE.getItem();}
