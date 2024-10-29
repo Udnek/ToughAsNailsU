@@ -189,6 +189,7 @@ public class Temperature extends RangedValue {
 
         return impact * IMPACT_SPEED;
     }
+    
     public double calculateExternalImpact(){
         double impactSum =
                 + (biomeTemperature - 0.8)* 5 * (biomeHumidity + 0.5)
