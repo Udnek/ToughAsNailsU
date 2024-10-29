@@ -1,14 +1,10 @@
 package me.udnek.toughasnailsu.util;
 
-import me.udnek.itemscoreu.customitem.CustomItem;
-import me.udnek.toughasnailsu.ToughAsNailsU;
-import me.udnek.toughasnailsu.item.Items;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 public class Tags {
