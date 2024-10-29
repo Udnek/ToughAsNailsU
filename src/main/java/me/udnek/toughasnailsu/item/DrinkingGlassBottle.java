@@ -13,10 +13,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.RecipeChoice;
-import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.*;
 import org.bukkit.util.RayTraceResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -70,15 +67,17 @@ public class DrinkingGlassBottle extends ConstructableCustomItem implements Toug
             Location location = block.getLocation();
             Biome biome = location.getWorld().getBiome(location);
             if (!(block.getBlockData() instanceof Waterlogged) && !(WATER_BLOCK.contains(block.getType()))){return;}
+            ItemStack bottle;
+
+
+            if (PURE_WATER_BIOMES.contains(biome)) {bottle = Items.PURE_WATER_BOTTLE.getItem();}
+            else if (SEA_WATER_BIOMES.contains(biome)) {bottle = Items.SEA_WATER_BOTTLE.getItem();}
+            else {bottle = Items.DIRTY_WATER_BOTTLE.getItem();}
 
             inventory.removeItem(Items.DRINKING_GLASS_BOTTLE.getItem());
-            if (PURE_WATER_BIOMES.contains(biome)) {
-                inventory.addItem(Items.PURE_WATER_BOTTLE.getItem());
-            } else if (SEA_WATER_BIOMES.contains(biome)) {
-                inventory.addItem(Items.SEA_WATER_BOTTLE.getItem());
-            } else {
-                inventory.addItem(Items.DIRTY_WATER_BOTTLE.getItem());
-            }
+            if (!(event.getHand().isHand())){inventory.setItem(event.getHand(),bottle);}
+            else {inventory.addItem(bottle);}
+
         }
     }
 }
