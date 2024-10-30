@@ -44,8 +44,8 @@ public class DrinkingGlassBottle extends ConstructableCustomItem implements Toug
     }
 
     @Override
-    public void afterInitialization() {
-        super.afterInitialization();
+    public void initializeComponents() {
+        super.initializeComponents();
         setComponent(new DrinkingGlassBottleComponent());
     }
 
