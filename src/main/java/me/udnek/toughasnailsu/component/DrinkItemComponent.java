@@ -69,9 +69,7 @@ public class DrinkItemComponent implements CustomComponent<CustomItem> {
 
         Component effect = Component.translatable(getTemperatureImpact() > 0 ? "effect.drinkable.heating" : "effect.drinkable.cooling");
         TextColor color = getTemperatureImpact() > 0 ? HEAT_COLOR : FREEZE_COLOR;
-        System.out.println(getTemperatureImpact());
         Component amount = Component.text((int)( Math.abs(getTemperatureImpact()) * 100) + "%");
-        System.out.println(amount);
         Component temperature = Component.translatable("lore.drinkable.effect", List.of(effect, amount, Component.text(generateEffectDuration(getTemperatureImpactDuration()))))
                 .color(color).decoration(TextDecoration.ITALIC, false);
 
