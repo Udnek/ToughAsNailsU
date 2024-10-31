@@ -33,8 +33,8 @@ public class ConstructableDrinkableItem extends ConstructableCustomItem implemen
     }
 
     @Override
-    public void afterInitialization() {
-        super.afterInitialization();
+    public void initializeComponents() {
+        super.initializeComponents();
         setComponent(new DrinkItemComponent(thirstRestoration, inflictsThirst, temperatureImpact, temperatureImpactDuration));
     }
 

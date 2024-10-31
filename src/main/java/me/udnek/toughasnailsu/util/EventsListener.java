@@ -12,6 +12,7 @@ import me.udnek.itemscoreu.util.SelfRegisteringListener;
 import me.udnek.itemscoreu.util.VanillaItemManager;
 import me.udnek.toughasnailsu.attribute.Attributes;
 import me.udnek.toughasnailsu.component.ComponentTypes;
+import me.udnek.toughasnailsu.component.DrinkItemComponent;
 import me.udnek.toughasnailsu.item.RecipeRegistration;
 import org.bukkit.Material;
 import org.bukkit.attribute.AttributeModifier;
@@ -29,10 +30,11 @@ public class EventsListener extends SelfRegisteringListener {
         if (customItem == null) return;
         customItem.getComponentOrDefault(ComponentTypes.DRINK_ITEM).onConsumption(customItem, event);
     }
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onGenerate(CustomItemGeneratedEvent event){
         CustomItem customItem = event.getCustomItem();
-        customItem.getComponentOrDefault(ComponentTypes.DRINK_ITEM).modifyItem(event);
+        DrinkItemComponent component = customItem.getComponent(ComponentTypes.DRINK_ITEM);
+        if (component != null) component.modifyItem(event);
     }
     @EventHandler
     public void afterInit(InitializationEvent event){

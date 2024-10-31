@@ -30,9 +30,6 @@ public class Temperature extends RangedValue {
 
     public static final int BLOCK_AROUND_RADIUS_SCANNER = 5;
 
-    public static final double FOOD_MULTIPLIER = 40;
-    public static final double INTERNAL_IMPACT_MULTIPLIER = 1;
-
     public static final EnumMap<Material, Double> AROUND_BLOCK_MAP = new EnumMap<>(Material.class);
     public static final EnumMap<Material, Double> AROUND_LIT_BLOCK_MAP = new EnumMap<>(Material.class);
     public static final EnumMap<Material, Double> UNDER_BLOCK_MAP = new EnumMap<>(Material.class);
@@ -155,15 +152,20 @@ public class Temperature extends RangedValue {
     }
     public double calculateImpact(){
         double externalImpact = calculateExternalImpact();
-        double internalImpact = calculateInternalImpact();
 
-        double impact = externalImpact + internalImpact;
+        double impact = externalImpact;
+
+        if (foodImpact != 0 && !Utils.isSameSign(impact, foodImpact)){
+            impact *= (1-Math.abs(foodImpact));
+        }
 
         data.debugger.addLine("externalImpact", externalImpact + " (" + externalImpact/EXTERNAL_IMPACT_MULTIPLIER + ")");
-        data.debugger.addLine("internalImpact", internalImpact + " (" + internalImpact/INTERNAL_IMPACT_MULTIPLIER + ")");
+        data.debugger.addLine("foodImpact", foodImpact);
+        data.debugger.addLine("foodImpactDuration", DrinkItemComponent.generateEffectDuration(foodDuration) + " (" + foodDuration +")");
         data.debugger.addLine("coldRes: (attr, mul) = (" + coldResistanceAttribute +", " + attributeToResistanceMultiplier(coldResistanceAttribute) + ")");
         data.debugger.addLine("heatRes: (attr, mul) = (" + heatResistanceAttribute +", " + attributeToResistanceMultiplier(heatResistanceAttribute) + ")");
         data.debugger.addLine("impact", impact);
+
 
         if (impact < 0) impact += NATURAL_RESTORE_VALUE;
         else            impact -= NATURAL_RESTORE_VALUE;
@@ -204,11 +206,7 @@ public class Temperature extends RangedValue {
 
         return impactSum * EXTERNAL_IMPACT_MULTIPLIER;
     }
-    public double calculateInternalImpact(){
-        data.debugger.addLine("foodImpact", foodImpact);
-        data.debugger.addLine("foodImpactDuration", DrinkItemComponent.generateEffectDuration(foodDuration) + " (" + foodDuration +")");
-        return foodImpact * FOOD_MULTIPLIER * INTERNAL_IMPACT_MULTIPLIER;
-    }
+
     public double calculateAroundBlocksImpact(){
         final int radius = BLOCK_AROUND_RADIUS_SCANNER;
 
