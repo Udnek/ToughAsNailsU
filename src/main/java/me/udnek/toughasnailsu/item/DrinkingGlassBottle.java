@@ -15,7 +15,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.*;
 import org.bukkit.util.RayTraceResult;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,8 +25,6 @@ public class DrinkingGlassBottle extends ConstructableCustomItem implements Toug
     public @NotNull String getRawId() {return "drinking_glass_bottle";}
     @Override
     public @NotNull Material getMaterial() {return Material.GUNPOWDER;}
-    @Override
-    public @Nullable Integer getCustomModelData() {return 3000;}
 
     @Override
     protected void generateRecipes(@NotNull Consumer<@NotNull Recipe> consumer) {
@@ -59,7 +56,7 @@ public class DrinkingGlassBottle extends ConstructableCustomItem implements Toug
         public void onRightClick(@NotNull CustomItem customItem, @NotNull PlayerInteractEvent event) {
             Player player = event.getPlayer();
             PlayerInventory inventory = player.getInventory();
-            RayTraceResult rayTraceResult = player.rayTraceBlocks(player.getAttribute(Attribute.PLAYER_BLOCK_INTERACTION_RANGE).getValue(), FluidCollisionMode.ALWAYS);
+            RayTraceResult rayTraceResult = player.rayTraceBlocks(player.getAttribute(Attribute.BLOCK_INTERACTION_RANGE).getValue(), FluidCollisionMode.ALWAYS);
             if (rayTraceResult == null) return;
             Block block = rayTraceResult.getHitBlock();
             EquipmentSlot hand = event.getHand();
