@@ -10,9 +10,3 @@ commands:
     aliases: []
     permission: tanu.admin
     permission-message: "You do not have permission to use this command"
-  testcommand:
-    description: "testcommand"
-    usage: "/testcommand"
-    aliases: [ ]
-    permission: tanu.admin
-    permission-message: "You do not have permission to use this command"
