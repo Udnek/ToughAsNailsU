@@ -39,7 +39,7 @@ public class EventsListener extends SelfRegisteringListener {
     @EventHandler
     public void afterInit(InitializationEvent event){
         if (event.getStep() == InitializationProcess.Step.AFTER_REGISTRIES_INITIALIZATION) RecipeRegistration.run();
-        if (event.getStep() == InitializationProcess.Step.AFTER_VANILLA_MANGER) {
+        if (event.getStep() == InitializationProcess.Step.BEFORE_VANILLA_MANAGER) {
             VanillaBasedCustomItem replacedLeatherChestplate = VanillaItemManager.getReplaced(Material.LEATHER_CHESTPLATE);
             replacedLeatherChestplate.setComponent(
                     new CustomItemAttributesComponent(
