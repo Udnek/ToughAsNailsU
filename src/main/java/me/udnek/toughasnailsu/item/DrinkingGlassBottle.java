@@ -59,7 +59,7 @@ public class DrinkingGlassBottle extends ConstructableCustomItem implements Toug
         public void onRightClick(@NotNull CustomItem customItem, @NotNull PlayerInteractEvent event) {
             Player player = event.getPlayer();
             PlayerInventory inventory = player.getInventory();
-            RayTraceResult rayTraceResult = player.rayTraceBlocks(player.getAttribute(Attribute.PLAYER_BLOCK_INTERACTION_RANGE).getValue(), FluidCollisionMode.ALWAYS);
+            RayTraceResult rayTraceResult = player.rayTraceBlocks(player.getAttribute(Attribute.BLOCK_INTERACTION_RANGE).getValue(), FluidCollisionMode.ALWAYS);
             if (rayTraceResult == null) return;
             Block block = rayTraceResult.getHitBlock();
             EquipmentSlot hand = event.getHand();
