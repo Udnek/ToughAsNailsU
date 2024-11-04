@@ -11,6 +11,8 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -22,8 +24,7 @@ public class Temperature extends RangedValue {
     public static final double MIN = -100;
     public static final double DEFAULT = 0;
 
-    public static final double EXTERNAL_IMPACT_MULTIPLIER = 5;
-    public static final double IMPACT_SPEED = 0.1;
+    public static final double IMPACT_SPEED = 0.01;
     public static final double ADAPTATION_MULTIPLIER = 0.5;
     public static final double NATURAL_RESTORE_VALUE = 5;
     public static final double NATURAL_RESTORE_RANGE = 10;
@@ -119,7 +120,11 @@ public class Temperature extends RangedValue {
         biomeHumidity = data.location.getBlock().getHumidity();
         biomeTemperature = data.location.getBlock().getTemperature();
     }
-    public void updateSun(){
+    public void updateSun() {
+        if (data.location.getWorld().getEnvironment() == World.Environment.NETHER){
+            sun = 0.75;
+            return;
+        }
         Block block = data.location.getBlock();
         byte currentMaxLight = block.getLightFromSky();
         byte surfaceLight = data.location.getWorld().getBlockAt(0, 1000, 0).getLightLevel();
@@ -159,12 +164,14 @@ public class Temperature extends RangedValue {
             impact *= (1-Math.abs(foodImpact));
         }
 
-        data.debugger.addLine("externalImpact", externalImpact + " (" + externalImpact/EXTERNAL_IMPACT_MULTIPLIER + ")");
+        data.debugger.addLine("externalImpact", externalImpact );
         data.debugger.addLine("foodImpact", foodImpact);
         data.debugger.addLine("foodImpactDuration", DrinkItemComponent.generateEffectDuration(foodDuration) + " (" + foodDuration +")");
         data.debugger.addLine("coldRes: (attr, mul) = (" + coldResistanceAttribute +", " + attributeToResistanceMultiplier(coldResistanceAttribute) + ")");
         data.debugger.addLine("heatRes: (attr, mul) = (" + heatResistanceAttribute +", " + attributeToResistanceMultiplier(heatResistanceAttribute) + ")");
         data.debugger.addLine("impact", impact);
+        data.debugger.addLine("sun, wet, activity, rain", sun, wet, activity, rain);
+
 
 
         if (impact < 0) impact += NATURAL_RESTORE_VALUE;
@@ -193,18 +200,20 @@ public class Temperature extends RangedValue {
     
     public double calculateExternalImpact(){
         double impactSum =
-                + (biomeTemperature - 0.8)* 5 * (biomeHumidity + 0.5)
-                + sun
-                + activity * 2.5
-                + wet * -10
-                + rain * -1
+                + (biomeTemperature - 0.69) * 58
+                + (sun - 0.75) * 64
+                + activity * 16
+                + wet * -48
+                + rain * -15
                 + blockAroundImpact
                 + blockUnderImpact;
 
         if (impactSum < 0) impactSum *= attributeToResistanceMultiplier(coldResistanceAttribute);
         else               impactSum *= attributeToResistanceMultiplier(heatResistanceAttribute);
 
-        return impactSum * EXTERNAL_IMPACT_MULTIPLIER;
+        data.debugger.addLine("formula", (biomeTemperature - 0.69) * 58, (sun - 0.75) * 64, activity * 16, wet * -48, rain * -15, blockAroundImpact, blockUnderImpact, impactSum);
+
+        return impactSum * (biomeHumidity + 0.7);
     }
 
     public double calculateAroundBlocksImpact(){
