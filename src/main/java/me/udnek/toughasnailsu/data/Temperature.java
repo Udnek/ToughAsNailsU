@@ -200,9 +200,9 @@ public class Temperature extends RangedValue {
     
     public double calculateExternalImpact(){
         double impactSum =
-                + (biomeTemperature - 0.69) * 58
+                + (biomeTemperature - 0.69) * 42
                 + (sun - 0.75) * 64
-                + activity * 16
+                + activity * 13
                 + wet * -48
                 + rain * -15
                 + blockAroundImpact
@@ -211,7 +211,7 @@ public class Temperature extends RangedValue {
         if (impactSum < 0) impactSum *= attributeToResistanceMultiplier(coldResistanceAttribute);
         else               impactSum *= attributeToResistanceMultiplier(heatResistanceAttribute);
 
-        data.debugger.addLine("formula", (biomeTemperature - 0.69) * 58, (sun - 0.75) * 64, activity * 16, wet * -48, rain * -15, blockAroundImpact, blockUnderImpact, impactSum);
+        data.debugger.addLine("formula", (biomeTemperature - 0.69) * 42, (sun - 0.75) * 64, activity * 13, wet * -43, rain * -15, blockAroundImpact, blockUnderImpact, impactSum);
 
         return impactSum * (biomeHumidity + 0.7);
     }
