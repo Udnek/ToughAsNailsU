@@ -71,8 +71,8 @@ public class DrinkingGlassBottle extends ConstructableCustomItem implements Toug
             ItemStack bottle;
             if (SEA_WATER_BIOMES.contains(biome)) {bottle = Items.SEA_WATER_BOTTLE.getItem();}
             else {bottle = Items.DIRTY_WATER_BOTTLE.getItem();}
-            for (Biome pure_water_biome : PURE_WATER_BIOMES){
-                if (location.getWorld().locateNearestBiome(location, 5, 2, 2, pure_water_biome) != null) {
+            for (Biome pureWaterBiome : PURE_WATER_BIOMES){
+                if (location.getWorld().locateNearestBiome(location, 5, 2, 2, pureWaterBiome) != null) {
                     bottle = Items.PURE_WATER_BOTTLE.getItem();
                     break;
                 }
