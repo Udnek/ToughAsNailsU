@@ -6,7 +6,6 @@ import me.udnek.itemscoreu.customitem.CustomItem;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Tag;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
@@ -68,11 +67,16 @@ public class DrinkingGlassBottle extends ConstructableCustomItem implements Toug
             if (block.getBlockData() instanceof Waterlogged waterlogged){
                 if (!waterlogged.isWaterlogged()) return;
             }
-            ItemStack bottle;
 
-            if (PURE_WATER_BIOMES.contains(biome)) {bottle = Items.PURE_WATER_BOTTLE.getItem();}
-            else if (SEA_WATER_BIOMES.contains(biome)) {bottle = Items.SEA_WATER_BOTTLE.getItem();}
+            ItemStack bottle;
+            if (SEA_WATER_BIOMES.contains(biome)) {bottle = Items.SEA_WATER_BOTTLE.getItem();}
             else {bottle = Items.DIRTY_WATER_BOTTLE.getItem();}
+            for (Biome pureWaterBiome : PURE_WATER_BIOMES){
+                if (location.getWorld().locateNearestBiome(location, 5, 2, 2, pureWaterBiome) != null) {
+                    bottle = Items.PURE_WATER_BOTTLE.getItem();
+                    break;
+                }
+            }
 
             inventory.setItem(hand,inventory.getItem(hand).add(-1));
             if (inventory.getItem(hand).getType() == Material.AIR){inventory.setItem(hand,bottle);}
