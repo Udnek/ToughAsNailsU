@@ -68,11 +68,16 @@ public class DrinkingGlassBottle extends ConstructableCustomItem implements Toug
             if (block.getBlockData() instanceof Waterlogged waterlogged){
                 if (!waterlogged.isWaterlogged()) return;
             }
-            ItemStack bottle;
 
-            if (PURE_WATER_BIOMES.contains(biome)) {bottle = Items.PURE_WATER_BOTTLE.getItem();}
-            else if (SEA_WATER_BIOMES.contains(biome)) {bottle = Items.SEA_WATER_BOTTLE.getItem();}
+            ItemStack bottle;
+            if (SEA_WATER_BIOMES.contains(biome)) {bottle = Items.SEA_WATER_BOTTLE.getItem();}
             else {bottle = Items.DIRTY_WATER_BOTTLE.getItem();}
+            for (Biome pure_water_biome : PURE_WATER_BIOMES){
+                if (location.getWorld().locateNearestBiome(location, 5, 2, 2, pure_water_biome) != null) {
+                    bottle = Items.PURE_WATER_BOTTLE.getItem();
+                    break;
+                }
+            }
 
             inventory.setItem(hand,inventory.getItem(hand).add(-1));
             if (inventory.getItem(hand).getType() == Material.AIR){inventory.setItem(hand,bottle);}
