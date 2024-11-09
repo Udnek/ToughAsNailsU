@@ -139,7 +139,7 @@ public class Temperature extends RangedValue {
         heatResistanceAttribute = Attributes.HEAT_RESISTANCE.calculate(data.player);
     }
     public double attributeToResistanceMultiplier(double attribute){
-        return 2-attribute;
+        return 1-attribute;
     }
 
     public void updateAll(){
