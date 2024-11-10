@@ -1,5 +1,6 @@
 package me.udnek.toughasnailsu.util;
 
+import me.udnek.itemscoreu.customattribute.CustomAttribute;
 import me.udnek.itemscoreu.customattribute.CustomAttributesContainer;
 import me.udnek.itemscoreu.customcomponent.instance.CustomItemAttributesComponent;
 import me.udnek.itemscoreu.customequipmentslot.CustomEquipmentSlot;
@@ -13,13 +14,17 @@ import me.udnek.itemscoreu.util.VanillaItemManager;
 import me.udnek.toughasnailsu.attribute.Attributes;
 import me.udnek.toughasnailsu.component.ComponentTypes;
 import me.udnek.toughasnailsu.component.DrinkItemComponent;
+import me.udnek.toughasnailsu.data.Database;
 import me.udnek.toughasnailsu.item.RecipeRegistration;
 import org.bukkit.Material;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public class EventsListener extends SelfRegisteringListener {
     public EventsListener(JavaPlugin plugin) {super(plugin);}
@@ -40,77 +45,35 @@ public class EventsListener extends SelfRegisteringListener {
     public void afterInit(InitializationEvent event){
         if (event.getStep() == InitializationProcess.Step.AFTER_REGISTRIES_INITIALIZATION) RecipeRegistration.run();
         if (event.getStep() == InitializationProcess.Step.BEFORE_VANILLA_MANAGER) {
-            VanillaBasedCustomItem replacedLeatherChestplate = VanillaItemManager.getReplaced(Material.LEATHER_CHESTPLATE);
-            replacedLeatherChestplate.setComponent(
-                    new CustomItemAttributesComponent(
-                            new CustomAttributesContainer.Builder()
-                                    .add(Attributes.COLD_RESISTANCE, 0.15, AttributeModifier.Operation.ADD_NUMBER, CustomEquipmentSlot.CHEST)
-                                    .build()
-                    )
-            );
-
-            VanillaBasedCustomItem replacedLeatherHelmet = VanillaItemManager.getReplaced(Material.LEATHER_HELMET);
-            replacedLeatherHelmet.setComponent(
-                    new CustomItemAttributesComponent(
-                            new CustomAttributesContainer.Builder()
-                                    .add(Attributes.COLD_RESISTANCE, 0.15, AttributeModifier.Operation.ADD_NUMBER, CustomEquipmentSlot.HEAD)
-                                    .build()
-                    )
-            );
-
-            VanillaBasedCustomItem replacedLeatherLeggings = VanillaItemManager.getReplaced(Material.LEATHER_LEGGINGS);
-            replacedLeatherLeggings.setComponent(
-                    new CustomItemAttributesComponent(
-                            new CustomAttributesContainer.Builder()
-                                    .add(Attributes.COLD_RESISTANCE, 0.15, AttributeModifier.Operation.ADD_NUMBER, CustomEquipmentSlot.LEGS)
-                                    .build()
-                    )
-            );
-
-            VanillaBasedCustomItem replacedLeatherBoots = VanillaItemManager.getReplaced(Material.LEATHER_BOOTS);
-            replacedLeatherBoots.setComponent(
-                    new CustomItemAttributesComponent(
-                            new CustomAttributesContainer.Builder()
-                                    .add(Attributes.COLD_RESISTANCE, 0.15, AttributeModifier.Operation.ADD_NUMBER, CustomEquipmentSlot.FEET)
-                                    .build()
-                    )
-            );
-
-            VanillaBasedCustomItem replacedChainmailChestplate = VanillaItemManager.getReplaced(Material.CHAINMAIL_CHESTPLATE);
-            replacedChainmailChestplate.setComponent(
-                    new CustomItemAttributesComponent(
-                            new CustomAttributesContainer.Builder()
-                                    .add(Attributes.HEAT_RESISTANCE, 0.15, AttributeModifier.Operation.ADD_NUMBER, CustomEquipmentSlot.CHEST)
-                                    .build()
-                    )
-            );
-
-            VanillaBasedCustomItem replacedChainmailHelmet = VanillaItemManager.getReplaced(Material.CHAINMAIL_HELMET);
-            replacedChainmailHelmet.setComponent(
-                    new CustomItemAttributesComponent(
-                            new CustomAttributesContainer.Builder()
-                                    .add(Attributes.HEAT_RESISTANCE, 0.15, AttributeModifier.Operation.ADD_NUMBER, CustomEquipmentSlot.HEAD)
-                                    .build()
-                    )
-            );
-
-            VanillaBasedCustomItem replacedChainmailLeggings = VanillaItemManager.getReplaced(Material.CHAINMAIL_LEGGINGS);
-            replacedChainmailLeggings.setComponent(
-                    new CustomItemAttributesComponent(
-                            new CustomAttributesContainer.Builder()
-                                    .add(Attributes.HEAT_RESISTANCE, 0.15, AttributeModifier.Operation.ADD_NUMBER, CustomEquipmentSlot.LEGS)
-                                    .build()
-                    )
-            );
-
-            VanillaBasedCustomItem replacedChainmailBoots = VanillaItemManager.getReplaced(Material.CHAINMAIL_BOOTS);
-            replacedChainmailBoots.setComponent(
-                    new CustomItemAttributesComponent(
-                            new CustomAttributesContainer.Builder()
-                                    .add(Attributes.HEAT_RESISTANCE, 0.15, AttributeModifier.Operation.ADD_NUMBER, CustomEquipmentSlot.FEET)
-                                    .build()
-                    )
-            );
+            armorAttributes(Material.LEATHER_HELMET, Attributes.COLD_RESISTANCE, 0.15);
+            armorAttributes(Material.LEATHER_CHESTPLATE, Attributes.COLD_RESISTANCE, 0.15);
+            armorAttributes(Material.LEATHER_LEGGINGS, Attributes.COLD_RESISTANCE, 0.15);
+            armorAttributes(Material.LEATHER_BOOTS, Attributes.COLD_RESISTANCE, 0.15);
+            armorAttributes(Material.CHAINMAIL_HELMET, Attributes.HEAT_RESISTANCE, 0.15);
+            armorAttributes(Material.CHAINMAIL_CHESTPLATE, Attributes.HEAT_RESISTANCE, 0.15);
+            armorAttributes(Material.CHAINMAIL_LEGGINGS, Attributes.HEAT_RESISTANCE, 0.15);
+            armorAttributes(Material.CHAINMAIL_BOOTS, Attributes.HEAT_RESISTANCE, 0.15);
         }
+    }
+
+    private static void armorAttributes(@NotNull Material material, @NotNull CustomAttribute attribute, double amount) {
+        VanillaBasedCustomItem replacedLeatherChestplate = VanillaItemManager.getReplaced(material);
+        replacedLeatherChestplate.setComponent(
+                new CustomItemAttributesComponent(
+                        new CustomAttributesContainer.Builder()
+                                .add(attribute, amount, AttributeModifier.Operation.ADD_NUMBER, CustomEquipmentSlot.getFromVanilla(material.getEquipmentSlot()))
+                                .build()
+                )
+        );
+    }
+
+    @EventHandler
+    public void thirstChanges(FoodLevelChangeEvent event){
+        Player player = (Player) event.getEntity();
+        int differenceFood = player.getFoodLevel() - event.getFoodLevel();
+        if (differenceFood < 0) return;
+        double thirstValue = Database.getInstance().get(player).getThirst().getValue();
+
+        Database.getInstance().get(player).getThirst().set(thirstValue - differenceFood / 2d);
     }
 }
