@@ -2,6 +2,8 @@ package me.udnek.toughasnailsu.item;
 
 import me.udnek.itemscoreu.customitem.ConstructableCustomItem;
 import me.udnek.itemscoreu.customitem.CustomItem;
+import me.udnek.itemscoreu.nms.ConsumableComponent;
+import me.udnek.itemscoreu.nms.Nms;
 import me.udnek.toughasnailsu.component.DrinkItemComponent;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -31,6 +33,11 @@ public class ConstructableDrinkableItem extends ConstructableCustomItem implemen
     }
 
     @Override
+    public @Nullable ConsumableComponent getConsumable() {
+        return Nms.get().getConsumableComponent(Material.POTION);
+    }
+
+    @Override
     public void initializeComponents() {
         super.initializeComponents();
         setComponent(new DrinkItemComponent(thirstRestoration, inflictsThirst, temperatureImpact, temperatureImpactDuration));
@@ -40,10 +47,10 @@ public class ConstructableDrinkableItem extends ConstructableCustomItem implemen
     public @Nullable CustomItem getUseRemainderCustom() {return Items.DRINKING_GLASS_BOTTLE;}
 
     public static CustomItem normal(String rawId, int thirstRestoration, double temperatureImpact, int temperatureImpactDuration){
-        return new ConstructableDrinkableItem(Material.POTION, rawId, thirstRestoration, false, temperatureImpact, temperatureImpactDuration);
+        return new ConstructableDrinkableItem(Material.GUNPOWDER, rawId, thirstRestoration, false, temperatureImpact, temperatureImpactDuration);
     }
     public static CustomItem dirty(String rawId, int thirstRestoration, double temperatureImpact, int temperatureImpactDuration){
-        return new ConstructableDrinkableItem(Material.POTION, rawId, thirstRestoration, true, temperatureImpact, temperatureImpactDuration);
+        return new ConstructableDrinkableItem(Material.GUNPOWDER, rawId, thirstRestoration, true, temperatureImpact, temperatureImpactDuration);
     }
     @Override
     public @NotNull String getRawId() {return rawId;}
@@ -51,7 +58,7 @@ public class ConstructableDrinkableItem extends ConstructableCustomItem implemen
     public @NotNull Material getMaterial() {return material;}
 
     @Override
-    protected void modifyFinalItemMeta(ItemMeta itemMeta) {
+    protected void modifyFinalItemMeta(@NotNull ItemMeta itemMeta) {
         if (!(itemMeta instanceof PotionMeta potionMeta)) return;
         potionMeta.setBasePotionType(null);
         potionMeta.setColor(Color.WHITE);
