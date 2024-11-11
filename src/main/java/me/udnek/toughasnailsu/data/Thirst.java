@@ -4,6 +4,7 @@ import me.udnek.itemscoreu.util.ComponentU;
 import me.udnek.toughasnailsu.util.RangedValue;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class Thirst extends RangedValue {
@@ -23,10 +24,12 @@ public class Thirst extends RangedValue {
     @Override
     public double getMin() {return MIN;}
 
-    double adding = -0.2;
+
     public void tick(){
-        add(adding);
-        if (value == 0 || value == 20) adding*=-1;
+        if (data.thirst.value == 0){
+            data.player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20, 1, false, true));
+            data.player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20, 0, false, true));
+        }
     }
 
     public boolean isThirsty(){
