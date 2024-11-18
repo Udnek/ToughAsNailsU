@@ -78,7 +78,7 @@ public class EventsListener extends SelfRegisteringListener {
         Thirst thirst = Database.getInstance().get(player).getThirst();
         double thirstValue = thirst.getValue();
 
-        if (thirst.isThirsty()) thirst.set((thirstValue - differenceFood) * Effects.THIRST.getAppliedLevel(player));
+        if (thirst.isThirsty()) thirst.set((thirstValue - differenceFood) * (Effects.THIRST.getAppliedLevel(player) + 1));
         else thirst.set(thirstValue - differenceFood / 2d);
     }
 }
