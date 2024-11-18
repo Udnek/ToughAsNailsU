@@ -25,6 +25,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -80,5 +81,10 @@ public class EventsListener extends SelfRegisteringListener {
 
         if (thirst.isThirsty()) thirst.set((thirstValue - differenceFood) * (Effects.THIRST.getAppliedLevel(player) + 1));
         else thirst.set(thirstValue - differenceFood / 2d);
+    }
+
+    @EventHandler
+    public void resetThirstAtDeath(PlayerRespawnEvent event){
+        Database.getInstance().get(event.getPlayer()).getThirst().set(20);
     }
 }
