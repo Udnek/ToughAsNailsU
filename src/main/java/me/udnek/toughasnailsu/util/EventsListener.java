@@ -15,6 +15,8 @@ import me.udnek.toughasnailsu.attribute.Attributes;
 import me.udnek.toughasnailsu.component.ComponentTypes;
 import me.udnek.toughasnailsu.component.DrinkItemComponent;
 import me.udnek.toughasnailsu.data.Database;
+import me.udnek.toughasnailsu.data.Thirst;
+import me.udnek.toughasnailsu.effect.Effects;
 import me.udnek.toughasnailsu.item.RecipeRegistration;
 import org.bukkit.Material;
 import org.bukkit.attribute.AttributeModifier;
@@ -45,14 +47,15 @@ public class EventsListener extends SelfRegisteringListener {
     public void afterInit(InitializationEvent event){
         if (event.getStep() == InitializationProcess.Step.AFTER_REGISTRIES_INITIALIZATION) RecipeRegistration.run();
         if (event.getStep() == InitializationProcess.Step.BEFORE_VANILLA_MANAGER) {
-            armorAttributes(Material.LEATHER_HELMET, Attributes.COLD_RESISTANCE, 0.15);
-            armorAttributes(Material.LEATHER_CHESTPLATE, Attributes.COLD_RESISTANCE, 0.15);
-            armorAttributes(Material.LEATHER_LEGGINGS, Attributes.COLD_RESISTANCE, 0.15);
-            armorAttributes(Material.LEATHER_BOOTS, Attributes.COLD_RESISTANCE, 0.15);
-            armorAttributes(Material.CHAINMAIL_HELMET, Attributes.HEAT_RESISTANCE, 0.15);
-            armorAttributes(Material.CHAINMAIL_CHESTPLATE, Attributes.HEAT_RESISTANCE, 0.15);
-            armorAttributes(Material.CHAINMAIL_LEGGINGS, Attributes.HEAT_RESISTANCE, 0.15);
-            armorAttributes(Material.CHAINMAIL_BOOTS, Attributes.HEAT_RESISTANCE, 0.15);
+            double amount = 0.15;
+            armorAttributes(Material.LEATHER_HELMET, Attributes.COLD_RESISTANCE, amount);
+            armorAttributes(Material.LEATHER_CHESTPLATE, Attributes.COLD_RESISTANCE, amount);
+            armorAttributes(Material.LEATHER_LEGGINGS, Attributes.COLD_RESISTANCE, amount);
+            armorAttributes(Material.LEATHER_BOOTS, Attributes.COLD_RESISTANCE, amount);
+            armorAttributes(Material.CHAINMAIL_HELMET, Attributes.HEAT_RESISTANCE, amount);
+            armorAttributes(Material.CHAINMAIL_CHESTPLATE, Attributes.HEAT_RESISTANCE, amount);
+            armorAttributes(Material.CHAINMAIL_LEGGINGS, Attributes.HEAT_RESISTANCE, amount);
+            armorAttributes(Material.CHAINMAIL_BOOTS, Attributes.HEAT_RESISTANCE, amount);
         }
     }
 
@@ -72,8 +75,10 @@ public class EventsListener extends SelfRegisteringListener {
         Player player = (Player) event.getEntity();
         int differenceFood = player.getFoodLevel() - event.getFoodLevel();
         if (differenceFood < 0) return;
-        double thirstValue = Database.getInstance().get(player).getThirst().getValue();
+        Thirst thirst = Database.getInstance().get(player).getThirst();
+        double thirstValue = thirst.getValue();
 
-        Database.getInstance().get(player).getThirst().set(thirstValue - differenceFood / 2d);
+        if (thirst.isThirsty()) thirst.set((thirstValue - differenceFood) * (Effects.THIRST.getAppliedLevel(player) + 1));
+        else thirst.set(thirstValue - differenceFood / 2d);
     }
 }

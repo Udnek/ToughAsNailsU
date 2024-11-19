@@ -8,6 +8,7 @@ import me.udnek.itemscoreu.util.ComponentU;
 import me.udnek.itemscoreu.util.LoreBuilder;
 import me.udnek.toughasnailsu.data.Database;
 import me.udnek.toughasnailsu.data.PlayerData;
+import me.udnek.toughasnailsu.effect.Effects;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -55,7 +56,9 @@ public class DrinkItemComponent implements CustomComponent<CustomItem> {
         if (getTemperatureImpact() != 0){
             playerData.getTemperature().setFoodImpact(getTemperatureImpact(), getTemperatureImpactDuration());
         }
-
+        if (inflictsThirst){
+            Effects.THIRST.apply(event.getPlayer(), 80, 0);
+        }
     }
     public void modifyItem(@NotNull CustomItemGeneratedEvent event){
         LoreBuilder loreBuilder = event.getLoreBuilder();
