@@ -15,6 +15,8 @@ import me.udnek.toughasnailsu.attribute.Attributes;
 import me.udnek.toughasnailsu.component.ComponentTypes;
 import me.udnek.toughasnailsu.component.DrinkItemComponent;
 import me.udnek.toughasnailsu.data.Database;
+import me.udnek.toughasnailsu.data.PlayerData;
+import me.udnek.toughasnailsu.data.Temperature;
 import me.udnek.toughasnailsu.data.Thirst;
 import me.udnek.toughasnailsu.effect.Effects;
 import me.udnek.toughasnailsu.item.RecipeRegistration;
@@ -25,6 +27,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -80,5 +83,12 @@ public class EventsListener extends SelfRegisteringListener {
 
         if (thirst.isThirsty()) thirst.set((thirstValue - differenceFood) * (Effects.THIRST.getAppliedLevel(player) + 1));
         else thirst.set(thirstValue - differenceFood / 2d);
+    }
+
+    @EventHandler
+    public void resetStatsOnDeath(PlayerRespawnEvent event){
+        PlayerData playerData = Database.getInstance().get(event.getPlayer());
+        playerData.getThirst().set(Thirst.DEFAULT);
+        playerData.getTemperature().set(Temperature.DEFAULT);
     }
 }
