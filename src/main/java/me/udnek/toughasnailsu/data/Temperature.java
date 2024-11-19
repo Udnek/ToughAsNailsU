@@ -14,7 +14,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Lightable;
-import org.bukkit.block.data.type.Light;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
@@ -110,13 +109,9 @@ public class Temperature extends RangedValue {
         add(newImpact);
         lastImpact = newImpact;
 
-        if (getValue() == Temperature.MAX && data.player.getFireTicks() < 1){
-            data.player.setFireTicks(20);
-        }
+        if (getValue() == Temperature.MAX) {data.player.setFireTicks(20);}
 
-        if (getValue() == Temperature.MIN && data.player.getFreezeTicks() < 140) {
-            data.player.setFreezeTicks(180);
-        }
+        if (getValue() == Temperature.MIN) {data.player.setFreezeTicks(180);}
 
         if (foodDuration == 0) return;
         foodDuration -= DataTicker.DELAY;
@@ -208,7 +203,7 @@ public class Temperature extends RangedValue {
     }
     
     public double calculateExternalImpact(){
-        double impactSum =
+        double impactSum = 0
                 + (biomeTemperature - 0.69) * 42
                 + (sun - 0.75) * 64
                 + activity * 13
