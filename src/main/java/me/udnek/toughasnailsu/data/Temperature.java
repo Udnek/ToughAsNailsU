@@ -108,6 +108,14 @@ public class Temperature extends RangedValue {
         add(newImpact);
         lastImpact = newImpact;
 
+        if (getValue() == Temperature.MAX && data.player.getFireTicks() < 1){
+            data.player.setFireTicks(20);
+        }
+
+        if (getValue() == Temperature.MIN && data.player.getFreezeTicks() < 140) {
+            data.player.setFreezeTicks(180);
+        }
+
         if (foodDuration == 0) return;
         foodDuration -= DataTicker.DELAY;
         if (foodDuration <= 0){
