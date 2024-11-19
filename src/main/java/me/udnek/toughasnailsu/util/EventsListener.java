@@ -15,6 +15,8 @@ import me.udnek.toughasnailsu.attribute.Attributes;
 import me.udnek.toughasnailsu.component.ComponentTypes;
 import me.udnek.toughasnailsu.component.DrinkItemComponent;
 import me.udnek.toughasnailsu.data.Database;
+import me.udnek.toughasnailsu.data.PlayerData;
+import me.udnek.toughasnailsu.data.Temperature;
 import me.udnek.toughasnailsu.data.Thirst;
 import me.udnek.toughasnailsu.effect.Effects;
 import me.udnek.toughasnailsu.item.RecipeRegistration;
@@ -84,7 +86,9 @@ public class EventsListener extends SelfRegisteringListener {
     }
 
     @EventHandler
-    public void resetThirstAtDeath(PlayerRespawnEvent event){
-        Database.getInstance().get(event.getPlayer()).getThirst().set(20);
+    public void resetStatsOnDeath(PlayerRespawnEvent event){
+        PlayerData playerData = Database.getInstance().get(event.getPlayer());
+        playerData.getThirst().set(Thirst.DEFAULT);
+        playerData.getTemperature().set(Temperature.DEFAULT);
     }
 }
