@@ -14,6 +14,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.Lightable;
+import org.bukkit.block.data.type.Light;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
@@ -225,8 +227,11 @@ public class Temperature extends RangedValue {
             for (double j = data.location.y()-radius; j < data.location.y()+radius; j++) {
                 for (double k = data.location.z()-radius; k < data.location.z()+radius; k++) {
                     loc.set(i, j, k);
-                    double impact = AROUND_BLOCK_MAP.getOrDefault(loc.getBlock().getType(), 0d);
-                    totalImpact += impact;
+                    Material material = loc.getBlock().getType();
+                    totalImpact += AROUND_BLOCK_MAP.getOrDefault(material, 0d);
+                    if (loc.getBlock().getBlockData() instanceof Lightable lightable){
+                        totalImpact += AROUND_LIT_BLOCK_MAP.getOrDefault(material, 0d) * (lightable.isLit() ? 1d : 0d);
+                    }
                 }
             }
         }
@@ -241,8 +246,8 @@ public class Temperature extends RangedValue {
     public class Hud{
         public static final Key FONT = Key.key("toughasnailsu:temperature");
         public static final int FRAMES = 21;
-        public static final Vector FREEZE_COLOR = new Vector(20, 78, 112).multiply((double) 1/255);
-        public static final Vector HEAT_COLOR = new Vector(217, 131, 44).multiply((double) 1/255);
+        public static final Vector FREEZE_COLOR = new Vector(20, 78, 112).multiply(1d/255d);
+        public static final Vector HEAT_COLOR = new Vector(217, 131, 44).multiply(1d/255d);
         public static final int SIZE = 14;
         public static final int OFFSET = -7;
 
