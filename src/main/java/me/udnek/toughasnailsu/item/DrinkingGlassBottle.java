@@ -43,8 +43,9 @@ public class DrinkingGlassBottle extends ConstructableCustomItem implements Toug
     @Override
     public void initializeComponents() {
         super.initializeComponents();
-        setComponent(new DrinkingGlassBottleComponent());
+        getComponents().set(new DrinkingGlassBottleComponent());
     }
+
 
     public static class DrinkingGlassBottleComponent implements RightClickableItem {
         private static final List<Biome> PURE_WATER_BIOMES = Arrays.asList(Biome.RIVER, Biome.FROZEN_RIVER);

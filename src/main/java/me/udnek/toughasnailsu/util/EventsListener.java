@@ -38,12 +38,12 @@ public class EventsListener extends SelfRegisteringListener {
     public void onPlayerConsume(PlayerItemConsumeEvent event){
         CustomItem customItem = CustomItem.get(event.getItem());
         if (customItem == null) return;
-        customItem.getComponentOrDefault(ComponentTypes.DRINK_ITEM).onConsumption(customItem, event);
+        customItem.getComponents().getOrDefault(ComponentTypes.DRINK_ITEM).onConsumption(customItem, event);
     }
     @EventHandler(priority = EventPriority.MONITOR)
     public void onGenerate(CustomItemGeneratedEvent event){
         CustomItem customItem = event.getCustomItem();
-        DrinkItemComponent component = customItem.getComponent(ComponentTypes.DRINK_ITEM);
+        DrinkItemComponent component = customItem.getComponents().get(ComponentTypes.DRINK_ITEM);
         if (component != null) component.modifyItem(event);
     }
     @EventHandler
@@ -63,8 +63,8 @@ public class EventsListener extends SelfRegisteringListener {
     }
 
     private static void armorAttributes(@NotNull Material material, @NotNull CustomAttribute attribute, double amount) {
-        VanillaBasedCustomItem replacedLeatherChestplate = VanillaItemManager.getReplaced(material);
-        replacedLeatherChestplate.setComponent(
+        VanillaBasedCustomItem replaced = VanillaItemManager.getReplaced(material);
+        replaced.getComponents().set(
                 new CustomItemAttributesComponent(
                         new CustomAttributesContainer.Builder()
                                 .add(attribute, amount, AttributeModifier.Operation.ADD_NUMBER, CustomEquipmentSlot.getFromVanilla(material.getEquipmentSlot()))
