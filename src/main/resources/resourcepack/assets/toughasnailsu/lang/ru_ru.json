@@ -1,0 +1,26 @@
+{
+  "effect.drinkable.cooling": "Охлаждение",
+  "effect.drinkable.heating": "Согревание",
+
+  "attribute.toughasnailsu.name.cold_resistance": "Холдоустойчивость",
+  "attribute.toughasnailsu.name.heat_resistance": "Жароустойчивость",
+
+  "item.toughasnailsu.drinking_glass_bottle": "Бутылка",
+
+  "item.toughasnailsu.sea_water_bottle": "Бутылка морской воды",
+  "item.toughasnailsu.dirty_water_bottle": "Бутылка грязной воды",
+  "item.toughasnailsu.pure_water_bottle": "Бутылка чистой воды",
+  "item.toughasnailsu.boiling_water_bottle": "Бутылка кипящий воды",
+
+  "item.toughasnailsu.green_sweet_berry_tea_bottle": "Бутылка зелёного сладкого ягодного чая",
+  "item.toughasnailsu.green_glow_berry_tea_bottle": "Бутылка зелёного светящегося ягодного чая",
+  "item.toughasnailsu.green_sugar_tea_bottle": "Бутылка сахарного ягодного чая",
+
+  "item.toughasnailsu.melon_juice_bottle": "Бутылка арбузного сока",
+  "item.toughasnailsu.carrot_juice_bottle": "Бутылка морковного сока",
+  "item.toughasnailsu.sweet_berry_juice_bottle": "Бутылка сока из сладких ягод",
+  "item.toughasnailsu.amethyst_water_bottle": "Бутылка аметистовой воды",
+
+  "item.toughasnailsu.raw_milk_cacao_bottle": "Бутылка сырого молочного какао",
+  "item.toughasnailsu.milk_cacao_bottle": "Бутылка молочного какао"
+}

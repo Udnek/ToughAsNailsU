@@ -1,11 +1,28 @@
 {
+
 	"lore.drinkable.effect": "%s %s (%s)",
-	
+
 	"effect.drinkable.cooling": "Cooling",
 	"effect.drinkable.heating": "Heating",
 
 	"attribute.toughasnailsu.name.cold_resistance": "Cold Resistance",
 	"attribute.toughasnailsu.name.heat_resistance": "Heat Resistance",
+
+	"item.toughasnailsu.drinking_glass_bottle": "Drinking Glass Bottle",
+	"item.toughasnailsu.amethyst_water_bottle": "Amethyst Water Bottle",
+	"item.toughasnailsu.pure_water_bottle": "Pure Water Bottle",
+	"item.toughasnailsu.dirty_water_bottle": "Dirty Water Bottle",
+	"item.toughasnailsu.sea_water_bottle": "Sea Water Bottle",
+	"item.toughasnailsu.boiling_water_bottle": "Boiling Water Bottle",
+	"item.toughasnailsu.carrot_juice_bottle": "Carrot Juice Bottle",
+	"item.toughasnailsu.sweet_berry_juice_bottle": "Sweet Berry Juice Bottle",
+	"item.toughasnailsu.melon_juice_bottle": "Melon Juice Bottle",
+	"item.toughasnailsu.milk_cacao_bottle": "Milk Cacao Bottle",
+	"item.toughasnailsu.raw_milk_cacao_bottle": "Raw Milk Cacao Bottle",
+	"item.toughasnailsu.green_sweet_berry_tea_bottle": "Green Sweet Berry Tea Bottle",
+	"item.toughasnailsu.green_glow_berry_tea_bottle": "Green Glow Berry Tea Bottle",
+	"item.toughasnailsu.green_sugar_tea_bottle": "Green Sugar Tea Bottle",
+
 
 	"animation.toughasnailsu.temperature.rise.0": "a",
 	"animation.toughasnailsu.temperature.rise.1": "b",
@@ -99,20 +116,5 @@
 	"lore.toughasnailsu.thirst.level.3": "3󏿾4",
 	"lore.toughasnailsu.thirst.level.2": "4",
 	"lore.toughasnailsu.thirst.level.1": "3",
-	"lore.toughasnailsu.thirst.level.0": "",
-
-	"item.toughasnailsu.drinking_glass_bottle": "Drinking Glass Bottle",
-	"item.toughasnailsu.amethyst_water_bottle": "Amethyst Water Bottle",
-	"item.toughasnailsu.pure_water_bottle": "Pure Water Bottle",
-	"item.toughasnailsu.dirty_water_bottle": "Dirty Water Bottle",
-	"item.toughasnailsu.sea_water_bottle": "Sea Water Bottle",
-	"item.toughasnailsu.boiling_water_bottle": "Boiling Water Bottle",
-	"item.toughasnailsu.carrot_juice_bottle": "Carrot Juice Bottle",
-	"item.toughasnailsu.sweet_berry_juice_bottle": "Sweet Berry Juice Bottle",
-	"item.toughasnailsu.melon_juice_bottle": "Melon Juice Bottle",
-	"item.toughasnailsu.milk_cacao_bottle": "Milk Cacao Bottle",
-	"item.toughasnailsu.raw_milk_cacao_bottle": "Raw Milk Cacao Bottle",
-	"item.toughasnailsu.green_sweet_berry_tea_bottle": "Green Sweet Berry Tea Bottle",
-	"item.toughasnailsu.green_glow_berry_tea_bottle": "Green Glow Berry Tea Bottle",
-	"item.toughasnailsu.green_sugar_tea_bottle": "Green Sugar Tea Bottle"
+	"lore.toughasnailsu.thirst.level.0": ""
 }
