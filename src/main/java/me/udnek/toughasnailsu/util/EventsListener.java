@@ -50,7 +50,7 @@ public class EventsListener extends SelfRegisteringListener {
     public void afterInit(InitializationEvent event){
         if (event.getStep() == InitializationProcess.Step.AFTER_REGISTRIES_INITIALIZATION) RecipeRegistration.run();
         if (event.getStep() == InitializationProcess.Step.BEFORE_VANILLA_MANAGER) {
-            double amount = 0.15;
+            double amount = 0.17;
             armorAttributes(Material.LEATHER_HELMET, Attributes.COLD_RESISTANCE, amount);
             armorAttributes(Material.LEATHER_CHESTPLATE, Attributes.COLD_RESISTANCE, amount);
             armorAttributes(Material.LEATHER_LEGGINGS, Attributes.COLD_RESISTANCE, amount);

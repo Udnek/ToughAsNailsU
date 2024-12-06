@@ -9,13 +9,12 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Lightable;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;
 
@@ -25,9 +24,10 @@ public class Temperature extends RangedValue {
     public static final double DEFAULT = 0;
 
     public static final double IMPACT_SPEED = 0.01;
-    public static final double ADAPTATION_MULTIPLIER = 0.5;
-    public static final double NATURAL_RESTORE_VALUE = 5;
-    public static final double NATURAL_RESTORE_RANGE = 10;
+    public static final double ADAPTATION_MULTIPLIER = 0.8;
+    public static final double NATURAL_RESTORE_VALUE = 6;
+    public static final double ACCEPTABLE_MAX = 22;
+    public static final double ACCEPTABLE_MIN = -6;
 
     public static final int BLOCK_AROUND_RADIUS_SCANNER = 5;
 
@@ -109,9 +109,11 @@ public class Temperature extends RangedValue {
         add(newImpact);
         lastImpact = newImpact;
 
-        if (getValue() == Temperature.MAX) {data.player.setFireTicks(20);}
+        if (!data.player.getGameMode().isInvulnerable()){
+            if (isMax() && Bukkit.getCurrentTick() % 20 == 0) {data.player.setFireTicks(20);}
+            else if (isMin()) {data.player.setFreezeTicks(180);}
+        }
 
-        if (getValue() == Temperature.MIN) {data.player.setFreezeTicks(180);}
 
         if (foodDuration == 0) return;
         foodDuration -= DataTicker.DELAY;
@@ -145,7 +147,6 @@ public class Temperature extends RangedValue {
     public double attributeToResistanceMultiplier(double attribute){
         return 1-attribute;
     }
-
     public void updateAll(){
         activity = (data.player.isSprinting() || data.player.isSwimming()) ? 1 : 0;
         wet = data.player.isInWater() ? 1 : 0;
@@ -173,26 +174,23 @@ public class Temperature extends RangedValue {
         data.debugger.addLine("foodImpactDuration", DrinkItemComponent.generateEffectDuration(foodDuration) + " (" + foodDuration +")");
         data.debugger.addLine("coldRes: (attr, mul) = (" + coldResistanceAttribute +", " + attributeToResistanceMultiplier(coldResistanceAttribute) + ")");
         data.debugger.addLine("heatRes: (attr, mul) = (" + heatResistanceAttribute +", " + attributeToResistanceMultiplier(heatResistanceAttribute) + ")");
-        data.debugger.addLine("impact", impact);
         data.debugger.addLine("sun, wet, activity, rain", sun, wet, activity, rain);
+        data.debugger.addLine("impactAfterFood", impact);
 
+/*        if (impact < 0) impact += NATURAL_RESTORE_VALUE;
+        else            impact -= NATURAL_RESTORE_VALUE;*/
 
+        if (data.player.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE) && impact > 0) impact = 0;
 
-        if (impact < 0) impact += NATURAL_RESTORE_VALUE;
-        else            impact -= NATURAL_RESTORE_VALUE;
+        if (Utils.isSameSign(impact, value)) impact *= ADAPTATION_MULTIPLIER;
 
-        if (data.player.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE) && impact > 0){
-            return 0;
-        }
+        data.debugger.addLine("impactBeforeRestoreRange", impact);
 
-        if (Utils.isSameSign(impact, value)){
-            impact *= ADAPTATION_MULTIPLIER;
-        }
-
-        if (Math.abs(impact) <= NATURAL_RESTORE_RANGE){
+        if (ACCEPTABLE_MIN <= impact && impact <= ACCEPTABLE_MAX){
             stabilizing = true;
-            if (Math.abs(value) < NATURAL_RESTORE_VALUE) impact = -value / IMPACT_SPEED;
-            else impact = NATURAL_RESTORE_VALUE * -Math.signum(impact);
+            if (Math.abs(value) < NATURAL_RESTORE_VALUE)
+                 impact = -value / IMPACT_SPEED;
+            else impact = NATURAL_RESTORE_VALUE * -Math.signum(value);
         } else {
             stabilizing = false;
         }
@@ -201,11 +199,14 @@ public class Temperature extends RangedValue {
 
         return impact * IMPACT_SPEED;
     }
-    
     public double calculateExternalImpact(){
+        double temp =      (biomeTemperature - 0.75) * 23;
+        double hum =       (biomeHumidity - 0.5) * 7;
+        double sunImpact = (sun - 0.6) * 22;
         double impactSum = 0
-                + (biomeTemperature - 0.69) * 42
-                + (sun - 0.75) * 64
+                + temp
+                + hum
+                + sunImpact
                 + activity * 13
                 + wet * -48
                 + rain * -15
@@ -215,9 +216,9 @@ public class Temperature extends RangedValue {
         if (impactSum < 0) impactSum *= attributeToResistanceMultiplier(coldResistanceAttribute);
         else               impactSum *= attributeToResistanceMultiplier(heatResistanceAttribute);
 
-        data.debugger.addLine("formula", (biomeTemperature - 0.69) * 42, (sun - 0.75) * 64, activity * 13, wet * -43, rain * -15, blockAroundImpact, blockUnderImpact, impactSum);
+        data.debugger.addLine("formula", temp, hum, sunImpact, activity * 13, wet * -43, rain * -15, impactSum);
 
-        return impactSum * (biomeHumidity + 0.7);
+        return impactSum;
     }
 
     public double calculateAroundBlocksImpact(){
@@ -256,7 +257,7 @@ public class Temperature extends RangedValue {
         int animation = -1;
         Component icon;
         TextColor color;
-        public Component get(){
+        public @NotNull Component get(){
             if (animation == -1 && (justStartedRising || justStartedDropping)){
                 animation = 0;
             }
@@ -271,12 +272,12 @@ public class Temperature extends RangedValue {
                 color = smoothColor();
                 return;
             }
-            else if (getValue() == Temperature.MAX){
+            else if (isMax()){
                 icon = Component.translatable("image.toughasnailsu.temperature.heat");
                 color = NamedTextColor.WHITE;
                 return;
             }
-            else if (getValue() == Temperature.MIN){
+            else if (isMin()){
                 icon = Component.translatable("image.toughasnailsu.temperature.freeze");
                 color = NamedTextColor.WHITE;
                 return;
@@ -284,13 +285,13 @@ public class Temperature extends RangedValue {
 
             String type = lastImpact > 0 ? "rise" : "drop";
             if (animation == -1) {
-                icon = Component.translatable("image.toughasnailsu.temperature."+type);
+                icon = Component.translatable("image.toughasnailsu.temperature." + type);
             } else {
                 icon = Component.translatable("animation.toughasnailsu.temperature." + type +'.' + animation++);
             }
             color = smoothColor();
         }
-        public TextColor smoothColor(){
+        public @NotNull TextColor smoothColor(){
             double normalized = getNormalized();
             Vector color;
             if (normalized < 0.5){

@@ -7,6 +7,7 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 
 public class Thirst extends RangedValue {
     public static final double MAX = 20;
@@ -43,7 +44,7 @@ public class Thirst extends RangedValue {
         public static final int SIZE = 82;
         public static final int OFFSET = 11;
 
-        public Component get(){
+        public @NotNull Component get(){
             Key font = isThirsty() ? FONT_THIRSTY : FONT_NORMAL;
             return ComponentU.textWithNoSpace(
                     OFFSET,

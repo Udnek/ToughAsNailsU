@@ -8,6 +8,15 @@ public abstract class RangedValue {
 
     public double getValue() {return value;}
 
+    public boolean isMax(){
+        return Double.compare(getMax(), value) == 0;
+    }
+
+    public boolean isMin(){
+        return Double.compare(getMin(), value) == 0;
+    }
+
+
     public void add(double addValue){
         set(value + addValue);
     }
