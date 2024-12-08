@@ -226,8 +226,8 @@ public class Temperature extends RangedValue {
 
         double totalImpact = 0;
         Location loc = data.location.clone();
-        for (double i = data.location.x()-radius; i < data.location.x()+radius; i++) {
-            for (double j = data.location.y()-radius; j < data.location.y()+radius; j++) {
+        for (double i = data.location.x()-radius; i <= data.location.x()+radius; i++) {
+            for (double j = data.location.y()-radius; j <= data.location.y()+radius; j++) {
                 for (double k = data.location.z()-radius; k < data.location.z()+radius; k++) {
                     loc.set(i, j, k);
                     Material material = loc.getBlock().getType();
