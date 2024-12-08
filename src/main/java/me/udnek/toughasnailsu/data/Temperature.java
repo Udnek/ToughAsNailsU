@@ -111,7 +111,10 @@ public class Temperature extends RangedValue {
 
         if (!data.player.getGameMode().isInvulnerable()){
             if (isMax() && Bukkit.getCurrentTick() % 20 == 0) {data.player.setFireTicks(20);}
-            else if (isMin()) {data.player.setFreezeTicks(180);}
+            else if (isMin()) {
+                data.player.setFreezeTicks(180);
+                if (Bukkit.getCurrentTick() % 20 == 0) data.player.damage(0.5);
+            }
         }
 
 
@@ -182,7 +185,7 @@ public class Temperature extends RangedValue {
 
         if (data.player.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE) && impact > 0) impact = 0;
 
-        if (Utils.isSameSign(impact, value)) impact *= ADAPTATION_MULTIPLIER;
+        //if (Utils.isSameSign(impact, value)) impact *= ADAPTATION_MULTIPLIER;
 
         data.debugger.addLine("impactBeforeRestoreRange", impact);
 
@@ -207,16 +210,16 @@ public class Temperature extends RangedValue {
                 + temp
                 + hum
                 + sunImpact
-                + activity * 13
-                + wet * -48
-                + rain * -15
+                + activity * 8
+                + wet * -45
+                + rain * -20
                 + blockAroundImpact
                 + blockUnderImpact;
 
         if (impactSum < 0) impactSum *= attributeToResistanceMultiplier(coldResistanceAttribute);
         else               impactSum *= attributeToResistanceMultiplier(heatResistanceAttribute);
 
-        data.debugger.addLine("formula", temp, hum, sunImpact, activity * 13, wet * -43, rain * -15, impactSum);
+        data.debugger.addLine("formula", temp, hum, sunImpact, activity * 8, wet * -45, rain * -20, impactSum);
 
         return impactSum;
     }

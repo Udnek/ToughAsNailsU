@@ -15,9 +15,9 @@ public class Items{
     public static final CustomItem PURE_WATER_BOTTLE = register(ConstructableDrinkableItem.normal("pure_water_bottle", 6, -0.15, 20*20));
     public static final CustomItem BOILING_WATER_BOTTLE = register(ConstructableDrinkableItem.normal("boiling_water_bottle", 6, 0.15, 20*20));
 
-    public static final CustomItem GREEN_SWEET_BERRY_TEA_BOTTLE = register(ConstructableDrinkableItem.normal("green_sweet_berry_tea_bottle", 10, 0.3, TEA_DURATION));
-    public static final CustomItem GREEN_GLOW_BERRY_TEA_BOTTLE = register(ConstructableDrinkableItem.normal("green_glow_berry_tea_bottle", 10, 0.3, TEA_DURATION));
-    public static final CustomItem GREEN_SUGAR_TEA_BOTTLE = register(ConstructableDrinkableItem.normal("green_sugar_tea_bottle", 10, 0.3, TEA_DURATION));
+    public static final CustomItem GREEN_SWEET_BERRY_TEA_BOTTLE = register(ConstructableDrinkableItem.normal("green_sweet_berry_tea_bottle", 10, 0.4, TEA_DURATION));
+    public static final CustomItem GREEN_GLOW_BERRY_TEA_BOTTLE = register(ConstructableDrinkableItem.normal("green_glow_berry_tea_bottle", 10, 0.4, TEA_DURATION));
+    public static final CustomItem GREEN_SUGAR_TEA_BOTTLE = register(ConstructableDrinkableItem.normal("green_sugar_tea_bottle", 10, 0.4, TEA_DURATION));
 
     public static final CustomItem CARROT_JUICE_BOTTLE = register(ConstructableDrinkableItem.normal("carrot_juice_bottle", 10, -0.2, JUICE_DURATION));
     public static final CustomItem SWEET_BERRY_JUICE_BOTTLE = register(ConstructableDrinkableItem.normal("sweet_berry_juice_bottle",  10, -0.2, JUICE_DURATION));

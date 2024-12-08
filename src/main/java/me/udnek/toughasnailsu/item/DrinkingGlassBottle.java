@@ -29,7 +29,7 @@ public class DrinkingGlassBottle extends ConstructableCustomItem implements Toug
 
     @Override
     protected void generateRecipes(@NotNull Consumer<@NotNull Recipe> consumer) {
-        ShapedRecipe recipe = new ShapedRecipe(getNewRecipeKey(), getItem());
+        ShapedRecipe recipe = new ShapedRecipe(getNewRecipeKey(), getItem().add(2));
         recipe.shape(
                 "G G",
                 "G G",
