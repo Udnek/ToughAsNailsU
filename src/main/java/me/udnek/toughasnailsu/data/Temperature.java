@@ -111,7 +111,10 @@ public class Temperature extends RangedValue {
 
         if (!data.player.getGameMode().isInvulnerable()){
             if (isMax() && Bukkit.getCurrentTick() % 20 == 0) {data.player.setFireTicks(20);}
-            else if (isMin()) {data.player.setFreezeTicks(180);}
+            else if (isMin()) {
+                data.player.setFreezeTicks(180);
+                if (Bukkit.getCurrentTick() % 20 == 0){data.player.damage(0.5);}
+            }
         }
 
 
