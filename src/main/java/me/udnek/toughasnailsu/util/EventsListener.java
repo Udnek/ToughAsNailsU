@@ -2,6 +2,7 @@ package me.udnek.toughasnailsu.util;
 
 import me.udnek.itemscoreu.customattribute.CustomAttribute;
 import me.udnek.itemscoreu.customattribute.CustomAttributesContainer;
+import me.udnek.itemscoreu.customcomponent.CustomComponentType;
 import me.udnek.itemscoreu.customcomponent.instance.CustomItemAttributesComponent;
 import me.udnek.itemscoreu.customequipmentslot.CustomEquipmentSlot;
 import me.udnek.itemscoreu.customevent.CustomItemGeneratedEvent;
@@ -72,12 +73,12 @@ public class EventsListener extends SelfRegisteringListener {
     }
 
     private static void armorAttributes(@NotNull CustomItem customItem, @NotNull CustomAttribute attribute, @NotNull CustomEquipmentSlot slot, double amount) {
+        CustomItemAttributesComponent component = customItem.getComponents().getOrDefault(CustomComponentType.CUSTOM_ITEM_ATTRIBUTES);
+
         customItem.getComponents().set(
-                new CustomItemAttributesComponent(
-                        new CustomAttributesContainer.Builder()
-                                .add(attribute, amount, AttributeModifier.Operation.ADD_NUMBER, slot)
-                                .build()
-                )
+                new CustomItemAttributesComponent(new CustomAttributesContainer.Builder()
+                        .add(component.getAttributes())
+                        .add(attribute, amount, AttributeModifier.Operation.ADD_NUMBER, slot).build())
         );
     }
 
