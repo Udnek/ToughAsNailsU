@@ -57,7 +57,7 @@ public class DrinkItemComponent implements CustomComponent<CustomItem> {
             playerData.getTemperature().setFoodImpact(getTemperatureImpact(), getTemperatureImpactDuration());
         }
         if (inflictsThirst){
-            Effects.THIRST.apply(event.getPlayer(), 80, 0);
+            Effects.THIRST.apply(event.getPlayer(), 40 * 20, 0);
         }
     }
     public void modifyItem(@NotNull CustomItemGeneratedEvent event){
