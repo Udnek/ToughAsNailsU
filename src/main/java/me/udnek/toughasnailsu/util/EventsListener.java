@@ -73,7 +73,7 @@ public class EventsListener extends SelfRegisteringListener {
     }
 
     private static void armorAttributes(@NotNull CustomItem customItem, @NotNull CustomAttribute attribute, @NotNull CustomEquipmentSlot slot, double amount) {
-        CustomItemAttributesComponent component = customItem.getComponents().getOrDefault(CustomComponentType.CUSTOM_ITEM_ATTRIBUTES);
+        CustomItemAttributesComponent component = customItem.getComponents().getOrDefault(CustomComponentType.CUSTOM_ATTRIBUTED_ITEM);
 
         customItem.getComponents().set(
                 new CustomItemAttributesComponent(new CustomAttributesContainer.Builder()
