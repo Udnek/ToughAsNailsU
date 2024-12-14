@@ -10,6 +10,7 @@ import me.udnek.toughasnailsu.command.DebugCommand;
 import me.udnek.toughasnailsu.data.DataTicker;
 import me.udnek.toughasnailsu.data.Database;
 import me.udnek.toughasnailsu.effect.Effects;
+import me.udnek.toughasnailsu.enchantment.Enchantments;
 import me.udnek.toughasnailsu.hud.MainHud;
 import me.udnek.toughasnailsu.item.Items;
 import me.udnek.toughasnailsu.util.EventsListener;
@@ -26,9 +27,10 @@ public final class ToughAsNailsU extends JavaPlugin implements ResourcePackableP
     public void onEnable() {
         instance = this;
 
-        CustomItem boot = Items.SEA_WATER_BOTTLE;
-        CustomAttribute boot1 = Attributes.COLD_RESISTANCE;
-        CustomEffect boot2 = Effects.THIRST;
+        Items.SEA_WATER_BOTTLE.key();
+        Attributes.COLD_RESISTANCE.key();
+        Effects.THIRST.key();
+        Enchantments.NAIL.key();
 
 
         VanillaItemManager.getInstance().replaceVanillaMaterial(Material.LEATHER_CHESTPLATE);

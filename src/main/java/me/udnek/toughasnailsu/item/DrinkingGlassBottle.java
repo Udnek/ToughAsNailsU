@@ -35,9 +35,7 @@ public class DrinkingGlassBottle extends ConstructableCustomItem implements Toug
                 "G G",
                 " G ");
 
-        RecipeChoice.MaterialChoice glass = new RecipeChoice.MaterialChoice(Material.GLASS);
-        recipe.setIngredient('G', glass);
-
+        recipe.setIngredient('G', new RecipeChoice.MaterialChoice(Material.GLASS));
         consumer.accept(recipe);
     }
 

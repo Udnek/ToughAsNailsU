@@ -46,8 +46,8 @@ public class Temperature extends RangedValue {
         AROUND_BLOCK_MAP.put(Material.LARGE_AMETHYST_BUD, -10d);
         AROUND_BLOCK_MAP.put(Material.AMETHYST_CLUSTER, -15d);
 
-        AROUND_LIT_BLOCK_MAP.put(Material.SOUL_CAMPFIRE, 14d);
-        AROUND_LIT_BLOCK_MAP.put(Material.CAMPFIRE, 9d);
+        AROUND_LIT_BLOCK_MAP.put(Material.SOUL_CAMPFIRE, 15d);
+        AROUND_LIT_BLOCK_MAP.put(Material.CAMPFIRE, 12d);
         AROUND_LIT_BLOCK_MAP.put(Material.FURNACE, 9d);
         AROUND_LIT_BLOCK_MAP.put(Material.SMOKER, 9d);
         AROUND_LIT_BLOCK_MAP.put(Material.BLAST_FURNACE, 9d);
@@ -159,9 +159,6 @@ public class Temperature extends RangedValue {
         updateSun();
         if (!data.shouldSkipTick(20*3)) blockAroundImpact = calculateAroundBlocksImpact();
         if (!data.shouldSkipTick(20, 123)) updateAttributes();
-
-
-
     }
     public double calculateImpact(){
         double externalImpact = calculateExternalImpact();
@@ -169,7 +166,7 @@ public class Temperature extends RangedValue {
         double impact = externalImpact;
 
         if (foodImpact != 0 && !Utils.isSameSign(impact, foodImpact)){
-            impact *= (1-Math.abs(foodImpact));
+            impact += foodImpact;
         }
 
         data.debugger.addLine("externalImpact", externalImpact );
@@ -180,12 +177,7 @@ public class Temperature extends RangedValue {
         data.debugger.addLine("sun, wet, activity, rain", sun, wet, activity, rain);
         data.debugger.addLine("impactAfterFood", impact);
 
-/*        if (impact < 0) impact += NATURAL_RESTORE_VALUE;
-        else            impact -= NATURAL_RESTORE_VALUE;*/
-
         if (data.player.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE) && impact > 0) impact = 0;
-
-        //if (Utils.isSameSign(impact, value)) impact *= ADAPTATION_MULTIPLIER;
 
         data.debugger.addLine("impactBeforeRestoreRange", impact);
 

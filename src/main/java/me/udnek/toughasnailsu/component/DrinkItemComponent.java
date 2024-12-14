@@ -6,6 +6,7 @@ import me.udnek.itemscoreu.customevent.CustomItemGeneratedEvent;
 import me.udnek.itemscoreu.customitem.CustomItem;
 import me.udnek.itemscoreu.util.ComponentU;
 import me.udnek.itemscoreu.util.LoreBuilder;
+import me.udnek.itemscoreu.util.Utils;
 import me.udnek.toughasnailsu.data.Database;
 import me.udnek.toughasnailsu.data.PlayerData;
 import me.udnek.toughasnailsu.effect.Effects;
@@ -72,7 +73,7 @@ public class DrinkItemComponent implements CustomComponent<CustomItem> {
 
         Component effect = Component.translatable(getTemperatureImpact() > 0 ? "effect.drinkable.heating" : "effect.drinkable.cooling");
         TextColor color = getTemperatureImpact() > 0 ? HEAT_COLOR : FREEZE_COLOR;
-        Component amount = Component.text((int)( Math.abs(getTemperatureImpact()) * 100) + "%");
+        Component amount = Component.text(Utils.roundToTwoDigits(Math.abs(getTemperatureImpact())));
         Component temperature = Component.translatable("lore.drinkable.effect", List.of(effect, amount, Component.text(generateEffectDuration(getTemperatureImpactDuration()))))
                 .color(color).decoration(TextDecoration.ITALIC, false);
 
