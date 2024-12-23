@@ -78,7 +78,7 @@ public class EventsListener extends SelfRegisteringListener {
                                     new CustomSingleRecipeChoice(Material.SNOWBALL),
                                     new CustomSingleRecipeChoice(Material.AMETHYST_SHARD),
                                     new CustomSingleRecipeChoice(Material.FIRE_CHARGE)),
-                            Set.of(EnchantingTableUpgrade.DECENT_BOOKSHELF))
+                            Set.of(EnchantingTableUpgrade.DECENT_BOOKSHELF, EnchantingTableUpgrade.AMETHYST))
             );
         }
         if (event.getStep() == InitializationProcess.Step.BEFORE_VANILLA_MANAGER) {
