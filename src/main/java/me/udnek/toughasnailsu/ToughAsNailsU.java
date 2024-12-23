@@ -1,8 +1,5 @@
 package me.udnek.toughasnailsu;
 
-import me.udnek.itemscoreu.customattribute.CustomAttribute;
-import me.udnek.itemscoreu.customeffect.CustomEffect;
-import me.udnek.itemscoreu.customitem.CustomItem;
 import me.udnek.itemscoreu.resourcepack.ResourcePackablePlugin;
 import me.udnek.itemscoreu.util.VanillaItemManager;
 import me.udnek.toughasnailsu.attribute.Attributes;

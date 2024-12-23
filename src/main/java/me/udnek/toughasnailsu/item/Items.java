@@ -10,8 +10,6 @@ public class Items{
     public static double TEA_IMPACT = 18;
     public static double JUICE_IMPACT = -8;
 
-    public static final CustomItem NAIL_BOOK = register(new NailBook());
-
     public static final CustomItem DRINKING_GLASS_BOTTLE = register(new DrinkingGlassBottle());
 
     public static final CustomItem DIRTY_WATER_BOTTLE = register(ConstructableDrinkableItem.dirty("dirty_water_bottle", 3, -2, 20*15));

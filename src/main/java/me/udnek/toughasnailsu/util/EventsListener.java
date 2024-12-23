@@ -8,11 +8,15 @@ import me.udnek.itemscoreu.customequipmentslot.CustomEquipmentSlot;
 import me.udnek.itemscoreu.customevent.CustomItemGeneratedEvent;
 import me.udnek.itemscoreu.customevent.InitializationEvent;
 import me.udnek.itemscoreu.customitem.CustomItem;
-import me.udnek.itemscoreu.customitem.VanillaBasedCustomItem;
+import me.udnek.itemscoreu.customrecipe.RecipeManager;
+import me.udnek.itemscoreu.customrecipe.choice.CustomSingleRecipeChoice;
 import me.udnek.itemscoreu.util.InitializationProcess;
 import me.udnek.itemscoreu.util.SelfRegisteringListener;
 import me.udnek.itemscoreu.util.VanillaItemManager;
 import me.udnek.rpgu.item.Items;
+import me.udnek.rpgu.mechanic.enchanting.EnchantingRecipe;
+import me.udnek.rpgu.mechanic.enchanting.upgrade.EnchantingTableUpgrade;
+import me.udnek.toughasnailsu.ToughAsNailsU;
 import me.udnek.toughasnailsu.attribute.Attributes;
 import me.udnek.toughasnailsu.component.ComponentTypes;
 import me.udnek.toughasnailsu.component.DrinkItemComponent;
@@ -21,8 +25,10 @@ import me.udnek.toughasnailsu.data.PlayerData;
 import me.udnek.toughasnailsu.data.Temperature;
 import me.udnek.toughasnailsu.data.Thirst;
 import me.udnek.toughasnailsu.effect.Effects;
+import me.udnek.toughasnailsu.enchantment.Enchantments;
 import me.udnek.toughasnailsu.item.RecipeRegistration;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,6 +38,9 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Set;
 
 public class EventsListener extends SelfRegisteringListener {
 
@@ -58,7 +67,20 @@ public class EventsListener extends SelfRegisteringListener {
     }
     @EventHandler
     public void afterInit(InitializationEvent event){
-        if (event.getStep() == InitializationProcess.Step.AFTER_REGISTRIES_INITIALIZATION) RecipeRegistration.run();
+        if (event.getStep() == InitializationProcess.Step.AFTER_REGISTRIES_INITIALIZATION) {
+            RecipeRegistration.run();
+
+            RecipeManager.getInstance().register(
+                    new EnchantingRecipe(
+                            new NamespacedKey(ToughAsNailsU.getInstance(), "nail"),
+                            Enchantments.NAIL.getBukkit(),
+                            List.of(new CustomSingleRecipeChoice(Material.MAGMA_CREAM),
+                                    new CustomSingleRecipeChoice(Material.SNOWBALL),
+                                    new CustomSingleRecipeChoice(Material.AMETHYST_SHARD),
+                                    new CustomSingleRecipeChoice(Material.FIRE_CHARGE)),
+                            Set.of(EnchantingTableUpgrade.DECENT_BOOKSHELF, EnchantingTableUpgrade.AMETHYST))
+            );
+        }
         if (event.getStep() == InitializationProcess.Step.BEFORE_VANILLA_MANAGER) {
 
             armorAttributes(Material.LEATHER_HELMET, Attributes.COLD_RESISTANCE, RESISTANCE_AMOUNT);
