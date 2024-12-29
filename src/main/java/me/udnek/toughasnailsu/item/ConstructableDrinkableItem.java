@@ -1,15 +1,14 @@
 package me.udnek.toughasnailsu.item;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.Consumable;
+import io.papermc.paper.datacomponent.item.PotionContents;
 import me.udnek.itemscoreu.customitem.ConstructableCustomItem;
 import me.udnek.itemscoreu.customitem.CustomItem;
-import me.udnek.itemscoreu.nms.ConsumableComponent;
-import me.udnek.itemscoreu.nms.Nms;
 import me.udnek.toughasnailsu.component.DrinkItemComponent;
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,14 +32,25 @@ public class ConstructableDrinkableItem extends ConstructableCustomItem implemen
     }
 
     @Override
-    public @Nullable ConsumableComponent getConsumable() {
-        return Nms.get().getConsumableComponent(Material.POTION);
+    public @Nullable DataSupplier<Consumable> getConsumable() {
+        return DataSupplier.of(Material.POTION.getDefaultData(DataComponentTypes.CONSUMABLE));
     }
 
     @Override
     public void initializeComponents() {
         super.initializeComponents();
         getComponents().set(new DrinkItemComponent(thirstRestoration, inflictsThirst, temperatureImpact, temperatureImpactDuration));
+    }
+
+    @Override
+    public @Nullable Boolean getHideAdditionalTooltip() {
+        return true;
+    }
+
+
+    @Override
+    public @Nullable DataSupplier<PotionContents> getPotionContents() {
+        return DataSupplier.of(PotionContents.potionContents().potion(PotionType.WATER).customColor(Color.WHITE).build());
     }
 
     @Override
@@ -56,12 +66,4 @@ public class ConstructableDrinkableItem extends ConstructableCustomItem implemen
     public @NotNull String getRawId() {return rawId;}
     @Override
     public @NotNull Material getMaterial() {return material;}
-
-    @Override
-    protected void modifyFinalItemMeta(@NotNull ItemMeta itemMeta) {
-        if (!(itemMeta instanceof PotionMeta potionMeta)) return;
-        potionMeta.setBasePotionType(null);
-        potionMeta.setColor(Color.WHITE);
-        potionMeta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
-    }
 }
