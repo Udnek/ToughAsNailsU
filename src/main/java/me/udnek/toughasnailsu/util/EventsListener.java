@@ -1,6 +1,7 @@
 package me.udnek.toughasnailsu.util;
 
 import me.udnek.itemscoreu.customattribute.CustomAttribute;
+import me.udnek.itemscoreu.customattribute.CustomAttributeModifier;
 import me.udnek.itemscoreu.customattribute.CustomAttributesContainer;
 import me.udnek.itemscoreu.customcomponent.CustomComponentType;
 import me.udnek.itemscoreu.customcomponent.instance.CustomItemAttributesComponent;
@@ -13,6 +14,7 @@ import me.udnek.itemscoreu.customrecipe.choice.CustomSingleRecipeChoice;
 import me.udnek.itemscoreu.util.InitializationProcess;
 import me.udnek.itemscoreu.util.SelfRegisteringListener;
 import me.udnek.itemscoreu.util.VanillaItemManager;
+import me.udnek.rpgu.equipment.slot.EquipmentSlots;
 import me.udnek.rpgu.item.Items;
 import me.udnek.rpgu.mechanic.enchanting.EnchantingRecipe;
 import me.udnek.rpgu.mechanic.enchanting.upgrade.EnchantingTableUpgrade;
@@ -57,13 +59,18 @@ public class EventsListener extends SelfRegisteringListener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onGenerate(CustomItemGeneratedEvent event){
         CustomItem customItem = event.getCustomItem();
-        DrinkItemComponent component = customItem.getComponents().get(ComponentTypes.DRINK_ITEM);
-        if (component != null) component.modifyItem(event);
+        DrinkItemComponent drinkingComponent = customItem.getComponents().get(ComponentTypes.DRINK_ITEM);
+        if (drinkingComponent != null) drinkingComponent.modifyItem(event);
 
         if (customItem == Items.WOLF_HELMET) armorAttributes(customItem, Attributes.COLD_RESISTANCE, CustomEquipmentSlot.HEAD, RESISTANCE_AMOUNT);
         if (customItem == Items.WOLF_CHESTPLATE) armorAttributes(customItem, Attributes.COLD_RESISTANCE, CustomEquipmentSlot.CHEST, RESISTANCE_AMOUNT);
         if (customItem == Items.WOLF_LEGGINGS) armorAttributes(customItem, Attributes.COLD_RESISTANCE, CustomEquipmentSlot.LEGS, RESISTANCE_AMOUNT);
         if (customItem == Items.WOLF_BOOTS) armorAttributes(customItem, Attributes.COLD_RESISTANCE, CustomEquipmentSlot.FEET, RESISTANCE_AMOUNT);
+        if (customItem == Items.FISHERMAN_SNORKEL){
+            CustomItemAttributesComponent.safeAddAttribute(customItem,
+                    Attributes.WATER_RESISTANCE, new CustomAttributeModifier(0.8, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlots.ARTIFACTS));
+
+        }
     }
     @EventHandler
     public void afterInit(InitializationEvent event){
@@ -95,13 +102,7 @@ public class EventsListener extends SelfRegisteringListener {
     }
 
     private static void armorAttributes(@NotNull CustomItem customItem, @NotNull CustomAttribute attribute, @NotNull CustomEquipmentSlot slot, double amount) {
-        CustomItemAttributesComponent component = customItem.getComponents().getOrDefault(CustomComponentType.CUSTOM_ATTRIBUTED_ITEM);
-
-        customItem.getComponents().set(
-                new CustomItemAttributesComponent(new CustomAttributesContainer.Builder()
-                        .add(component.getAttributes())
-                        .add(attribute, amount, AttributeModifier.Operation.ADD_NUMBER, slot).build())
-        );
+        CustomItemAttributesComponent.safeAddAttribute(customItem, attribute, new CustomAttributeModifier(amount, AttributeModifier.Operation.ADD_NUMBER, slot));
     }
 
     private static void armorAttributes(@NotNull Material material, @NotNull CustomAttribute attribute, double amount) {

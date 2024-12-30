@@ -27,7 +27,6 @@ public class Temperature extends RangedValue {
     public static final double DEFAULT = 0;
 
     public static final double IMPACT_SPEED = 0.01;
-    public static final double ADAPTATION_MULTIPLIER = 0.8;
     public static final double NATURAL_RESTORE_VALUE = 6;
     public static final double ACCEPTABLE_MAX = 22;
     public static final double ACCEPTABLE_MIN = -6;
@@ -77,8 +76,9 @@ public class Temperature extends RangedValue {
     double blockAroundImpact = 0;
     double blockUnderImpact = 0;
 
-    double heatResistanceAttribute = 1;
-    double coldResistanceAttribute = 1;
+    double heatResistanceMultiplier = 0;
+    double coldResistanceMultiplier = 0;
+    double waterResistanceMultiplier = 0;
 
     double foodImpact = 0;
     int foodDuration = 0;
@@ -147,11 +147,9 @@ public class Temperature extends RangedValue {
         }
     }
     public void updateAttributes(){
-        coldResistanceAttribute = Attributes.COLD_RESISTANCE.calculate(data.player);
-        heatResistanceAttribute = Attributes.HEAT_RESISTANCE.calculate(data.player);
-    }
-    public double attributeToResistanceMultiplier(double attribute){
-        return 1-attribute;
+        coldResistanceMultiplier = 1 - Attributes.COLD_RESISTANCE.calculate(data.player);
+        heatResistanceMultiplier = 1 - Attributes.HEAT_RESISTANCE.calculate(data.player);
+        waterResistanceMultiplier = 1 -Attributes.WATER_RESISTANCE.calculate(data.player);
     }
     public void updateAll(){
         activity = (data.player.isSprinting() || data.player.isSwimming()) ? 1 : 0;
@@ -175,8 +173,9 @@ public class Temperature extends RangedValue {
         data.debugger.addLine("externalImpact", externalImpact );
         data.debugger.addLine("foodImpact", foodImpact);
         data.debugger.addLine("foodImpactDuration", DrinkItemComponent.generateEffectDuration(foodDuration) + " (" + foodDuration +")");
-        data.debugger.addLine("coldRes: (attr, mul) = (" + coldResistanceAttribute +", " + attributeToResistanceMultiplier(coldResistanceAttribute) + ")");
-        data.debugger.addLine("heatRes: (attr, mul) = (" + heatResistanceAttribute +", " + attributeToResistanceMultiplier(heatResistanceAttribute) + ")");
+        data.debugger.addLine("coldRes: (mul) = " + coldResistanceMultiplier);
+        data.debugger.addLine("heatRes: (mul) = " + heatResistanceMultiplier);
+        data.debugger.addLine("waterRes: (mul) = " + waterResistanceMultiplier);
         data.debugger.addLine("sun, wet, activity, rain", sun, wet, activity, rain);
         data.debugger.addLine("impactAfterFood", impact);
 
@@ -206,13 +205,15 @@ public class Temperature extends RangedValue {
                 + hum
                 + sunImpact
                 + activity * 8
-                + wet * -45
                 + rain * -20
                 + blockAroundImpact
                 + blockUnderImpact;
 
-        if (impactSum < 0) impactSum *= attributeToResistanceMultiplier(coldResistanceAttribute);
-        else               impactSum *= attributeToResistanceMultiplier(heatResistanceAttribute);
+        if (impactSum > ACCEPTABLE_MAX) impactSum += wet * -45;
+        else                            impactSum += wet * -45 * waterResistanceMultiplier;
+
+        if (impactSum < 0) impactSum *= coldResistanceMultiplier;
+        else               impactSum *= heatResistanceMultiplier;
 
         data.debugger.addLine("formula", temp, hum, sunImpact, activity * 8, wet * -45, rain * -20, impactSum);
 
