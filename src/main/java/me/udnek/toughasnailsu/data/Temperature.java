@@ -28,8 +28,8 @@ public class Temperature extends RangedValue {
 
     public static final double IMPACT_SPEED = 0.01;
     public static final double NATURAL_RESTORE_VALUE = 6;
-    public static final double ACCEPTABLE_MAX = 22;
-    public static final double ACCEPTABLE_MIN = -6;
+    public static final double ACCEPTABLE_MAX = 20;
+    public static final double ACCEPTABLE_MIN = -8;
 
     public static final int BLOCK_AROUND_RADIUS_SCANNER = 5;
 
@@ -166,10 +166,6 @@ public class Temperature extends RangedValue {
 
         double impact = externalImpact;
 
-        if (foodImpact != 0 && !Utils.isSameSign(impact, foodImpact)){
-            impact += foodImpact;
-        }
-
         data.debugger.addLine("externalImpact", externalImpact );
         data.debugger.addLine("foodImpact", foodImpact);
         data.debugger.addLine("foodImpactDuration", DrinkItemComponent.generateEffectDuration(foodDuration) + " (" + foodDuration +")");
@@ -177,13 +173,17 @@ public class Temperature extends RangedValue {
         data.debugger.addLine("heatRes: (mul) = " + heatResistanceMultiplier);
         data.debugger.addLine("waterRes: (mul) = " + waterResistanceMultiplier);
         data.debugger.addLine("sun, wet, activity, rain", sun, wet, activity, rain);
-        data.debugger.addLine("impactAfterFood", impact);
 
-        if (data.player.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE) && impact > 0) impact = 0;
+        if (data.player.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE) && impact > 0 && !isAcceptableImpact(impact)) {
+            impact = 0;
+        }
+        if (foodImpact != 0 && !Utils.isSameSign(impact, foodImpact) && !isAcceptableImpact(impact)){
+            impact += foodImpact;
+        }
 
         data.debugger.addLine("impactBeforeRestoreRange", impact);
 
-        if (ACCEPTABLE_MIN <= impact && impact <= ACCEPTABLE_MAX){
+        if (isAcceptableImpact(impact)){
             stabilizing = true;
             if (Math.abs(value) < NATURAL_RESTORE_VALUE)
                  impact = -value / IMPACT_SPEED;
@@ -196,6 +196,10 @@ public class Temperature extends RangedValue {
 
         return impact * IMPACT_SPEED;
     }
+    public boolean isAcceptableImpact(double impact){
+        return ACCEPTABLE_MIN <= impact && impact <= ACCEPTABLE_MAX;
+    }
+
     public double calculateExternalImpact(){
         double temp =      (biomeTemperature - 0.75) * 23;
         double hum =       (biomeHumidity - 0.5) * 7;
@@ -215,7 +219,7 @@ public class Temperature extends RangedValue {
         if (impactSum < 0) impactSum *= coldResistanceMultiplier;
         else               impactSum *= heatResistanceMultiplier;
 
-        data.debugger.addLine("formula", temp, hum, sunImpact, activity * 8, wet * -45, rain * -20, impactSum);
+        data.debugger.addLine("temp, hum, sun, sum", temp, hum, sunImpact, impactSum);
 
         return impactSum;
     }
