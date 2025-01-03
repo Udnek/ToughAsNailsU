@@ -26,7 +26,7 @@ public class MainHud implements CustomHud {
     }
     
     @Override
-    public @NotNull Component getText(Player player) {
+    public @NotNull Component getText(@NotNull Player player) {
         PlayerData playerData = database.get(player);
         return playerData.getHud();
     }
