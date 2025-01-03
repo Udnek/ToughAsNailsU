@@ -15,7 +15,7 @@ public class MainHud implements CustomHud {
     private final Database database;
 
     private MainHud(){
-        CustomHudManager.addTicket(ToughAsNailsU.getInstance(), this);
+        CustomHudManager.getInstance().addTicket(ToughAsNailsU.getInstance(), this);
         database = Database.getInstance();
     }
 

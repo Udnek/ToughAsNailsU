@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Range;
 public class Nail extends ConstructableCustomEnchantment {
 
     public static final int MAX_LEVEL = 4;
-    public static final double MAX_RESISTANCE = 0.9;
+    public static final double MAX_RESISTANCE = 0.95;
 
     @Override
     public void getCustomAttributes(int level, @NotNull CustomAttributeConsumer consumer) {
