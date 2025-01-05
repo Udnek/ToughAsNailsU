@@ -170,7 +170,8 @@ public class Temperature extends RangedValue {
 
         if (!isAcceptableImpact(impact)) {
             if (colling != 0  && impact > 0) impact -= colling;
-            if (heating != 0  && impact < 0) impact += heating;}
+            if (heating != 0  && impact < 0) impact += heating;
+        }
 
         data.debugger.addLine("impactBeforeRestoreRange", impact);
 
