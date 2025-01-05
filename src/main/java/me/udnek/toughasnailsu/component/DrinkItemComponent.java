@@ -60,7 +60,6 @@ public class DrinkItemComponent implements CustomComponent<CustomItem> {
         if (temperatureImpact != 0){
             if (temperatureImpact > 0) Effects.HEATING.apply(player, getTemperatureImpactDuration(), temperatureImpact - 1);
             else Effects.COLLING.apply(player, getTemperatureImpactDuration(), (-temperatureImpact) - 1);
-            //playerData.getTemperature().setFoodImpact(getTemperatureImpact(), getTemperatureImpactDuration());
         }
         if (inflictsThirst){
             Effects.THIRST.apply(player, 40 * 20, 0);
