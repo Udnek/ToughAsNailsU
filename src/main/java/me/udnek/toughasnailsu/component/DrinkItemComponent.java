@@ -14,6 +14,7 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -50,15 +51,18 @@ public class DrinkItemComponent implements CustomComponent<CustomItem> {
     public boolean isInflictsThirst() {return inflictsThirst;}
 
     public void onConsumption(@NotNull CustomItem customItem, PlayerItemConsumeEvent event){
-        PlayerData playerData = Database.getInstance().get(event.getPlayer());
+        Player player = event.getPlayer();
+        PlayerData playerData = Database.getInstance().get(player);
+        int temperatureImpact = (int) getTemperatureImpact();
         if (getThirstRestoration() != 0) {
             playerData.getThirst().add(getThirstRestoration());
         }
-        if (getTemperatureImpact() != 0){
-            playerData.getTemperature().setFoodImpact(getTemperatureImpact(), getTemperatureImpactDuration());
+        if (temperatureImpact != 0){
+            if (temperatureImpact > 0) Effects.HEATING.apply(player, getTemperatureImpactDuration(), temperatureImpact - 1);
+            else Effects.COLLING.apply(player, getTemperatureImpactDuration(), (-temperatureImpact) - 1);
         }
         if (inflictsThirst){
-            Effects.THIRST.apply(event.getPlayer(), 40 * 20, 0);
+            Effects.THIRST.apply(player, 40 * 20, 0);
         }
     }
     public void modifyItem(@NotNull CustomItemGeneratedEvent event){

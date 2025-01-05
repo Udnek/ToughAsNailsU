@@ -22,7 +22,7 @@ public class ConstructableDrinkableItem extends ConstructableCustomItem implemen
     protected final double temperatureImpact;
     protected final int temperatureImpactDuration;
 
-    protected ConstructableDrinkableItem(Material material, String rawId, int thirstRestoration, boolean inflictsThirst, double temperatureImpact, int temperatureImpactDuration){
+    protected ConstructableDrinkableItem(@NotNull Material material, @NotNull String rawId, int thirstRestoration, boolean inflictsThirst, double temperatureImpact, int temperatureImpactDuration){
         this.material = material;
         this.rawId = rawId;
         this.thirstRestoration = thirstRestoration;
