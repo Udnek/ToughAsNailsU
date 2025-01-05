@@ -2,7 +2,7 @@ package me.udnek.toughasnailsu.data;
 
 import me.udnek.itemscoreu.util.ComponentU;
 import me.udnek.toughasnailsu.attribute.Attributes;
-import me.udnek.toughasnailsu.component.DrinkItemComponent;
+import me.udnek.toughasnailsu.effect.Effects;
 import me.udnek.toughasnailsu.util.RangedValue;
 import me.udnek.toughasnailsu.util.Utils;
 import net.kyori.adventure.key.Key;
@@ -80,9 +80,6 @@ public class Temperature extends RangedValue {
     double coldResistanceMultiplier = 0;
     double waterResistanceMultiplier = 0;
 
-    double foodImpact = 0;
-    int foodDuration = 0;
-
     double lastImpact = 0;
     boolean justStartedRising = false;
     boolean justStartedDropping = false;
@@ -118,14 +115,6 @@ public class Temperature extends RangedValue {
                 data.player.setFreezeTicks(180);
                 if (Bukkit.getCurrentTick() % 20 == 0) data.player.damage(0.5);
             }
-        }
-
-
-        if (foodDuration == 0) return;
-        foodDuration -= DataTicker.DELAY;
-        if (foodDuration <= 0){
-            foodDuration = 0;
-            foodImpact = 0;
         }
     }
     public void updateBiomeData(){
@@ -165,10 +154,11 @@ public class Temperature extends RangedValue {
         double externalImpact = calculateExternalImpact();
 
         double impact = externalImpact;
+        int colling = Effects.COLLING.getAppliedLevel(data.player) + 1;
+        int heating = Effects.HEATING.getAppliedLevel(data.player) + 1;
 
         data.debugger.addLine("externalImpact", externalImpact );
-        data.debugger.addLine("foodImpact", foodImpact);
-        data.debugger.addLine("foodImpactDuration", DrinkItemComponent.generateEffectDuration(foodDuration) + " (" + foodDuration +")");
+        data.debugger.addLine("foodColling, foodHeating", colling, heating);
         data.debugger.addLine("coldRes: (mul) = " + coldResistanceMultiplier);
         data.debugger.addLine("heatRes: (mul) = " + heatResistanceMultiplier);
         data.debugger.addLine("waterRes: (mul) = " + waterResistanceMultiplier);
@@ -177,9 +167,17 @@ public class Temperature extends RangedValue {
         if (data.player.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE) && impact > 0 && !isAcceptableImpact(impact)) {
             impact = 0;
         }
-        if (foodImpact != 0 && !Utils.isSameSign(impact, foodImpact) && !isAcceptableImpact(impact)){
-            impact += foodImpact;
+
+        if (!isAcceptableImpact(impact)) {
+            if (colling != 0  && impact > 0){
+                impact -= colling;
+            }
+
+            if (heating != 0  && impact < 0){
+                impact += heating;
+            }
         }
+
 
         data.debugger.addLine("impactBeforeRestoreRange", impact);
 
@@ -242,11 +240,6 @@ public class Temperature extends RangedValue {
             }
         }
         return totalImpact;
-    }
-
-    public void setFoodImpact(double impact, int duration){
-        foodImpact = impact;
-        foodDuration = duration;
     }
 
     public class Hud{
