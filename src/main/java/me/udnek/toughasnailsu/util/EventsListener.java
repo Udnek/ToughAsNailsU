@@ -7,11 +7,12 @@ import me.udnek.itemscoreu.customequipmentslot.CustomEquipmentSlot;
 import me.udnek.itemscoreu.customevent.CustomItemGeneratedEvent;
 import me.udnek.itemscoreu.customevent.InitializationEvent;
 import me.udnek.itemscoreu.customitem.CustomItem;
+import me.udnek.itemscoreu.customitem.VanillaItemManager;
 import me.udnek.itemscoreu.customrecipe.RecipeManager;
 import me.udnek.itemscoreu.customrecipe.choice.CustomSingleRecipeChoice;
-import me.udnek.itemscoreu.util.InitializationProcess;
+import me.udnek.itemscoreu.customregistry.InitializationProcess;
 import me.udnek.itemscoreu.util.SelfRegisteringListener;
-import me.udnek.itemscoreu.util.VanillaItemManager;
+
 import me.udnek.rpgu.equipment.slot.EquipmentSlots;
 import me.udnek.rpgu.item.Items;
 import me.udnek.rpgu.mechanic.enchanting.EnchantingRecipe;
