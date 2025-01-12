@@ -1,0 +1,45 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "toughasnailsu:item/flask"
+	},
+	"display": {
+		"firstperson_righthand": {
+			"rotation": [
+				0,
+				-90,
+				25
+			],
+			"translation": [
+				1.13,
+				3.2,
+				1.13
+			],
+			"scale": [
+				0.68,
+				0.68,
+				0.68
+			]
+		},
+		"firstperson_lefthand": {
+			"rotation": [
+				0,
+				90,
+				-25
+			],
+			"translation": [
+				1.13,
+				3.2,
+				1.13
+			],
+			"scale": [
+				0.68,
+				0.68,
+				0.68
+			]
+		}
+	},
+	"overrides": [
+		{ "predicate": { "filled": 0.0000001 }, "model": "toughasnailsu:item/flask_filled" }
+	]
+}

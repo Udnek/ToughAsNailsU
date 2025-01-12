@@ -5,7 +5,7 @@ import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.PotionContents;
 import me.udnek.itemscoreu.customitem.ConstructableCustomItem;
 import me.udnek.itemscoreu.customitem.CustomItem;
-import me.udnek.toughasnailsu.component.DrinkItemComponent;
+import me.udnek.toughasnailsu.component.DrinkItem;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.potion.PotionType;
@@ -39,7 +39,7 @@ public class ConstructableDrinkableItem extends ConstructableCustomItem implemen
     @Override
     public void initializeComponents() {
         super.initializeComponents();
-        getComponents().set(new DrinkItemComponent(thirstRestoration, inflictsThirst, temperatureImpact, temperatureImpactDuration));
+        getComponents().set(new DrinkItem(thirstRestoration, inflictsThirst, temperatureImpact, temperatureImpactDuration));
     }
 
     @Override

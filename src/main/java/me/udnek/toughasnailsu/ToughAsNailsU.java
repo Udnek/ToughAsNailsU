@@ -1,7 +1,7 @@
 package me.udnek.toughasnailsu;
 
-import me.udnek.itemscoreu.resourcepack.ResourcePackablePlugin;
 import me.udnek.itemscoreu.customitem.VanillaItemManager;
+import me.udnek.itemscoreu.resourcepack.ResourcePackablePlugin;
 import me.udnek.toughasnailsu.attribute.Attributes;
 import me.udnek.toughasnailsu.command.DebugCommand;
 import me.udnek.toughasnailsu.data.DataTicker;

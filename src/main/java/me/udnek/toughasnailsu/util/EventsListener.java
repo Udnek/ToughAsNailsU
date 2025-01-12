@@ -12,7 +12,6 @@ import me.udnek.itemscoreu.customrecipe.RecipeManager;
 import me.udnek.itemscoreu.customrecipe.choice.CustomSingleRecipeChoice;
 import me.udnek.itemscoreu.customregistry.InitializationProcess;
 import me.udnek.itemscoreu.util.SelfRegisteringListener;
-
 import me.udnek.rpgu.equipment.slot.EquipmentSlots;
 import me.udnek.rpgu.item.Items;
 import me.udnek.rpgu.mechanic.enchanting.EnchantingRecipe;
@@ -20,7 +19,7 @@ import me.udnek.rpgu.mechanic.enchanting.upgrade.EnchantingTableUpgrade;
 import me.udnek.toughasnailsu.ToughAsNailsU;
 import me.udnek.toughasnailsu.attribute.Attributes;
 import me.udnek.toughasnailsu.component.ComponentTypes;
-import me.udnek.toughasnailsu.component.DrinkItemComponent;
+import me.udnek.toughasnailsu.component.DrinkItem;
 import me.udnek.toughasnailsu.data.Database;
 import me.udnek.toughasnailsu.data.PlayerData;
 import me.udnek.toughasnailsu.data.Temperature;
@@ -35,6 +34,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -56,9 +56,16 @@ public class EventsListener extends SelfRegisteringListener {
         customItem.getComponents().getOrDefault(ComponentTypes.DRINK_ITEM).onConsumption(customItem, event);
     }
     @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerConsume(InventoryClickEvent event){
+        CustomItem currentItem = CustomItem.get(event.getCurrentItem());
+        CustomItem cursorItem = CustomItem.get(event.getCursor());
+        if (currentItem != null) currentItem.getComponents().getOrDefault(ComponentTypes.INVENTORY_INTERACTABLE_ITEM).onBeingClicked(currentItem, event);
+        if (cursorItem != null) cursorItem.getComponents().getOrDefault(ComponentTypes.INVENTORY_INTERACTABLE_ITEM).onClickWith(cursorItem, event);
+    }
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onGenerate(CustomItemGeneratedEvent event){
         CustomItem customItem = event.getCustomItem();
-        DrinkItemComponent drinkingComponent = customItem.getComponents().get(ComponentTypes.DRINK_ITEM);
+        DrinkItem drinkingComponent = customItem.getComponents().get(ComponentTypes.DRINK_ITEM);
         if (drinkingComponent != null) drinkingComponent.modifyItem(event);
 
         if (customItem == Items.WOLF_HELMET) armorAttributes(customItem, Attributes.COLD_RESISTANCE, CustomEquipmentSlot.HEAD, RESISTANCE_AMOUNT);
