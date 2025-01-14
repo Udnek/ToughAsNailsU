@@ -3,6 +3,7 @@ package me.udnek.toughasnailsu.item;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.BundleContents;
 import io.papermc.paper.datacomponent.item.ItemLore;
+import io.papermc.paper.datacomponent.item.UseRemainder;
 import me.udnek.itemscoreu.customcomponent.instance.RightClickableItem;
 import me.udnek.itemscoreu.customitem.ConstructableCustomItem;
 import me.udnek.itemscoreu.customitem.CustomItem;
@@ -36,6 +37,8 @@ import static me.udnek.toughasnailsu.util.Utils.resetStyle;
 public class Flask extends ConstructableCustomItem {
     public static final Material DRINKING_MATERIAL = Material.GUNPOWDER;
     public static final Material DEFALT_MATERIAL = Material.BUNDLE;
+    public static final String OPENED_MODEL = "flask_opened";
+    public static final String CLOSE_MODEL = "flask";
 
     @Override
     public @NotNull String getRawId() {return "flask";}
@@ -192,18 +195,17 @@ public class Flask extends ConstructableCustomItem {
         for (ItemStack itemStack : flask.getData(DataComponentTypes.BUNDLE_CONTENTS).contents()){
             freeAmount -= itemStack.getAmount();
         }
-        ItemStack drinkingGlass = Items.DRINKING_GLASS_BOTTLE.getItem();
-        drinkingGlass.setAmount(Math.min(freeAmount, drink.getAmount()));
-        player.getInventory().addItem(drinkingGlass);
+        ItemStack useRemainder = drink.getData(DataComponentTypes.USE_REMAINDER).transformInto();
+        System.out.println(useRemainder);
+        useRemainder.setAmount(Math.min(freeAmount, drink.getAmount()) * useRemainder.getAmount());
+        player.getInventory().addItem(useRemainder);
     }
 
     public static void openBundle(@NotNull ItemStack itemStack) {
-        String modelData = itemStack.getData(DataComponentTypes.ITEM_MODEL).value() + "_opened";
-        itemStack.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(ToughAsNailsU.getInstance(), modelData));
+        itemStack.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(ToughAsNailsU.getInstance(), OPENED_MODEL));
     }
 
     public static void closeBundle(@NotNull ItemStack itemStack) {
-        String modelData = itemStack.getData(DataComponentTypes.ITEM_MODEL).value().replace("_opened", "");
-        itemStack.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(ToughAsNailsU.getInstance(), modelData));
+        itemStack.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(ToughAsNailsU.getInstance(), CLOSE_MODEL));
     }
 }
