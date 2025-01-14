@@ -18,9 +18,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DrinkItemComponent implements CustomComponent<CustomItem> {
+public class DrinkItem implements CustomComponent<CustomItem> {
 
     public static final Key LORE_FONT_NORMAL = Key.key("toughasnailsu:thirst");
     public static final Key LORE_FONT_THIRST = Key.key("toughasnailsu:thirst_thirsty");
@@ -28,7 +29,7 @@ public class DrinkItemComponent implements CustomComponent<CustomItem> {
     public static final TextColor FREEZE_COLOR = TextColor.color(99, 155, 255);
     public static final TextColor HEAT_COLOR = TextColor.color(217, 131, 44);
 
-    public static final DrinkItemComponent DEFAULT = new DrinkItemComponent(0, false, 0, 0){
+    public static final DrinkItem DEFAULT = new DrinkItem(0, false, 0, 0){
         @Override
         public void modifyItem(@NotNull CustomItemGeneratedEvent event){}
     };
@@ -38,7 +39,7 @@ public class DrinkItemComponent implements CustomComponent<CustomItem> {
     protected final double temperatureImpact;
     protected final int temperatureImpactDuration;
 
-    public DrinkItemComponent(int thirstRestoration, boolean inflictsThirst, double temperatureImpact, int temperatureImpactDuration){
+    public DrinkItem(int thirstRestoration, boolean inflictsThirst, double temperatureImpact, int temperatureImpactDuration){
         this.thirstRestoration = thirstRestoration;
         this.inflictsThirst = inflictsThirst;
         this.temperatureImpact = temperatureImpact;
@@ -64,6 +65,27 @@ public class DrinkItemComponent implements CustomComponent<CustomItem> {
         if (inflictsThirst){
             Effects.THIRST.apply(player, 40 * 20, 0);
         }
+    }
+
+    public @NotNull List<Component> generateLore(){
+        List<Component> component = new ArrayList<>();
+
+        Key font = isInflictsThirst() ? LORE_FONT_THIRST : LORE_FONT_NORMAL;
+        Component thirst = Component.translatable(
+                        "lore.toughasnailsu.thirst.level." + getThirstRestoration())
+                .font(font)
+                .color(ComponentU.NO_SHADOW_COLOR)
+                .decoration(TextDecoration.ITALIC, false);
+
+        Component effect = Component.translatable(getTemperatureImpact() > 0 ? "effect.drinkable.heating" : "effect.drinkable.cooling");
+        TextColor color = getTemperatureImpact() > 0 ? HEAT_COLOR : FREEZE_COLOR;
+        Component amount = Component.text(Utils.roundToTwoDigits(Math.abs(getTemperatureImpact())));
+        Component temperature = Component.translatable("lore.drinkable.effect", List.of(effect, amount, Component.text(generateEffectDuration(getTemperatureImpactDuration()))))
+                .color(color).decoration(TextDecoration.ITALIC, false);
+
+        component.add(Component.space().append(temperature));
+        component.add(Component.space().append(thirst));
+        return component;
     }
     public void modifyItem(@NotNull CustomItemGeneratedEvent event){
         LoreBuilder loreBuilder = event.getLoreBuilder();
