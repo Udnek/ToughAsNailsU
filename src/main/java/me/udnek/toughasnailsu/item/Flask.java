@@ -16,6 +16,8 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -105,7 +107,7 @@ public class Flask extends ConstructableCustomItem {
             ItemStack flask = playerItemConsumeEvent.getItem();
             flask.unsetData(DataComponentTypes.CONSUMABLE);
 
-            List<ItemStack> contents = new java.util.ArrayList<>(flask.getData(DataComponentTypes.BUNDLE_CONTENTS).contents());
+            List<ItemStack> contents = new ArrayList<>(flask.getData(DataComponentTypes.BUNDLE_CONTENTS).contents());
             ItemStack firstItem = contents.getFirst();
 
             firstItem.add(-1);
@@ -133,25 +135,66 @@ public class Flask extends ConstructableCustomItem {
     public static class FlaskInventoryInteractable implements InventoryInteractableItem {
         @Override
         public void onBeingClicked(@NotNull CustomItem item, @NotNull InventoryClickEvent event) {
-            System.out.println(event.getClickedInventory());
-            System.out.println(event.getClick());
-            System.out.println(event.getInventory());
-            System.out.println(event.getAction());
-            System.out.println(event.getCurrentItem());
-            System.out.println(event.getCursor());
-            System.out.println(event.getHandlers());
+            ClickType click = event.getClick();
+            Player player = (Player) event.getWhoClicked();
+            ItemStack flask = event.getCurrentItem();
+            switch (click) {
+                case LEFT -> {
+                    if (event.getAction() == InventoryAction.PICKUP_ALL) return;
+                    ItemStack cursorItem = event.getCursor();
+                    CustomItem drinkItem = CustomItem.get(cursorItem);
+
+                    if (drinkItem == null || !(drinkItem.getComponents().has(ComponentTypes.DRINK_ITEM)) ) {
+                        event.setCancelled(true);
+                        return;
+                    }
+
+                    addItemToBundle(flask, cursorItem, player);
+                }
+                case RIGHT -> {
+                    event.setCancelled(true);
+                    Material flaskMaterial = flask.getType();
+                    if (flaskMaterial == DEFALT_MATERIAL) {return;}
+                    if (flaskMaterial == DRINKING_MATERIAL) {
+                        flask.unsetData(DataComponentTypes.CONSUMABLE);
+
+                        List<Component> oldLore = flask.getData(DataComponentTypes.LORE).lines();
+                        flask.setData(DataComponentTypes.LORE, ItemLore.lore(List.of(oldLore.get(oldLore.size() - 1))));
+
+                        closeBundle(flask);
+
+                        player.getInventory().setItem(event.getSlot(), flask.withType(DEFALT_MATERIAL));
+                        return;
+                    }
+                }
+            }
         }
 
         @Override
         public void onClickWith(@NotNull CustomItem item, @NotNull InventoryClickEvent event) {
-            System.out.println(event.getClickedInventory());
-            System.out.println(event.getClick());
-            System.out.println(event.getInventory());
-            System.out.println(event.getAction());
-            System.out.println(event.getCurrentItem());
-            System.out.println(event.getCursor());
-            System.out.println(event.getHandlers());
+            ClickType click = event.getClick();
+            if (click != ClickType.LEFT) {return;}
+            InventoryAction action = event.getAction();
+            if (action == InventoryAction.PLACE_ALL || action == InventoryAction.PLACE_ONE) return;
+            ItemStack currentItem = event.getCurrentItem();
+            CustomItem drinkItem = CustomItem.get(currentItem);
+            if (drinkItem == null || currentItem == null || !(drinkItem.getComponents().has(ComponentTypes.DRINK_ITEM))) {
+                event.setCancelled(true);
+                return;
+            }
+
+            addItemToBundle(event.getCursor(), currentItem, (Player) event.getWhoClicked());
         }
+    }
+
+    public static void addItemToBundle(@NotNull ItemStack flask, @NotNull ItemStack drink, @NotNull Player player) {
+        int freeAmount = 64;
+        for (ItemStack itemStack : flask.getData(DataComponentTypes.BUNDLE_CONTENTS).contents()){
+            freeAmount -= itemStack.getAmount();
+        }
+        ItemStack drinkingGlass = Items.DRINKING_GLASS_BOTTLE.getItem();
+        drinkingGlass.setAmount(Math.min(freeAmount, drink.getAmount()));
+        player.getInventory().addItem(drinkingGlass);
     }
 
     public static void openBundle(@NotNull ItemStack itemStack) {
