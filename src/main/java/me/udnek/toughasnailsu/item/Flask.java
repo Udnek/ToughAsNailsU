@@ -3,10 +3,10 @@ package me.udnek.toughasnailsu.item;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.BundleContents;
 import io.papermc.paper.datacomponent.item.ItemLore;
-import io.papermc.paper.datacomponent.item.UseRemainder;
 import me.udnek.itemscoreu.customcomponent.instance.RightClickableItem;
 import me.udnek.itemscoreu.customitem.ConstructableCustomItem;
 import me.udnek.itemscoreu.customitem.CustomItem;
+import me.udnek.itemscoreu.nms.Nms;
 import me.udnek.itemscoreu.util.LoreBuilder;
 import me.udnek.rpgu.component.ability.active.ConstructableActiveAbilityComponent;
 import me.udnek.rpgu.component.ability.property.AttributeBasedProperty;
@@ -28,6 +28,7 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.jetbrains.annotations.NotNull;
 
+import javax.naming.spi.NamingManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -38,7 +39,7 @@ public class Flask extends ConstructableCustomItem {
     public static final Material DRINKING_MATERIAL = Material.GUNPOWDER;
     public static final Material DEFALT_MATERIAL = Material.BUNDLE;
     public static final String OPENED_MODEL = "flask_opened";
-    public static final String CLOSE_MODEL = "flask";
+    public static final String CLOSED_MODEL = "flask";
 
     @Override
     public @NotNull String getRawId() {return "flask";}
@@ -176,12 +177,15 @@ public class Flask extends ConstructableCustomItem {
         @Override
         public void onClickWith(@NotNull CustomItem item, @NotNull InventoryClickEvent event) {
             ClickType click = event.getClick();
-            if (click != ClickType.LEFT) {return;}
             InventoryAction action = event.getAction();
-            if (action == InventoryAction.PLACE_ALL || action == InventoryAction.PLACE_ONE) return;
+            System.out.println(action);
+            System.out.println(click);
+            if (action == InventoryAction.PLACE_ONE && click == ClickType.RIGHT) {event.setCancelled(true); return;}
+            if (click != ClickType.LEFT) {return;}
             ItemStack currentItem = event.getCurrentItem();
             CustomItem drinkItem = CustomItem.get(currentItem);
-            if (drinkItem == null || currentItem == null || !(drinkItem.getComponents().has(ComponentTypes.DRINK_ITEM))) {
+            if (drinkItem == null) return;
+            if (currentItem == null || !(drinkItem.getComponents().has(ComponentTypes.DRINK_ITEM))) {
                 event.setCancelled(true);
                 return;
             }
@@ -191,13 +195,8 @@ public class Flask extends ConstructableCustomItem {
     }
 
     public static void addItemToBundle(@NotNull ItemStack flask, @NotNull ItemStack drink, @NotNull Player player) {
-        int freeAmount = 64;
-        for (ItemStack itemStack : flask.getData(DataComponentTypes.BUNDLE_CONTENTS).contents()){
-            freeAmount -= itemStack.getAmount();
-        }
         ItemStack useRemainder = drink.getData(DataComponentTypes.USE_REMAINDER).transformInto();
-        System.out.println(useRemainder);
-        useRemainder.setAmount(Math.min(freeAmount, drink.getAmount()) * useRemainder.getAmount());
+        useRemainder.setAmount(Math.min(Nms.get().getMaxAmountCanFitInBundle(flask), drink.getAmount()) * useRemainder.getAmount());
         player.getInventory().addItem(useRemainder);
     }
 
@@ -206,6 +205,6 @@ public class Flask extends ConstructableCustomItem {
     }
 
     public static void closeBundle(@NotNull ItemStack itemStack) {
-        itemStack.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(ToughAsNailsU.getInstance(), CLOSE_MODEL));
+        itemStack.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(ToughAsNailsU.getInstance(), CLOSED_MODEL));
     }
 }
