@@ -31,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.naming.spi.NamingManager;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import static me.udnek.toughasnailsu.util.Utils.resetStyle;
@@ -112,15 +113,16 @@ public class Flask extends ConstructableCustomItem {
             flask.unsetData(DataComponentTypes.CONSUMABLE);
 
             List<ItemStack> contents = new ArrayList<>(flask.getData(DataComponentTypes.BUNDLE_CONTENTS).contents());
+
             ItemStack firstItem = contents.getFirst();
             CustomItem.get(firstItem).getComponents().getOrException(ComponentTypes.DRINK_ITEM).onConsumption(customItem,playerItemConsumeEvent);
-
             firstItem.add(-1);
             if (firstItem.isEmpty()) {contents.removeFirst();}
+
             flask.setData(DataComponentTypes.BUNDLE_CONTENTS, BundleContents.bundleContents(contents));
 
             List<Component> oldLore = flask.getData(DataComponentTypes.LORE).lines();
-            flask.setData(DataComponentTypes.LORE, ItemLore.lore(List.of(oldLore.get(oldLore.size() - 1))));
+            flask.setData(DataComponentTypes.LORE, Objects.requireNonNull(Items.FLASK.getItem().getData(DataComponentTypes.LORE)));
 
             closeBundle(flask);
 
@@ -162,9 +164,7 @@ public class Flask extends ConstructableCustomItem {
                     if (flaskMaterial == DEFALT_MATERIAL) {return;}
                     if (flaskMaterial == DRINKING_MATERIAL) {
                         flask.unsetData(DataComponentTypes.CONSUMABLE);
-
-                        List<Component> oldLore = flask.getData(DataComponentTypes.LORE).lines();
-                        flask.setData(DataComponentTypes.LORE, ItemLore.lore(List.of(oldLore.get(oldLore.size() - 1))));
+                        flask.setData(DataComponentTypes.LORE, Objects.requireNonNull(Items.FLASK.getItem().getData(DataComponentTypes.LORE)));
 
                         closeBundle(flask);
 
