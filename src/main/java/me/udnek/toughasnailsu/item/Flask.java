@@ -153,7 +153,8 @@ public class Flask extends ConstructableCustomItem {
                         return;
                     }
 
-                    addItemToBundle(flask, cursorItem, player);
+                    BundleContents bundleFlask = flask.getData(DataComponentTypes.BUNDLE_CONTENTS);
+                    addItemToBundle(bundleFlask, cursorItem, player);
                 }
                 case RIGHT -> {
                     event.setCancelled(true);
@@ -178,8 +179,6 @@ public class Flask extends ConstructableCustomItem {
         public void onClickWith(@NotNull CustomItem item, @NotNull InventoryClickEvent event) {
             ClickType click = event.getClick();
             InventoryAction action = event.getAction();
-            System.out.println(action);
-            System.out.println(click);
             if (action == InventoryAction.PLACE_ONE && click == ClickType.RIGHT) {event.setCancelled(true); return;}
             if (click != ClickType.LEFT) {return;}
             ItemStack currentItem = event.getCurrentItem();
@@ -190,13 +189,14 @@ public class Flask extends ConstructableCustomItem {
                 return;
             }
 
-            addItemToBundle(event.getCursor(), currentItem, (Player) event.getWhoClicked());
+            BundleContents bundleFlask = event.getCursor().getData(DataComponentTypes.BUNDLE_CONTENTS);
+            addItemToBundle(bundleFlask, currentItem, (Player) event.getWhoClicked());
         }
     }
 
-    public static void addItemToBundle(@NotNull ItemStack flask, @NotNull ItemStack drink, @NotNull Player player) {
+    public static void addItemToBundle(@NotNull BundleContents flask, @NotNull ItemStack drink, @NotNull Player player) {
         ItemStack useRemainder = drink.getData(DataComponentTypes.USE_REMAINDER).transformInto();
-        useRemainder.setAmount(Math.min(Nms.get().getMaxAmountCanFitInBundle(flask), drink.getAmount()) * useRemainder.getAmount());
+        useRemainder.setAmount(Math.min(Nms.get().getMaxAmountCanFitInBundle(flask, drink), drink.getAmount()) * useRemainder.getAmount());
         player.getInventory().addItem(useRemainder);
     }
 
