@@ -113,6 +113,7 @@ public class Flask extends ConstructableCustomItem {
 
             List<ItemStack> contents = new ArrayList<>(flask.getData(DataComponentTypes.BUNDLE_CONTENTS).contents());
             ItemStack firstItem = contents.getFirst();
+            CustomItem.get(firstItem).getComponents().getOrException(ComponentTypes.DRINK_ITEM).onConsumption(customItem,playerItemConsumeEvent);
 
             firstItem.add(-1);
             if (firstItem.isEmpty()) {contents.removeFirst();}
@@ -123,7 +124,6 @@ public class Flask extends ConstructableCustomItem {
 
             closeBundle(flask);
 
-            CustomItem.get(firstItem).getComponents().getOrException(ComponentTypes.DRINK_ITEM).onConsumption(customItem,playerItemConsumeEvent);
             player.getInventory().setItem(playerItemConsumeEvent.getHand(), flask.withType(DEFALT_MATERIAL));
             return ActionResult.FULL_COOLDOWN;
         }
