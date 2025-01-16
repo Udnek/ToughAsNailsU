@@ -6,6 +6,7 @@ import io.papermc.paper.datacomponent.item.ItemLore;
 import me.udnek.itemscoreu.customcomponent.instance.RightClickableItem;
 import me.udnek.itemscoreu.customitem.ConstructableCustomItem;
 import me.udnek.itemscoreu.customitem.CustomItem;
+import me.udnek.itemscoreu.nms.Nms;
 import me.udnek.itemscoreu.util.LoreBuilder;
 import me.udnek.rpgu.component.ability.active.ConstructableActiveAbilityComponent;
 import me.udnek.rpgu.component.ability.property.AttributeBasedProperty;
@@ -16,6 +17,8 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -25,6 +28,7 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.jetbrains.annotations.NotNull;
 
+import javax.naming.spi.NamingManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -34,6 +38,8 @@ import static me.udnek.toughasnailsu.util.Utils.resetStyle;
 public class Flask extends ConstructableCustomItem {
     public static final Material DRINKING_MATERIAL = Material.GUNPOWDER;
     public static final Material DEFALT_MATERIAL = Material.BUNDLE;
+    public static final String OPENED_MODEL = "flask_opened";
+    public static final String CLOSED_MODEL = "flask";
 
     @Override
     public @NotNull String getRawId() {return "flask";}
@@ -105,7 +111,7 @@ public class Flask extends ConstructableCustomItem {
             ItemStack flask = playerItemConsumeEvent.getItem();
             flask.unsetData(DataComponentTypes.CONSUMABLE);
 
-            List<ItemStack> contents = new java.util.ArrayList<>(flask.getData(DataComponentTypes.BUNDLE_CONTENTS).contents());
+            List<ItemStack> contents = new ArrayList<>(flask.getData(DataComponentTypes.BUNDLE_CONTENTS).contents());
             ItemStack firstItem = contents.getFirst();
 
             firstItem.add(-1);
@@ -133,34 +139,72 @@ public class Flask extends ConstructableCustomItem {
     public static class FlaskInventoryInteractable implements InventoryInteractableItem {
         @Override
         public void onBeingClicked(@NotNull CustomItem item, @NotNull InventoryClickEvent event) {
-            System.out.println(event.getClickedInventory());
-            System.out.println(event.getClick());
-            System.out.println(event.getInventory());
-            System.out.println(event.getAction());
-            System.out.println(event.getCurrentItem());
-            System.out.println(event.getCursor());
-            System.out.println(event.getHandlers());
+            ClickType click = event.getClick();
+            Player player = (Player) event.getWhoClicked();
+            ItemStack flask = event.getCurrentItem();
+            switch (click) {
+                case LEFT -> {
+                    if (event.getAction() == InventoryAction.PICKUP_ALL) return;
+                    ItemStack cursorItem = event.getCursor();
+                    CustomItem drinkItem = CustomItem.get(cursorItem);
+
+                    if (drinkItem == null || !(drinkItem.getComponents().has(ComponentTypes.DRINK_ITEM)) ) {
+                        event.setCancelled(true);
+                        return;
+                    }
+
+                    addItemToBundle(flask, cursorItem, player);
+                }
+                case RIGHT -> {
+                    event.setCancelled(true);
+                    Material flaskMaterial = flask.getType();
+                    if (flaskMaterial == DEFALT_MATERIAL) {return;}
+                    if (flaskMaterial == DRINKING_MATERIAL) {
+                        flask.unsetData(DataComponentTypes.CONSUMABLE);
+
+                        List<Component> oldLore = flask.getData(DataComponentTypes.LORE).lines();
+                        flask.setData(DataComponentTypes.LORE, ItemLore.lore(List.of(oldLore.get(oldLore.size() - 1))));
+
+                        closeBundle(flask);
+
+                        player.getInventory().setItem(event.getSlot(), flask.withType(DEFALT_MATERIAL));
+                        return;
+                    }
+                }
+            }
         }
 
         @Override
         public void onClickWith(@NotNull CustomItem item, @NotNull InventoryClickEvent event) {
-            System.out.println(event.getClickedInventory());
-            System.out.println(event.getClick());
-            System.out.println(event.getInventory());
-            System.out.println(event.getAction());
-            System.out.println(event.getCurrentItem());
-            System.out.println(event.getCursor());
-            System.out.println(event.getHandlers());
+            ClickType click = event.getClick();
+            InventoryAction action = event.getAction();
+            System.out.println(action);
+            System.out.println(click);
+            if (action == InventoryAction.PLACE_ONE && click == ClickType.RIGHT) {event.setCancelled(true); return;}
+            if (click != ClickType.LEFT) {return;}
+            ItemStack currentItem = event.getCurrentItem();
+            CustomItem drinkItem = CustomItem.get(currentItem);
+            if (drinkItem == null) return;
+            if (currentItem == null || !(drinkItem.getComponents().has(ComponentTypes.DRINK_ITEM))) {
+                event.setCancelled(true);
+                return;
+            }
+
+            addItemToBundle(event.getCursor(), currentItem, (Player) event.getWhoClicked());
         }
     }
 
+    public static void addItemToBundle(@NotNull ItemStack flask, @NotNull ItemStack drink, @NotNull Player player) {
+        ItemStack useRemainder = drink.getData(DataComponentTypes.USE_REMAINDER).transformInto();
+        useRemainder.setAmount(Math.min(Nms.get().getMaxAmountCanFitInBundle(flask), drink.getAmount()) * useRemainder.getAmount());
+        player.getInventory().addItem(useRemainder);
+    }
+
     public static void openBundle(@NotNull ItemStack itemStack) {
-        String modelData = itemStack.getData(DataComponentTypes.ITEM_MODEL).value() + "_opened";
-        itemStack.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(ToughAsNailsU.getInstance(), modelData));
+        itemStack.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(ToughAsNailsU.getInstance(), OPENED_MODEL));
     }
 
     public static void closeBundle(@NotNull ItemStack itemStack) {
-        String modelData = itemStack.getData(DataComponentTypes.ITEM_MODEL).value().replace("_opened", "");
-        itemStack.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(ToughAsNailsU.getInstance(), modelData));
+        itemStack.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(ToughAsNailsU.getInstance(), CLOSED_MODEL));
     }
 }
