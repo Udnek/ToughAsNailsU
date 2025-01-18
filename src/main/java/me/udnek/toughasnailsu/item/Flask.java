@@ -16,6 +16,7 @@ import me.udnek.toughasnailsu.component.ComponentTypes;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Tag;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
@@ -54,12 +55,13 @@ public class Flask extends ConstructableCustomItem {
 
     @Override
     protected void generateRecipes(@NotNull Consumer<@NotNull Recipe> consumer) {
-        ShapedRecipe recipe = new ShapedRecipe(getNewRecipeKey(), getItem().add(2));
+        ShapedRecipe recipe = new ShapedRecipe(getNewRecipeKey(), getItem());
         recipe.shape(
-                " LS",
+                "SLP",
                 "LBL",
                 " L ");
 
+        recipe.setIngredient('P', new RecipeChoice.MaterialChoice(Tag.WOODEN_BUTTONS));
         recipe.setIngredient('L', new RecipeChoice.MaterialChoice(Material.LEATHER));
         recipe.setIngredient('S', new RecipeChoice.MaterialChoice(Material.STRING));
         recipe.setIngredient('B', new RecipeChoice.MaterialChoice(Material.BUCKET));
