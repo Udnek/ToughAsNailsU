@@ -55,14 +55,8 @@ public class EventsListener extends SelfRegisteringListener {
         if (customItem == null) return;
         customItem.getComponents().getOrDefault(ComponentTypes.DRINK_ITEM).onConsumption(customItem, event);
     }
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerConsume(InventoryClickEvent event){
-        CustomItem currentItem = CustomItem.get(event.getCurrentItem());
-        CustomItem cursorItem = CustomItem.get(event.getCursor());
-        if (currentItem != null) currentItem.getComponents().getOrDefault(ComponentTypes.INVENTORY_INTERACTABLE_ITEM).onBeingClicked(currentItem, event);
-        if (cursorItem != null) cursorItem.getComponents().getOrDefault(ComponentTypes.INVENTORY_INTERACTABLE_ITEM).onClickWith(cursorItem, event);
-    }
-    @EventHandler(priority = EventPriority.MONITOR)
+
+    @EventHandler
     public void onGenerate(CustomItemGeneratedEvent event){
         CustomItem customItem = event.getCustomItem();
         DrinkItem drinkingComponent = customItem.getComponents().get(ComponentTypes.DRINK_ITEM);

@@ -10,9 +10,6 @@ public class ComponentTypes {
     public static final CustomComponentType<CustomItem, DrinkItem>
             DRINK_ITEM = register(new ConstructableComponentType("drink_item", DrinkItem.DEFAULT));
 
-    public static final CustomComponentType<CustomItem, InventoryInteractableItem>
-            INVENTORY_INTERACTABLE_ITEM = register(new ConstructableComponentType("inventory_interactable_item", InventoryInteractableItem.EMPTY));
-
     private static CustomComponentType register(CustomComponentType type){
         return CustomRegistries.COMPONENT_TYPE.register(ToughAsNailsU.getInstance(), type);
     }

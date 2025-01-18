@@ -68,7 +68,7 @@ public class DrinkItem implements CustomComponent<CustomItem> {
     }
 
     public @NotNull List<Component> generateLore(){
-        List<Component> component = new ArrayList<>();
+        List<Component> components = new ArrayList<>();
 
         Key font = isInflictsThirst() ? LORE_FONT_THIRST : LORE_FONT_NORMAL;
         Component thirst = Component.translatable(
@@ -83,28 +83,17 @@ public class DrinkItem implements CustomComponent<CustomItem> {
         Component temperature = Component.translatable("lore.drinkable.effect", List.of(effect, amount, Component.text(generateEffectDuration(getTemperatureImpactDuration()))))
                 .color(color).decoration(TextDecoration.ITALIC, false);
 
-        component.add(Component.space().append(temperature));
-        component.add(Component.space().append(thirst));
-        return component;
+        components.add(temperature);
+        components.add(thirst);
+        return components;
     }
+
     public void modifyItem(@NotNull CustomItemGeneratedEvent event){
         LoreBuilder loreBuilder = event.getLoreBuilder();
 
-        Key font = isInflictsThirst() ? LORE_FONT_THIRST : LORE_FONT_NORMAL;
-        Component thirst = Component.translatable(
-                        "lore.toughasnailsu.thirst.level." + getThirstRestoration())
-                .font(font)
-                .color(ComponentU.NO_SHADOW_COLOR)
-                .decoration(TextDecoration.ITALIC, false);
-
-        Component effect = Component.translatable(getTemperatureImpact() > 0 ? "effect.drinkable.heating" : "effect.drinkable.cooling");
-        TextColor color = getTemperatureImpact() > 0 ? HEAT_COLOR : FREEZE_COLOR;
-        Component amount = Component.text(Utils.roundToTwoDigits(Math.abs(getTemperatureImpact())));
-        Component temperature = Component.translatable("lore.drinkable.effect", List.of(effect, amount, Component.text(generateEffectDuration(getTemperatureImpactDuration()))))
-                .color(color).decoration(TextDecoration.ITALIC, false);
-
-        loreBuilder.add(LoreBuilder.Position.ATTRIBUTES.priority + 50, temperature);
-        loreBuilder.add(LoreBuilder.Position.ATTRIBUTES.priority + 50, thirst);
+        for (Component component : generateLore()) {
+            loreBuilder.add(LoreBuilder.Position.ATTRIBUTES.priority + 50, component);
+        }
     }
 
     public static String generateEffectDuration(int duration){

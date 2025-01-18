@@ -3,6 +3,7 @@ package me.udnek.toughasnailsu.item;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.BundleContents;
 import io.papermc.paper.datacomponent.item.ItemLore;
+import me.udnek.itemscoreu.customcomponent.instance.InventoryInteractableItem;
 import me.udnek.itemscoreu.customcomponent.instance.RightClickableItem;
 import me.udnek.itemscoreu.customitem.ConstructableCustomItem;
 import me.udnek.itemscoreu.customitem.CustomItem;
@@ -12,7 +13,6 @@ import me.udnek.rpgu.component.ability.active.ConstructableActiveAbilityComponen
 import me.udnek.rpgu.component.ability.property.AttributeBasedProperty;
 import me.udnek.toughasnailsu.ToughAsNailsU;
 import me.udnek.toughasnailsu.component.ComponentTypes;
-import me.udnek.toughasnailsu.component.InventoryInteractableItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -28,7 +28,6 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.jetbrains.annotations.NotNull;
 
-import javax.naming.spi.NamingManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -47,6 +46,11 @@ public class Flask extends ConstructableCustomItem {
 
     @Override
     public @NotNull Material getMaterial() {return DEFALT_MATERIAL;}
+
+    @Override
+    public boolean isUpdateMaterial() {return false;}
+    @Override
+    public void getComponentsToUpdate(@NotNull ComponentConsumer consumer) {}
 
     @Override
     protected void generateRecipes(@NotNull Consumer<@NotNull Recipe> consumer) {
@@ -121,7 +125,6 @@ public class Flask extends ConstructableCustomItem {
 
             flask.setData(DataComponentTypes.BUNDLE_CONTENTS, BundleContents.bundleContents(contents));
 
-            List<Component> oldLore = flask.getData(DataComponentTypes.LORE).lines();
             flask.setData(DataComponentTypes.LORE, Objects.requireNonNull(Items.FLASK.getItem().getData(DataComponentTypes.LORE)));
 
             closeBundle(flask);
@@ -169,7 +172,6 @@ public class Flask extends ConstructableCustomItem {
                         closeBundle(flask);
 
                         player.getInventory().setItem(event.getSlot(), flask.withType(DEFALT_MATERIAL));
-                        return;
                     }
                 }
             }
