@@ -3,6 +3,7 @@ version: '${project.version}'
 main: me.udnek.toughasnailsu.ToughAsNailsU
 api-version: '1.21.1'
 depend: [ItemsCoreU]
+softdepend: [RpgU]
 commands:
   tanudebug:
     description: "tanudebug"

@@ -12,6 +12,7 @@ import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -26,14 +27,14 @@ public class PlayerData implements SerializableData {
     final Thirst thirst;
     final Debugger debugger = new Debugger();
 
-    private PlayerData(Player player){
+    private PlayerData(@NotNull Player player){
         this.player = player;
         temperature = new Temperature(this);
         thirst = new Thirst(this);
         debugger.initialize();
     }
-    public Temperature getTemperature() {return temperature;}
-    public Thirst getThirst() {return thirst;}
+    public @NotNull Temperature getTemperature() {return temperature;}
+    public @NotNull Thirst getThirst() {return thirst;}
     public void tick(){
         location = player.getLocation();
         debugger.prepare();
@@ -42,7 +43,7 @@ public class PlayerData implements SerializableData {
         debugger.debug();
         step++;
     }
-    public Component getHud(){
+    public @NotNull Component getHud(){
         return temperature.hud.get().append(thirst.hud.get());
     }
     public boolean shouldSkipTick(int tickEvery, int ticket){
@@ -54,16 +55,16 @@ public class PlayerData implements SerializableData {
     ///////////////////////////////////////////////////////////////////////////
     // TECHNICAL
     ///////////////////////////////////////////////////////////////////////////
-    public static PlayerData empty(Player player){
+    public static @NotNull PlayerData empty(@NotNull Player player){
         return new PlayerData(player);
     }
-    public static PlayerData deserialize(Player player){
+    public static @NotNull PlayerData deserialize(@NotNull Player player){
         PlayerData playerData = PlayerData.empty(player);
         SerializableDataManager.read(playerData, ToughAsNailsU.getInstance(), player);
         return playerData;
     }
     @Override
-    public String serialize() {
+    public @NotNull String serialize() {
         return temperature.getValue() + "," + thirst.getValue();
     }
     @Override
@@ -77,7 +78,7 @@ public class PlayerData implements SerializableData {
         temperature.set(temperatureValue);
     }
     @Override
-    public String getDataName() {return "data";}
+    public @NotNull String getDataName() {return "data";}
     ///////////////////////////////////////////////////////////////////////////
     // DEBUG
     ///////////////////////////////////////////////////////////////////////////
@@ -121,13 +122,6 @@ public class PlayerData implements SerializableData {
             addLine("temp", temperature.getValue());
             addLine("biomeTemp, biomeHum", Utils.roundForDebug(temperature.biomeTemperature), Utils.roundForDebug(temperature.biomeHumidity));
             addLine("blockAround, blockUnder", Utils.roundForDebug(temperature.blockAroundImpact), Utils.roundForDebug(temperature.blockUnderImpact));
-            //addLine("sunMul", temperature.sun);
-            //addLine("activity", temperature.activity);
-            //addLine("wet", temperature.wet);
-            //addLine("underWeather", temperature.weather);
-            //addLine();
-/*            addLine("jsRising", temperature.justStartedRising);
-            addLine("jsDropping", temperature.justStartedDropping);*/
             addLine("stabilizing", temperature.stabilizing);
             addLine("anim", temperature.hud.animation);
             addLine("tempNormalized", temperature.getNormalized());

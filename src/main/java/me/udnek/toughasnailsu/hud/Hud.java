@@ -9,18 +9,18 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class MainHud implements CustomHud {
+public class Hud implements CustomHud {
     
-    private static MainHud instance;
+    private static Hud instance;
     private final Database database;
 
-    private MainHud(){
+    private Hud(){
         CustomHudManager.getInstance().addTicket(ToughAsNailsU.getInstance(), this);
         database = Database.getInstance();
     }
 
-    public static MainHud getInstance() {
-        if (instance == null) instance = new MainHud();
+    public static Hud getInstance() {
+        if (instance == null) instance = new Hud();
         return instance;
         
     }

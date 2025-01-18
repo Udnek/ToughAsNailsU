@@ -1,0 +1,42 @@
+{
+	"providers": [
+		{
+			"type": "bitmap",
+			"file": "toughasnailsu:font/rpgu_thirst/background.png",
+			"ascent": -16,
+			"height": 9,
+			"chars": ["b"]
+		},
+		{
+			"type": "bitmap",
+			"file": "toughasnailsu:font/rpgu_thirst/icon.png",
+			"ascent": -16,
+			"height": 9,
+			"chars": ["i"]
+		},
+		{
+			"type": "bitmap",
+			"file": "toughasnailsu:font/rpgu_thirst/unit.png",
+			"ascent": -17,
+			"height": 7,
+			"chars": ["u"]
+		},
+		{
+			"type": "bitmap",
+			"file": "toughasnailsu:font/rpgu_thirst/overlay.png",
+			"ascent": -16,
+			"height": 9,
+			"chars": ["o"]
+		},
+		{
+			"type": "space",
+			"advances": {
+				"+": -3,
+				"-": 1,
+				"n": -82,
+				"j": 75,
+				"k": -75
+			}
+		}
+	]
+}

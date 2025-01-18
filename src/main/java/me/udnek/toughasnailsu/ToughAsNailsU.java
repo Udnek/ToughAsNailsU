@@ -8,7 +8,7 @@ import me.udnek.toughasnailsu.data.DataTicker;
 import me.udnek.toughasnailsu.data.Database;
 import me.udnek.toughasnailsu.effect.Effects;
 import me.udnek.toughasnailsu.enchantment.Enchantments;
-import me.udnek.toughasnailsu.hud.MainHud;
+import me.udnek.toughasnailsu.hud.Hud;
 import me.udnek.toughasnailsu.item.Items;
 import me.udnek.toughasnailsu.util.EventsListener;
 import org.bukkit.Material;
@@ -44,7 +44,7 @@ public final class ToughAsNailsU extends JavaPlugin implements ResourcePackableP
         getCommand("tanudebug").setExecutor(new DebugCommand());
         Database.getInstance();
         DataTicker.getInstance().start(this);
-        MainHud.getInstance();
+        Hud.getInstance();
     }
 
     @Override
