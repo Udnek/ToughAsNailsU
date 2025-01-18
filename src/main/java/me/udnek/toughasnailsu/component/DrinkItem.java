@@ -59,11 +59,11 @@ public class DrinkItem implements CustomComponent<CustomItem> {
             playerData.getThirst().add(getThirstRestoration());
         }
         if (temperatureImpact != 0){
-            if (temperatureImpact > 0) Effects.HEATING.apply(player, getTemperatureImpactDuration(), temperatureImpact - 1);
-            else Effects.COLLING.apply(player, getTemperatureImpactDuration(), (-temperatureImpact) - 1);
+            if (temperatureImpact > 0) Effects.HEATING.apply(player, getTemperatureImpactDuration(), temperatureImpact - 1, true, true, true);
+            else Effects.COLLING.apply(player, getTemperatureImpactDuration(), (-temperatureImpact) - 1, true, true, true);
         }
         if (inflictsThirst){
-            Effects.THIRST.apply(player, 40 * 20, 0);
+            Effects.THIRST.apply(player, 40 * 20, 0, true, true, true);
         }
     }
 
