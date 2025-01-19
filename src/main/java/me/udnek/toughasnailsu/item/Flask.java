@@ -187,8 +187,8 @@ public class Flask extends ConstructableCustomItem {
             if (click != ClickType.LEFT) {return;}
             ItemStack currentItem = event.getCurrentItem();
             CustomItem drinkItem = CustomItem.get(currentItem);
-            if (drinkItem == null) return;
-            if (currentItem == null || !(drinkItem.getComponents().has(ComponentTypes.DRINK_ITEM))) {
+            if (currentItem == null || currentItem.isEmpty()) return;
+            if (drinkItem == null || !(drinkItem.getComponents().has(ComponentTypes.DRINK_ITEM))) {
                 event.setCancelled(true);
                 return;
             }
