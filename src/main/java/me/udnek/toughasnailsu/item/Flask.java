@@ -28,6 +28,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,11 @@ public class Flask extends ConstructableCustomItem {
         recipe.setIngredient('S', new RecipeChoice.MaterialChoice(Material.STRING));
         recipe.setIngredient('B', new RecipeChoice.MaterialChoice(Material.BUCKET));
         consumer.accept(recipe);
+    }
+
+    @Override
+    public @Nullable DataSupplier<Integer> getMaxStackSize() {
+        return DataSupplier.of(1);
     }
 
     @Override
@@ -187,8 +193,8 @@ public class Flask extends ConstructableCustomItem {
             if (click != ClickType.LEFT) {return;}
             ItemStack currentItem = event.getCurrentItem();
             CustomItem drinkItem = CustomItem.get(currentItem);
-            if (drinkItem == null) return;
-            if (currentItem == null || !(drinkItem.getComponents().has(ComponentTypes.DRINK_ITEM))) {
+            if (currentItem == null || currentItem.isEmpty()) return;
+            if (drinkItem == null || !(drinkItem.getComponents().has(ComponentTypes.DRINK_ITEM))) {
                 event.setCancelled(true);
                 return;
             }
