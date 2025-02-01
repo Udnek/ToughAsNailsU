@@ -17,6 +17,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
@@ -111,17 +112,16 @@ public class Flask extends ConstructableCustomItem {
         }
 
         @Override
-        public void getLore(@NotNull LoreBuilder loreBuilder) {}
+        public @NotNull ActionResult action(@NotNull CustomItem customItem, @NotNull LivingEntity livingEntity, @NotNull PlayerItemConsumeEvent event) {
+            Player player = event.getPlayer();
 
-        @Override
-        public @NotNull ActionResult action(@NotNull CustomItem customItem, @NotNull Player player, @NotNull PlayerItemConsumeEvent playerItemConsumeEvent) {
-            ItemStack flask = playerItemConsumeEvent.getItem();
+            ItemStack flask = event.getItem();
             flask.unsetData(DataComponentTypes.CONSUMABLE);
 
             List<ItemStack> contents = new ArrayList<>(flask.getData(DataComponentTypes.BUNDLE_CONTENTS).contents());
 
             ItemStack firstItem = contents.getFirst();
-            CustomItem.get(firstItem).getComponents().getOrException(ComponentTypes.DRINK_ITEM).onConsumption(customItem,playerItemConsumeEvent);
+            CustomItem.get(firstItem).getComponents().getOrException(ComponentTypes.DRINK_ITEM).onConsumption(customItem, event);
             firstItem.add(-1);
             if (firstItem.isEmpty()) {contents.removeFirst();}
 
@@ -131,9 +131,12 @@ public class Flask extends ConstructableCustomItem {
 
             closeBundle(flask);
 
-            player.getInventory().setItem(playerItemConsumeEvent.getHand(), flask.withType(DEFALT_MATERIAL));
+            player.getInventory().setItem(event.getHand(), flask.withType(DEFALT_MATERIAL));
             return ActionResult.FULL_COOLDOWN;
         }
+
+        @Override
+        public void getLore(@NotNull LoreBuilder loreBuilder) {}
 
         @Override
         public void onConsume(@NotNull CustomItem customItem, @NotNull PlayerItemConsumeEvent event) {
