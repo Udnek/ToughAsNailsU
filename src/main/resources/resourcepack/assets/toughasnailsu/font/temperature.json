@@ -46,6 +46,15 @@
 			]
 		},
 		{
+			"type": "bitmap",
+			"file": "toughasnailsu:font/temperature/fortify.png",
+			"ascent": -14,
+			"height": 16,
+			"chars": [
+				"3"
+			]
+		},
+		{
 			"type": "reference",
 			"id": "space:default"
 		}

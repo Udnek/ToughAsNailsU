@@ -34,20 +34,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
 
-public class EventsListener extends SelfRegisteringListener {
+public class EventListener extends SelfRegisteringListener {
 
     public static final double RESISTANCE_AMOUNT = 0.17;
 
-    public EventsListener(JavaPlugin plugin) {super(plugin);}
+    public EventListener(JavaPlugin plugin) {super(plugin);}
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerConsume(PlayerItemConsumeEvent event){
@@ -122,9 +122,15 @@ public class EventsListener extends SelfRegisteringListener {
     }
 
     @EventHandler
-    public void resetStatsOnDeath(PlayerRespawnEvent event){
+    public void onRespawn(PlayerRespawnEvent event){
         PlayerData playerData = Database.getInstance().get(event.getPlayer());
         playerData.getThirst().set(Thirst.DEFAULT);
         playerData.getTemperature().set(Temperature.DEFAULT);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Effects.TEMPERATURE_FORTIFY.apply(event.getPlayer(), 20*60*2, 0);
+            }
+        }.runTaskLater(ToughAsNailsU.getInstance(), 1);
     }
 }

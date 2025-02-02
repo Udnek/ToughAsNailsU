@@ -10,7 +10,7 @@ import me.udnek.toughasnailsu.effect.Effects;
 import me.udnek.toughasnailsu.enchantment.Enchantments;
 import me.udnek.toughasnailsu.hud.Hud;
 import me.udnek.toughasnailsu.item.Items;
-import me.udnek.toughasnailsu.util.EventsListener;
+import me.udnek.toughasnailsu.util.EventListener;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -40,7 +40,7 @@ public final class ToughAsNailsU extends JavaPlugin implements ResourcePackableP
         VanillaItemManager.getInstance().replaceVanillaMaterial(Material.CHAINMAIL_BOOTS);
 
 
-        new EventsListener(this);
+        new EventListener(this);
         getCommand("tanudebug").setExecutor(new DebugCommand());
         Database.getInstance();
         DataTicker.getInstance().start(this);

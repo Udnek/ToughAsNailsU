@@ -1,3 +1,4 @@
 {
-  "effect.minecraft.instant_damage": "Thirst"
+  "effect.minecraft.instant_damage": "Thirst",
+  "effect.minecraft.instant_health": "Thermoinvurnability"
 }

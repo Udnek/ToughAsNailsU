@@ -26,7 +26,7 @@ public class Temperature extends RangedValue {
     public static final double MIN = -100;
     public static final double DEFAULT = 0;
 
-    public static final double IMPACT_SPEED = 0.01;
+    public static final double IMPACT_SPEED = 0.005;
     public static final double NATURAL_RESTORE_VALUE = 6;
     public static final double ACCEPTABLE_MAX = 20;
     public static final double ACCEPTABLE_MIN = -8;
@@ -50,9 +50,9 @@ public class Temperature extends RangedValue {
 
         AROUND_LIT_BLOCK_MAP.put(Material.SOUL_CAMPFIRE, 15d);
         AROUND_LIT_BLOCK_MAP.put(Material.CAMPFIRE, 12d);
-        AROUND_LIT_BLOCK_MAP.put(Material.FURNACE, 9d);
-        AROUND_LIT_BLOCK_MAP.put(Material.SMOKER, 9d);
-        AROUND_LIT_BLOCK_MAP.put(Material.BLAST_FURNACE, 9d);
+        AROUND_LIT_BLOCK_MAP.put(Material.FURNACE, 4d);
+        AROUND_LIT_BLOCK_MAP.put(Material.SMOKER, 4d);
+        AROUND_LIT_BLOCK_MAP.put(Material.BLAST_FURNACE, 4d);
 
         UNDER_BLOCK_MAP.put(Material.POWDER_SNOW, -6d);
         UNDER_BLOCK_MAP.put(Material.SNOW_BLOCK, -3d);
@@ -159,8 +159,8 @@ public class Temperature extends RangedValue {
 
         data.debugger.addLine("externalImpact", externalImpact );
         data.debugger.addLine("foodColling, foodHeating", colling, heating);
-        data.debugger.addLine("coldRes: (mul) = " + coldResistanceMultiplier);
-        data.debugger.addLine("heatRes: (mul) = " + heatResistanceMultiplier);
+        data.debugger.addLine("coldRes: (mul)", coldResistanceMultiplier);
+        data.debugger.addLine("heatRes: (mul)", heatResistanceMultiplier);
         data.debugger.addLine("waterRes: (mul) = " + waterResistanceMultiplier);
         data.debugger.addLine("sun, wet, activity, rain", sun, wet, activity, rain);
 
@@ -246,6 +246,7 @@ public class Temperature extends RangedValue {
 
         int animation = -1;
         Component icon;
+        Component fortify;
         TextColor color;
         public @NotNull Component get(){
             if (animation == -1 && (justStartedRising || justStartedDropping)){
@@ -254,9 +255,13 @@ public class Temperature extends RangedValue {
             if (animation >= FRAMES) animation = -1;
 
             updateComponents();
-            return ComponentU.textWithNoSpace(OFFSET, icon.font(FONT).color(color), SIZE);
+            return ComponentU.textWithNoSpace(OFFSET, icon.font(FONT).color(color).append(fortify), SIZE);
         }
         public void updateComponents(){
+            if (coldResistanceMultiplier == 0 && heatResistanceMultiplier == 0){
+                fortify = ComponentU.textWithNoSpace(-16, Component.translatable("image.toughasnailsu.temperature.fortify").color(ComponentU.NO_SHADOW_COLOR), 16);
+            } else fortify = Component.empty();
+
             if (stabilizing) {
                 icon = Component.translatable("image.toughasnailsu.temperature.stabilizing");
                 color = smoothColor();
