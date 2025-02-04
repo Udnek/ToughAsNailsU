@@ -1,5 +1,8 @@
 package me.udnek.toughasnailsu.effect;
 
+import me.udnek.itemscoreu.customattribute.CustomAttribute;
+import me.udnek.itemscoreu.customattribute.CustomAttributeConsumer;
+import me.udnek.itemscoreu.customattribute.CustomAttributeModifier;
 import me.udnek.itemscoreu.customeffect.ConstructableCustomEffect;
 import me.udnek.toughasnailsu.attribute.Attributes;
 import net.kyori.adventure.text.format.TextColor;
@@ -23,8 +26,8 @@ public class TemperatureFortifyEffect extends ConstructableCustomEffect {
 
     @Override
     public void getCustomAttributes(@NotNull PotionEffect context, @NotNull CustomAttributeConsumer consumer) {
-        consumer.accept(Attributes.HEAT_RESISTANCE, 100, AttributeModifier.Operation.ADD_NUMBER);
-        consumer.accept(Attributes.COLD_RESISTANCE, 100, AttributeModifier.Operation.ADD_NUMBER);
+        consumer.accept(Attributes.HEAT_RESISTANCE, new CustomAttributeModifier(100, AttributeModifier.Operation.ADD_NUMBER));
+        consumer.accept(Attributes.COLD_RESISTANCE, new CustomAttributeModifier(100, AttributeModifier.Operation.ADD_NUMBER));
     }
 
     @Override

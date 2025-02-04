@@ -45,7 +45,7 @@ import java.util.Set;
 
 public class EventListener extends SelfRegisteringListener {
 
-    public static final double RESISTANCE_AMOUNT = 0.17;
+    public static final double RESISTANCE_AMOUNT = 0.4;
 
     public EventListener(JavaPlugin plugin) {super(plugin);}
 
@@ -68,7 +68,7 @@ public class EventListener extends SelfRegisteringListener {
         if (customItem == Items.WOLF_BOOTS) armorAttributes(customItem, Attributes.COLD_RESISTANCE, CustomEquipmentSlot.FEET, RESISTANCE_AMOUNT);
         if (customItem == Items.FISHERMAN_SNORKEL){
             CustomItemAttributesComponent.safeAddAttribute(customItem,
-                    Attributes.WATER_RESISTANCE, new CustomAttributeModifier(0.8, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlots.ARTIFACTS));
+                    Attributes.WATER_RESISTANCE, new CustomAttributeModifier(0.9, AttributeModifier.Operation.MULTIPLY_SCALAR_1, EquipmentSlots.ARTIFACTS));
 
         }
     }
@@ -102,7 +102,7 @@ public class EventListener extends SelfRegisteringListener {
     }
 
     private static void armorAttributes(@NotNull CustomItem customItem, @NotNull CustomAttribute attribute, @NotNull CustomEquipmentSlot slot, double amount) {
-        CustomItemAttributesComponent.safeAddAttribute(customItem, attribute, new CustomAttributeModifier(amount, AttributeModifier.Operation.ADD_NUMBER, slot));
+        CustomItemAttributesComponent.safeAddAttribute(customItem, attribute, new CustomAttributeModifier(amount, AttributeModifier.Operation.MULTIPLY_SCALAR_1, slot));
     }
 
     private static void armorAttributes(@NotNull Material material, @NotNull CustomAttribute attribute, double amount) {

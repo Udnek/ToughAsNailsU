@@ -1,5 +1,7 @@
 package me.udnek.toughasnailsu.enchantment;
 
+import me.udnek.itemscoreu.customattribute.CustomAttributeConsumer;
+import me.udnek.itemscoreu.customattribute.CustomAttributeModifier;
 import me.udnek.itemscoreu.customenchantment.ConstructableCustomEnchantment;
 import me.udnek.itemscoreu.customequipmentslot.CustomEquipmentSlot;
 import me.udnek.toughasnailsu.attribute.Attributes;
@@ -17,8 +19,8 @@ public class Nail extends ConstructableCustomEnchantment {
 
     @Override
     public void getCustomAttributes(int level, @NotNull CustomAttributeConsumer consumer) {
-        consumer.accept(Attributes.COLD_RESISTANCE, MAX_RESISTANCE/MAX_LEVEL/4d*level, AttributeModifier.Operation.ADD_NUMBER, CustomEquipmentSlot.ARMOR);
-        consumer.accept(Attributes.HEAT_RESISTANCE, MAX_RESISTANCE/MAX_LEVEL/4d*level, AttributeModifier.Operation.ADD_NUMBER, CustomEquipmentSlot.ARMOR);
+        consumer.accept(Attributes.COLD_RESISTANCE, new CustomAttributeModifier(MAX_RESISTANCE/MAX_LEVEL/4d*level, AttributeModifier.Operation.MULTIPLY_SCALAR_1, CustomEquipmentSlot.ARMOR));
+        consumer.accept(Attributes.HEAT_RESISTANCE, new CustomAttributeModifier(MAX_RESISTANCE/MAX_LEVEL/4d*level, AttributeModifier.Operation.MULTIPLY_SCALAR_1, CustomEquipmentSlot.ARMOR));
     }
 
     @Override
