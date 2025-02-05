@@ -1,6 +1,5 @@
 package me.udnek.toughasnailsu.effect;
 
-import me.udnek.itemscoreu.customattribute.CustomAttribute;
 import me.udnek.itemscoreu.customattribute.CustomAttributeConsumer;
 import me.udnek.itemscoreu.customattribute.CustomAttributeModifier;
 import me.udnek.itemscoreu.customeffect.ConstructableCustomEffect;

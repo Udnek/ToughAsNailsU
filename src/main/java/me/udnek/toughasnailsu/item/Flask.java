@@ -55,12 +55,12 @@ public class Flask extends ConstructableCustomItem {
     protected void generateRecipes(@NotNull Consumer<@NotNull Recipe> consumer) {
         ShapedRecipe recipe = new ShapedRecipe(getNewRecipeKey(), getItem());
         recipe.shape(
-                "SLP",
-                "LBL",
-                " L ");
+                "SFP",
+                "FBF",
+                " F ");
 
         recipe.setIngredient('P', new RecipeChoice.MaterialChoice(Tag.WOODEN_BUTTONS));
-        recipe.setIngredient('L', new RecipeChoice.MaterialChoice(Material.LEATHER));
+        recipe.setIngredient('F', new RecipeChoice.ExactChoice(me.udnek.rpgu.item.Items.FABRIC.getItem()));
         recipe.setIngredient('S', new RecipeChoice.MaterialChoice(Material.STRING));
         recipe.setIngredient('B', new RecipeChoice.MaterialChoice(Material.BUCKET));
         consumer.accept(recipe);
