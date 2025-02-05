@@ -1,0 +1,83 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "property": "minecraft:has_component",
+    "component": "minecraft:consumable",
+    "on_true": {
+      "type": "minecraft:condition",
+      "property": "minecraft:has_component",
+      "component": "minecraft:dyed_color",
+      "on_false": {
+        "type": "minecraft:model",
+        "model": "toughasnailsu:item/flask_opened"
+      },
+      "on_true": {
+        "type": "minecraft:model",
+        "model": "minecraft:item/wolf_armor_dyed",
+        "tints": [
+          {
+            "type": "minecraft:constant",
+            "value": -1
+          },
+          {
+            "type": "minecraft:dye",
+            "default": 0
+          }
+        ]
+      }
+    },
+    "on_false": {
+      "type": "minecraft:range_dispatch",
+      "property": "minecraft:bundle/fullness",
+      "entries": [{
+        "threshold": 0.00000001,
+        "model": {
+          "type": "minecraft:condition",
+          "property": "minecraft:has_component",
+          "component": "minecraft:dyed_color",
+          "on_false": {
+            "type": "minecraft:model",
+            "model": "toughasnailsu:item/flask_filled"
+          },
+          "on_true": {
+            "type": "minecraft:model",
+            "model": "minecraft:item/wolf_armor_dyed",
+            "tints": [
+              {
+                "type": "minecraft:constant",
+                "value": -1
+              },
+              {
+                "type": "minecraft:dye",
+                "default": 0
+              }
+            ]
+          }
+        }
+      }],
+      "fallback" : {
+        "type": "minecraft:condition",
+        "property": "minecraft:has_component",
+        "component": "minecraft:dyed_color",
+        "on_false": {
+          "type": "minecraft:model",
+          "model": "toughasnailsu:item/flask"
+        },
+        "on_true": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/wolf_armor_dyed",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "minecraft:dye",
+              "default": 0
+            }
+          ]
+        }
+      }
+    }
+  }
+}

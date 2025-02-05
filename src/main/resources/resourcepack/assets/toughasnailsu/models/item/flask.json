@@ -38,8 +38,5 @@
 				0.68
 			]
 		}
-	},
-	"overrides": [
-		{ "predicate": { "filled": 0.0000001 }, "model": "toughasnailsu:item/flask_filled" }
-	]
+	}
 }
