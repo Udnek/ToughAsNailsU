@@ -8,6 +8,7 @@ import me.udnek.toughasnailsu.util.Utils;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.ShadowColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -239,10 +240,12 @@ public class Temperature extends RangedValue {
     public class Hud{
         public static final Key FONT = Key.key("toughasnailsu:temperature");
         public static final int FRAMES = 21;
-        public static final Vector FREEZE_COLOR = new Vector(20, 78, 112).multiply(1d/255d);
-        public static final Vector HEAT_COLOR = new Vector(217, 131, 44).multiply(1d/255d);
-        public static final int SIZE = 14;
-        public static final int OFFSET = -7;
+        public static final TextColor FREEZE_COLOR = TextColor.color(1, 107, 189);
+        public static final TextColor HEAT_COLOR = TextColor.color(255, 71, 0);
+        public static final Vector FREEZE_COLOR_VECTOR = new Vector(FREEZE_COLOR.red(), FREEZE_COLOR.green(), FREEZE_COLOR.blue()).multiply(1d/255d);
+        public static final Vector HEAT_COLOR_VECTOR = new Vector(HEAT_COLOR.red(), HEAT_COLOR.green(), HEAT_COLOR.blue()).multiply(1d/255d);
+        public static final int SIZE = 16;
+        public static final int OFFSET = -8;
 
         int animation = -1;
         Component icon;
@@ -255,11 +258,11 @@ public class Temperature extends RangedValue {
             if (animation >= FRAMES) animation = -1;
 
             updateComponents();
-            return ComponentU.textWithNoSpace(OFFSET, icon.font(FONT).color(color).append(fortify), SIZE);
+            return ComponentU.textWithNoSpace(OFFSET, icon.shadowColor(ShadowColor.none()).font(FONT).color(color).append(fortify), SIZE);
         }
         public void updateComponents(){
             if (coldResistanceMultiplier == 0 && heatResistanceMultiplier == 0){
-                fortify = ComponentU.textWithNoSpace(-16, Component.translatable("image.toughasnailsu.temperature.fortify").color(ComponentU.NO_SHADOW_COLOR), 16);
+                fortify = ComponentU.textWithNoSpace(-17, Component.translatable("image.toughasnailsu.temperature.fortify"), 16).color(NamedTextColor.WHITE);
             } else fortify = Component.empty();
 
             if (stabilizing) {
@@ -290,9 +293,9 @@ public class Temperature extends RangedValue {
             double normalized = getNormalized();
             Vector color;
             if (normalized < 0.5){
-                color = new Vector(1,1,1).subtract(FREEZE_COLOR.clone()).multiply(1-normalized*2);
+                color = new Vector(1,1,1).subtract(FREEZE_COLOR_VECTOR).multiply(1-normalized*2);
             } else {
-                color = new Vector(1,1,1).subtract(HEAT_COLOR.clone()).multiply((normalized-0.5)*2);
+                color = new Vector(1,1,1).subtract(HEAT_COLOR_VECTOR).multiply((normalized-0.5)*2);
             }
             color = new Vector(1,1,1).subtract(color);
             return TextColor.color((float) color.getX(), (float) color.getY(), (float) color.getZ());

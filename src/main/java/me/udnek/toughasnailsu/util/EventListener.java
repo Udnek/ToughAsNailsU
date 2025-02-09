@@ -45,7 +45,7 @@ import java.util.Set;
 
 public class EventListener extends SelfRegisteringListener {
 
-    public static final double RESISTANCE_AMOUNT = 0.4;
+    public static final double RESISTANCE_AMOUNT = 0.45;
 
     public EventListener(JavaPlugin plugin) {super(plugin);}
 

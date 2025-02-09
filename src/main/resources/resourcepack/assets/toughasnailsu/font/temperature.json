@@ -3,8 +3,8 @@
 		{
 			"type": "bitmap",
 			"file": "toughasnailsu:font/temperature/rise.png",
-			"ascent": -15,
-			"height": 14,
+			"ascent": -14,
+			"height": 16,
 			"chars": [
 				"abcdefghijklmnopqrstu"
 			]
@@ -12,8 +12,8 @@
 		{
 			"type": "bitmap",
 			"file": "toughasnailsu:font/temperature/drop.png",
-			"ascent": -15,
-			"height": 14,
+			"ascent": -14,
+			"height": 16,
 			"chars": [
 				"абвгдеёжзийклмнопрсту"
 			]
@@ -21,8 +21,8 @@
 		{
 			"type": "bitmap",
 			"file": "toughasnailsu:font/temperature/normal.png",
-			"ascent": -15,
-			"height": 14,
+			"ascent": -14,
+			"height": 16,
 			"chars": [
 				"0"
 			]
@@ -30,8 +30,8 @@
 		{
 			"type": "bitmap",
 			"file": "toughasnailsu:font/temperature/heat.png",
-			"ascent": -15,
-			"height": 14,
+			"ascent": -14,
+			"height": 16,
 			"chars": [
 				"1"
 			]
@@ -39,8 +39,8 @@
 		{
 			"type": "bitmap",
 			"file": "toughasnailsu:font/temperature/freeze.png",
-			"ascent": -15,
-			"height": 14,
+			"ascent": -14,
+			"height": 16,
 			"chars": [
 				"2"
 			]
