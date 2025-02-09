@@ -5,6 +5,7 @@ import io.papermc.paper.datacomponent.item.BundleContents;
 import io.papermc.paper.datacomponent.item.ItemLore;
 import me.udnek.itemscoreu.customcomponent.instance.InventoryInteractableItem;
 import me.udnek.itemscoreu.customcomponent.instance.RightClickableItem;
+import me.udnek.itemscoreu.customequipmentslot.UniversalInventorySlot;
 import me.udnek.itemscoreu.customitem.ConstructableCustomItem;
 import me.udnek.itemscoreu.customitem.CustomItem;
 import me.udnek.itemscoreu.nms.Nms;
@@ -49,7 +50,9 @@ public class Flask extends ConstructableCustomItem {
     @Override
     public boolean isUpdateMaterial() {return false;}
     @Override
-    public void getComponentsToUpdate(@NotNull ComponentConsumer consumer) {}
+    public void getComponentsToUpdate(@NotNull ComponentConsumer consumer) {
+        consumer.accept(DataComponentTypes.ITEM_MODEL);
+    }
 
     @Override
     protected void generateRecipes(@NotNull Consumer<@NotNull Recipe> consumer) {
@@ -114,7 +117,7 @@ public class Flask extends ConstructableCustomItem {
         }
 
         @Override
-        public @NotNull ActionResult action(@NotNull CustomItem customItem, @NotNull LivingEntity livingEntity, @NotNull PlayerItemConsumeEvent event) {
+        public @NotNull ActionResult action(@NotNull CustomItem customItem, @NotNull LivingEntity livingEntity, @NotNull UniversalInventorySlot universalInventorySlot, @NotNull PlayerItemConsumeEvent event) {
             Player player = event.getPlayer();
 
             ItemStack flask = event.getItem();
