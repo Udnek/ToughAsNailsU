@@ -11,11 +11,9 @@ import me.udnek.itemscoreu.nms.Nms;
 import me.udnek.itemscoreu.util.LoreBuilder;
 import me.udnek.rpgu.component.ability.active.ConstructableActiveAbilityComponent;
 import me.udnek.rpgu.component.ability.property.AttributeBasedProperty;
-import me.udnek.toughasnailsu.ToughAsNailsU;
 import me.udnek.toughasnailsu.component.ComponentTypes;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -41,8 +39,6 @@ import static me.udnek.toughasnailsu.util.Utils.resetStyle;
 public class Flask extends ConstructableCustomItem {
     public static final Material DRINKING_MATERIAL = Material.GUNPOWDER;
     public static final Material DEFALT_MATERIAL = Material.BUNDLE;
-    public static final String OPENED_MODEL = "flask_opened";
-    public static final String CLOSED_MODEL = "flask";
 
     @Override
     public @NotNull String getRawId() {return "flask";}
@@ -59,12 +55,12 @@ public class Flask extends ConstructableCustomItem {
     protected void generateRecipes(@NotNull Consumer<@NotNull Recipe> consumer) {
         ShapedRecipe recipe = new ShapedRecipe(getNewRecipeKey(), getItem());
         recipe.shape(
-                "SLP",
-                "LBL",
-                " L ");
+                "SFP",
+                "FBF",
+                " F ");
 
         recipe.setIngredient('P', new RecipeChoice.MaterialChoice(Tag.WOODEN_BUTTONS));
-        recipe.setIngredient('L', new RecipeChoice.MaterialChoice(Material.LEATHER));
+        recipe.setIngredient('F', new RecipeChoice.ExactChoice(me.udnek.rpgu.item.Items.FABRIC.getItem()));
         recipe.setIngredient('S', new RecipeChoice.MaterialChoice(Material.STRING));
         recipe.setIngredient('B', new RecipeChoice.MaterialChoice(Material.BUCKET));
         consumer.accept(recipe);
@@ -105,7 +101,7 @@ public class Flask extends ConstructableCustomItem {
             loreList.addAll(oldLore);
             flask.setData(DataComponentTypes.LORE, ItemLore.lore(loreList));
 
-            openBundle(flask);
+            //openBundle(flask);
 
             playerInteractEvent.getPlayer().getInventory().setItem(playerInteractEvent.getHand(), flask.withType(DRINKING_MATERIAL));
             playerInteractEvent.setCancelled(true);
@@ -135,7 +131,7 @@ public class Flask extends ConstructableCustomItem {
 
             flask.setData(DataComponentTypes.LORE, Objects.requireNonNull(Items.FLASK.getItem().getData(DataComponentTypes.LORE)));
 
-            closeBundle(flask);
+            //closeBundle(flask);
 
             player.getInventory().setItem(event.getHand(), flask.withType(DEFALT_MATERIAL));
             return ActionResult.FULL_COOLDOWN;
@@ -180,7 +176,7 @@ public class Flask extends ConstructableCustomItem {
                         flask.unsetData(DataComponentTypes.CONSUMABLE);
                         flask.setData(DataComponentTypes.LORE, Objects.requireNonNull(Items.FLASK.getItem().getData(DataComponentTypes.LORE)));
 
-                        closeBundle(flask);
+                        //closeBundle(flask);
 
                         player.getInventory().setItem(event.getSlot(), flask.withType(DEFALT_MATERIAL));
                     }
@@ -211,13 +207,5 @@ public class Flask extends ConstructableCustomItem {
         ItemStack useRemainder = drink.getData(DataComponentTypes.USE_REMAINDER).transformInto();
         useRemainder.setAmount(Math.min(Nms.get().getMaxAmountCanFitInBundle(flask, drink), drink.getAmount()) * useRemainder.getAmount());
         player.getInventory().addItem(useRemainder);
-    }
-
-    public static void openBundle(@NotNull ItemStack itemStack) {
-        itemStack.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(ToughAsNailsU.getInstance(), OPENED_MODEL));
-    }
-
-    public static void closeBundle(@NotNull ItemStack itemStack) {
-        itemStack.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(ToughAsNailsU.getInstance(), CLOSED_MODEL));
     }
 }
