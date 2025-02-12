@@ -123,6 +123,7 @@ public class EventListener extends SelfRegisteringListener {
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event){
+        if (event.getRespawnReason() != PlayerRespawnEvent.RespawnReason.DEATH) return;
         PlayerData playerData = Database.getInstance().get(event.getPlayer());
         playerData.getThirst().set(Thirst.DEFAULT);
         playerData.getTemperature().set(Temperature.DEFAULT);
