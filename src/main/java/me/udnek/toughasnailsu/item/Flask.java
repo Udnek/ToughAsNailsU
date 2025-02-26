@@ -8,6 +8,7 @@ import me.udnek.itemscoreu.customcomponent.instance.RightClickableItem;
 import me.udnek.itemscoreu.customequipmentslot.UniversalInventorySlot;
 import me.udnek.itemscoreu.customitem.ConstructableCustomItem;
 import me.udnek.itemscoreu.customitem.CustomItem;
+import me.udnek.itemscoreu.customitem.ItemUtils;
 import me.udnek.itemscoreu.nms.Nms;
 import me.udnek.itemscoreu.util.LoreBuilder;
 import me.udnek.rpgu.component.ability.active.ConstructableActiveAbilityComponent;
@@ -209,6 +210,6 @@ public class Flask extends ConstructableCustomItem {
     public static void addItemToBundle(@NotNull BundleContents flask, @NotNull ItemStack drink, @NotNull Player player) {
         ItemStack useRemainder = drink.getData(DataComponentTypes.USE_REMAINDER).transformInto();
         useRemainder.setAmount(Math.min(Nms.get().getMaxAmountCanFitInBundle(flask, drink), drink.getAmount()) * useRemainder.getAmount());
-        player.getInventory().addItem(useRemainder);
+        ItemUtils.giveAndDropLeftover(player, useRemainder);
     }
 }
