@@ -1,24 +1,22 @@
 package me.udnek.toughasnailsu.item;
 
+import me.udnek.itemscoreu.customcomponent.instance.DispensableItem;
 import me.udnek.itemscoreu.customcomponent.instance.RightClickableItem;
 import me.udnek.itemscoreu.customitem.ConstructableCustomItem;
 import me.udnek.itemscoreu.customitem.CustomItem;
+import me.udnek.toughasnailsu.util.WaterSearcher;
 import org.bukkit.FluidCollisionMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.Waterlogged;
+import org.bukkit.block.data.type.Dispenser;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.*;
 import org.bukkit.util.RayTraceResult;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Consumer;
 
 public class DrinkingGlassBottle extends ConstructableCustomItem implements ToughAsNailsUCustomItem{
@@ -40,38 +38,12 @@ public class DrinkingGlassBottle extends ConstructableCustomItem implements Toug
     @Override
     public void initializeComponents() {
         super.initializeComponents();
-        getComponents().set(new DrinkingGlassBottleComponent());
+        getComponents().set(new DrinkingGlassBottleRightClickableItem());
+        getComponents().set(new DrinkingGlassBottleDispensableItem());
     }
 
 
-    public static class DrinkingGlassBottleComponent implements RightClickableItem {
-        private static final List<Material> WATER_BLOCK = Arrays.asList(Material.WATER, Material.KELP, Material.SEAGRASS,  Material.TALL_SEAGRASS, Material.BUBBLE_COLUMN);
-
-        public @NotNull WaterType getWaterType(@NotNull Biome biome){
-            String name = biome.getKey().getKey();
-            if (name.contains("river") || name.contains("yellowstone")) return WaterType.PURE;
-            if (name.contains("sea") || name.contains("ocean") || name.contains("beach") || name.contains("shore")) return WaterType.SEA;
-            return WaterType.DIRTY;
-        }
-
-        public @NotNull WaterType getWaterType(@NotNull Location origin){
-            final int range = 5;
-            final int step = 2;
-
-            Location tempLoc = origin.clone();
-            World world = origin.getWorld();
-            if (getWaterType(world.getBiome(origin)) == WaterType.PURE) return WaterType.PURE;
-            for (double x = origin.x()-range; x <= origin.x()+range; x+=step) {
-                for (double z = origin.z()-range; z <= origin.z()+range; z+=step) {
-                    tempLoc.set(x, tempLoc.y(), z);
-                    Biome biome = world.getBiome(tempLoc);
-                    if (getWaterType(biome) == WaterType.PURE) return WaterType.PURE;
-                }
-            }
-            return getWaterType(world.getBiome(origin));
-        }
-
-
+    public static class DrinkingGlassBottleRightClickableItem implements RightClickableItem {
         @Override
         public void onRightClick(@NotNull CustomItem customItem, @NotNull PlayerInteractEvent event) {
             Player player = event.getPlayer();
@@ -81,18 +53,9 @@ public class DrinkingGlassBottle extends ConstructableCustomItem implements Toug
             Block block = rayTraceResult.getHitBlock();
             EquipmentSlot hand = event.getHand();
             if (block == null || hand == null) return;
-            Location location = block.getLocation();
 
-            if (!(WATER_BLOCK.contains(block.getType())) && !(block.getBlockData() instanceof Waterlogged)) return;
-            if (block.getBlockData() instanceof Waterlogged waterlogged){
-                if (!waterlogged.isWaterlogged()) return;
-            }
-
-            ItemStack bottle = switch (getWaterType(location)){
-                case PURE -> Items.PURE_WATER_BOTTLE.getItem();
-                case DIRTY -> Items.DIRTY_WATER_BOTTLE.getItem();
-                case SEA -> Items.SEA_WATER_BOTTLE.getItem();
-            };
+            ItemStack bottle = WaterSearcher.getBottleType(block);
+            if (bottle == null) return;
 
             inventory.setItem(hand,inventory.getItem(hand).add(-1));
             if (inventory.getItem(hand).getType() == Material.AIR){inventory.setItem(hand,bottle);}
@@ -100,9 +63,23 @@ public class DrinkingGlassBottle extends ConstructableCustomItem implements Toug
         }
     }
 
-    public enum WaterType{
-        PURE,
-        SEA,
-        DIRTY
+    public static class DrinkingGlassBottleDispensableItem implements DispensableItem {
+
+        @Override
+        public void onDispense(@NotNull CustomItem customItem, @NotNull BlockDispenseEvent event) {
+            Block block = event.getBlock();
+            Block relative = block.getRelative(((Dispenser) block.getBlockData()).getFacing());
+            ItemStack bottleType = WaterSearcher.getBottleType(relative);
+            if (bottleType == null) return;
+            Inventory inventory = ((org.bukkit.block.Dispenser) block.getState()).getInventory();
+            if (inventory.addItem(bottleType).isEmpty()) {
+                event.setCancelled(true);
+                return;
+            }
+            event.setItem(bottleType);
+        }
+
+        @Override
+        public void onDrop(@NotNull CustomItem customItem, @NotNull BlockDispenseEvent blockDispenseEvent) {}
     }
 }
