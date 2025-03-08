@@ -2,7 +2,7 @@ package me.udnek.toughasnailsu.util;
 
 import me.udnek.itemscoreu.customattribute.CustomAttribute;
 import me.udnek.itemscoreu.customattribute.CustomAttributeModifier;
-import me.udnek.itemscoreu.customcomponent.instance.CustomItemAttributesComponent;
+import me.udnek.itemscoreu.customcomponent.CustomComponentType;
 import me.udnek.itemscoreu.customequipmentslot.CustomEquipmentSlot;
 import me.udnek.itemscoreu.customevent.CustomItemGeneratedEvent;
 import me.udnek.itemscoreu.customevent.InitializationEvent;
@@ -67,7 +67,7 @@ public class EventListener extends SelfRegisteringListener {
         if (customItem == Items.WOLF_LEGGINGS) armorAttributes(customItem, Attributes.COLD_RESISTANCE, CustomEquipmentSlot.LEGS, RESISTANCE_AMOUNT);
         if (customItem == Items.WOLF_BOOTS) armorAttributes(customItem, Attributes.COLD_RESISTANCE, CustomEquipmentSlot.FEET, RESISTANCE_AMOUNT);
         if (customItem == Items.FISHERMAN_SNORKEL){
-            CustomItemAttributesComponent.safeAddAttribute(customItem,
+            customItem.getComponents().getOrCreateDefault(CustomComponentType.CUSTOM_ATTRIBUTED_ITEM).addAttribute(
                     Attributes.WATER_RESISTANCE, new CustomAttributeModifier(0.9, AttributeModifier.Operation.MULTIPLY_SCALAR_1, EquipmentSlots.ARTIFACTS));
 
         }
@@ -102,7 +102,7 @@ public class EventListener extends SelfRegisteringListener {
     }
 
     private static void armorAttributes(@NotNull CustomItem customItem, @NotNull CustomAttribute attribute, @NotNull CustomEquipmentSlot slot, double amount) {
-        CustomItemAttributesComponent.safeAddAttribute(customItem, attribute, new CustomAttributeModifier(amount, AttributeModifier.Operation.MULTIPLY_SCALAR_1, slot));
+        customItem.getComponents().getOrCreateDefault(CustomComponentType.CUSTOM_ATTRIBUTED_ITEM).addAttribute(attribute, new CustomAttributeModifier(amount, AttributeModifier.Operation.MULTIPLY_SCALAR_1, slot));
     }
 
     private static void armorAttributes(@NotNull Material material, @NotNull CustomAttribute attribute, double amount) {
