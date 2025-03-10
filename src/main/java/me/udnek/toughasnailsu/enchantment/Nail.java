@@ -3,7 +3,7 @@ package me.udnek.toughasnailsu.enchantment;
 import me.udnek.itemscoreu.customattribute.CustomAttributeConsumer;
 import me.udnek.itemscoreu.customattribute.CustomAttributeModifier;
 import me.udnek.itemscoreu.customenchantment.ConstructableCustomEnchantment;
-import me.udnek.itemscoreu.customequipmentslot.CustomEquipmentSlot;
+import me.udnek.itemscoreu.customequipmentslot.slot.CustomEquipmentSlot;
 import me.udnek.toughasnailsu.attribute.Attributes;
 import org.bukkit.Material;
 import org.bukkit.Tag;
