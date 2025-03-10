@@ -13,8 +13,8 @@
 
     <properties>
         <java.version>21</java.version>
-        <lib.itemscoreu>H:\test\plugins\ItemsCoreU-1.0-SNAPSHOT-remapped.jar</lib.itemscoreu>
-        <lib.rpgu>H:\test\plugins\RpgU.jar</lib.rpgu>
+        <lib.itemscoreu>C:\Users\glebd\OneDrive\Documents\CODING\Java\ItemsCoreU\target\ItemsCoreU-1.0-SNAPSHOT-remapped.jar</lib.itemscoreu>
+        <lib.rpgu>C:\Users\glebd\OneDrive\Рабочий стол\TestServer\plugins\RpgU.jar</lib.rpgu>
     </properties>
 
     <build>
