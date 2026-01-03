@@ -79,3 +79,7 @@ target
 # IntelliJ
 #out/*
 !out/artifacts/ToughAsNailsU.jar
+build
+.gradle
+gradle
+.idea

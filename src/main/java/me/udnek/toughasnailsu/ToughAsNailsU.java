@@ -1,7 +1,7 @@
 package me.udnek.toughasnailsu;
 
-import me.udnek.itemscoreu.customitem.VanillaItemManager;
-import me.udnek.itemscoreu.resourcepack.ResourcePackablePlugin;
+import me.udnek.coreu.custom.item.VanillaItemManager;
+import me.udnek.coreu.resourcepack.ResourcePackablePlugin;
 import me.udnek.toughasnailsu.attribute.Attributes;
 import me.udnek.toughasnailsu.command.DebugCommand;
 import me.udnek.toughasnailsu.data.DataTicker;
@@ -13,6 +13,7 @@ import me.udnek.toughasnailsu.item.Items;
 import me.udnek.toughasnailsu.util.EventListener;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public final class ToughAsNailsU extends JavaPlugin implements ResourcePackablePlugin {
     private static ToughAsNailsU instance;
@@ -50,5 +51,11 @@ public final class ToughAsNailsU extends JavaPlugin implements ResourcePackableP
     @Override
     public void onDisable() {
         DataTicker.getInstance().stop();
+    }
+
+    @NotNull
+    @Override
+    public Priority getPriority() {
+        return Priority.BASE;
     }
 }

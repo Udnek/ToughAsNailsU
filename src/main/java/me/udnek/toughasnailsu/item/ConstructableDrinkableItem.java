@@ -3,8 +3,8 @@ package me.udnek.toughasnailsu.item;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.PotionContents;
-import me.udnek.itemscoreu.customitem.ConstructableCustomItem;
-import me.udnek.itemscoreu.customitem.CustomItem;
+import me.udnek.coreu.custom.item.ConstructableCustomItem;
+import me.udnek.coreu.custom.item.CustomItem;
 import me.udnek.toughasnailsu.component.DrinkItem;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -40,11 +40,6 @@ public class ConstructableDrinkableItem extends ConstructableCustomItem implemen
     public void initializeComponents() {
         super.initializeComponents();
         getComponents().set(new DrinkItem(thirstRestoration, inflictsThirst, temperatureImpact, temperatureImpactDuration));
-    }
-
-    @Override
-    public @Nullable Boolean getHideAdditionalTooltip() {
-        return true;
     }
 
 

@@ -1,7 +1,7 @@
 package me.udnek.toughasnailsu.item;
 
-import me.udnek.itemscoreu.customitem.CustomItem;
-import me.udnek.itemscoreu.customregistry.CustomRegistries;
+import me.udnek.coreu.custom.item.CustomItem;
+import me.udnek.coreu.custom.registry.CustomRegistries;
 import me.udnek.toughasnailsu.ToughAsNailsU;
 
 public class Items{

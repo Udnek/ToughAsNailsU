@@ -1,9 +1,9 @@
 package me.udnek.toughasnailsu.item;
 
-import me.udnek.itemscoreu.customcomponent.instance.DispensableItem;
-import me.udnek.itemscoreu.customcomponent.instance.RightClickableItem;
-import me.udnek.itemscoreu.customitem.ConstructableCustomItem;
-import me.udnek.itemscoreu.customitem.CustomItem;
+import me.udnek.coreu.custom.component.instance.DispensableItem;
+import me.udnek.coreu.custom.component.instance.RightClickableItem;
+import me.udnek.coreu.custom.item.ConstructableCustomItem;
+import me.udnek.coreu.custom.item.CustomItem;
 import me.udnek.toughasnailsu.util.WaterSearcher;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Material;
@@ -24,7 +24,7 @@ public class DrinkingGlassBottle extends ConstructableCustomItem implements Toug
     public @NotNull String getRawId() {return "drinking_glass_bottle";}
 
     @Override
-    protected void generateRecipes(@NotNull Consumer<@NotNull Recipe> consumer) {
+    protected void generateRecipes(@NotNull Consumer<Recipe> consumer) {
         ShapedRecipe recipe = new ShapedRecipe(getNewRecipeKey(), getItem().add(2));
         recipe.shape(
                 "G G",

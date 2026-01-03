@@ -1,7 +1,7 @@
 package me.udnek.toughasnailsu.item;
 
-import me.udnek.itemscoreu.customitem.CustomItem;
-import me.udnek.itemscoreu.customitem.CustomItemProperties;
+import me.udnek.coreu.custom.item.CustomItem;
+import me.udnek.coreu.custom.item.CustomItemProperties;
 
 public interface ToughAsNailsUCustomItem extends CustomItem, CustomItemProperties {
 }

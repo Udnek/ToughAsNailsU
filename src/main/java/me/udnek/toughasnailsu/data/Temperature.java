@@ -1,6 +1,6 @@
 package me.udnek.toughasnailsu.data;
 
-import me.udnek.itemscoreu.util.ComponentU;
+import me.udnek.coreu.util.ComponentU;
 import me.udnek.toughasnailsu.attribute.Attributes;
 import me.udnek.toughasnailsu.effect.Effects;
 import me.udnek.toughasnailsu.util.RangedValue;

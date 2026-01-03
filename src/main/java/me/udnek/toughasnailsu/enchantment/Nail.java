@@ -1,9 +1,9 @@
 package me.udnek.toughasnailsu.enchantment;
 
-import me.udnek.itemscoreu.customattribute.CustomAttributeConsumer;
-import me.udnek.itemscoreu.customattribute.CustomAttributeModifier;
-import me.udnek.itemscoreu.customenchantment.ConstructableCustomEnchantment;
-import me.udnek.itemscoreu.customequipmentslot.slot.CustomEquipmentSlot;
+import me.udnek.coreu.custom.attribute.CustomAttributeConsumer;
+import me.udnek.coreu.custom.attribute.CustomAttributeModifier;
+import me.udnek.coreu.custom.enchantment.ConstructableCustomEnchantment;
+import me.udnek.coreu.custom.equipment.slot.CustomEquipmentSlot;
 import me.udnek.toughasnailsu.attribute.Attributes;
 import org.bukkit.Material;
 import org.bukkit.Tag;
@@ -24,7 +24,7 @@ public class Nail extends ConstructableCustomEnchantment {
     }
 
     @Override
-    public @NotNull Iterable<@NotNull Material> getSupportedItems() {
+    public @NotNull Iterable<Material> getSupportedItems() {
         return Tag.ITEMS_ENCHANTABLE_ARMOR.getValues();
     }
 

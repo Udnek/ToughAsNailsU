@@ -1,17 +1,18 @@
 package me.udnek.toughasnailsu.util;
 
-import me.udnek.itemscoreu.customattribute.CustomAttribute;
-import me.udnek.itemscoreu.customattribute.CustomAttributeModifier;
-import me.udnek.itemscoreu.customcomponent.CustomComponentType;
-import me.udnek.itemscoreu.customequipmentslot.slot.CustomEquipmentSlot;
-import me.udnek.itemscoreu.customevent.CustomItemGeneratedEvent;
-import me.udnek.itemscoreu.customevent.InitializationEvent;
-import me.udnek.itemscoreu.customitem.CustomItem;
-import me.udnek.itemscoreu.customitem.VanillaItemManager;
-import me.udnek.itemscoreu.customrecipe.RecipeManager;
-import me.udnek.itemscoreu.customrecipe.choice.CustomSingleRecipeChoice;
-import me.udnek.itemscoreu.customregistry.InitializationProcess;
-import me.udnek.itemscoreu.util.SelfRegisteringListener;
+import me.udnek.coreu.custom.attribute.CustomAttribute;
+import me.udnek.coreu.custom.attribute.CustomAttributeModifier;
+import me.udnek.coreu.custom.component.CustomComponentType;
+import me.udnek.coreu.custom.equipment.slot.CustomEquipmentSlot;
+import me.udnek.coreu.custom.event.CustomItemGeneratedEvent;
+import me.udnek.coreu.custom.event.InitializationEvent;
+import me.udnek.coreu.custom.item.CustomItem;
+import me.udnek.coreu.custom.item.VanillaItemManager;
+import me.udnek.coreu.custom.recipe.RecipeManager;
+import me.udnek.coreu.custom.recipe.choice.CustomSingleRecipeChoice;
+import me.udnek.coreu.custom.registry.InitializationProcess;
+import me.udnek.coreu.rpgu.component.RPGUComponents;
+import me.udnek.coreu.util.SelfRegisteringListener;
 import me.udnek.rpgu.equipment.slot.EquipmentSlots;
 import me.udnek.rpgu.item.Items;
 import me.udnek.rpgu.mechanic.enchanting.EnchantingRecipe;
@@ -26,6 +27,7 @@ import me.udnek.toughasnailsu.data.Temperature;
 import me.udnek.toughasnailsu.data.Thirst;
 import me.udnek.toughasnailsu.effect.Effects;
 import me.udnek.toughasnailsu.enchantment.Enchantments;
+import me.udnek.toughasnailsu.item.Flask;
 import me.udnek.toughasnailsu.item.RecipeRegistration;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -51,9 +53,11 @@ public class EventListener extends SelfRegisteringListener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerConsume(PlayerItemConsumeEvent event){
-        CustomItem customItem = CustomItem.get(event.getItem());
-        if (customItem == null) return;
-        customItem.getComponents().getOrDefault(ComponentTypes.DRINK_ITEM).onConsumption(customItem, event);
+        CustomItem.consumeIfCustom(event.getItem(), customItem -> {
+            Flask.ActiveAbilityComponent activeAbilityComponent = customItem.getComponents().getOrCreateDefault(RPGUComponents.ACTIVE_ABILITY_ITEM).getComponents().get(ComponentTypes.FLASK_ACTIVE_ABILITY);
+            if (activeAbilityComponent == null) return;
+            activeAbilityComponent.onConsume(customItem, event);
+        });
     }
 
     @EventHandler
@@ -74,7 +78,7 @@ public class EventListener extends SelfRegisteringListener {
     }
     @EventHandler
     public void afterInit(InitializationEvent event){
-        if (event.getStep() == InitializationProcess.Step.AFTER_REGISTRIES_INITIALIZATION) {
+        if (event.getStep() == InitializationProcess.Step.AFTER_GLOBAL_INITIALIZATION) {
             RecipeRegistration.run();
 
             RecipeManager.getInstance().register(
@@ -88,8 +92,7 @@ public class EventListener extends SelfRegisteringListener {
                             Set.of(EnchantingTableUpgrade.DECENT_BOOKSHELF, EnchantingTableUpgrade.AMETHYST))
             );
         }
-        if (event.getStep() == InitializationProcess.Step.BEFORE_VANILLA_MANAGER) {
-
+        if (event.getStep() == InitializationProcess.Step.GLOBAL_INITIALIZATION) {
             armorAttributes(Material.LEATHER_HELMET, Attributes.COLD_RESISTANCE, RESISTANCE_AMOUNT);
             armorAttributes(Material.LEATHER_CHESTPLATE, Attributes.COLD_RESISTANCE, RESISTANCE_AMOUNT);
             armorAttributes(Material.LEATHER_LEGGINGS, Attributes.COLD_RESISTANCE, RESISTANCE_AMOUNT);
@@ -102,7 +105,8 @@ public class EventListener extends SelfRegisteringListener {
     }
 
     private static void armorAttributes(@NotNull CustomItem customItem, @NotNull CustomAttribute attribute, @NotNull CustomEquipmentSlot slot, double amount) {
-        customItem.getComponents().getOrCreateDefault(CustomComponentType.CUSTOM_ATTRIBUTED_ITEM).addAttribute(attribute, new CustomAttributeModifier(amount, AttributeModifier.Operation.MULTIPLY_SCALAR_1, slot));
+        customItem.getComponents().getOrCreateDefault(CustomComponentType.CUSTOM_ATTRIBUTED_ITEM)
+                .addAttribute(attribute, new CustomAttributeModifier(amount, AttributeModifier.Operation.MULTIPLY_SCALAR_1, slot));
     }
 
     private static void armorAttributes(@NotNull Material material, @NotNull CustomAttribute attribute, double amount) {

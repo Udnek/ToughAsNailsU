@@ -1,7 +1,7 @@
 package me.udnek.toughasnailsu.enchantment;
 
-import me.udnek.itemscoreu.customenchantment.CustomEnchantment;
-import me.udnek.itemscoreu.customregistry.CustomRegistries;
+import me.udnek.coreu.custom.enchantment.CustomEnchantment;
+import me.udnek.coreu.custom.registry.CustomRegistries;
 import me.udnek.toughasnailsu.ToughAsNailsU;
 
 public class Enchantments {

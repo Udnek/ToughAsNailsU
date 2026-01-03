@@ -3,21 +3,24 @@ package me.udnek.toughasnailsu.item;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.BundleContents;
 import io.papermc.paper.datacomponent.item.ItemLore;
-import me.udnek.itemscoreu.customcomponent.instance.InventoryInteractableItem;
-import me.udnek.itemscoreu.customcomponent.instance.RightClickableItem;
-import me.udnek.itemscoreu.customequipmentslot.slot.SingleSlot;
-import me.udnek.itemscoreu.customequipmentslot.universal.BaseUniversalSlot;
-import me.udnek.itemscoreu.customequipmentslot.universal.UniversalInventorySlot;
-import me.udnek.itemscoreu.customitem.ConstructableCustomItem;
-import me.udnek.itemscoreu.customitem.CustomItem;
-import me.udnek.itemscoreu.customitem.ItemUtils;
-import me.udnek.itemscoreu.nms.Nms;
-import me.udnek.itemscoreu.util.Either;
-import me.udnek.itemscoreu.util.LoreBuilder;
-import me.udnek.rpgu.component.ability.active.ConstructableActiveAbilityComponent;
-import me.udnek.rpgu.component.ability.property.AttributeBasedProperty;
+import me.udnek.coreu.custom.component.CustomComponent;
+import me.udnek.coreu.custom.component.CustomComponentType;
+import me.udnek.coreu.custom.component.instance.InventoryInteractableItem;
+import me.udnek.coreu.custom.component.instance.RightClickableItem;
+import me.udnek.coreu.custom.equipment.universal.BaseUniversalSlot;
+import me.udnek.coreu.custom.equipment.universal.UniversalInventorySlot;
+import me.udnek.coreu.custom.item.ConstructableCustomItem;
+import me.udnek.coreu.custom.item.CustomItem;
+import me.udnek.coreu.custom.item.ItemUtils;
+import me.udnek.coreu.nms.Nms;
+import me.udnek.coreu.rpgu.component.RPGUActiveItem;
+import me.udnek.coreu.rpgu.component.RPGUComponents;
+import me.udnek.coreu.rpgu.component.ability.active.RPGUConstructableActiveAbility;
+import me.udnek.coreu.rpgu.component.ability.property.AttributeBasedProperty;
+import me.udnek.coreu.util.LoreBuilder;
 import me.udnek.toughasnailsu.component.ComponentTypes;
 import net.kyori.adventure.text.Component;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.entity.LivingEntity;
@@ -59,7 +62,7 @@ public class Flask extends ConstructableCustomItem {
     }
 
     @Override
-    protected void generateRecipes(@NotNull Consumer<@NotNull Recipe> consumer) {
+    protected void generateRecipes(@NotNull Consumer<Recipe> consumer) {
         ShapedRecipe recipe = new ShapedRecipe(getNewRecipeKey(), getItem());
         recipe.shape(
                 "SFP",
@@ -84,7 +87,7 @@ public class Flask extends ConstructableCustomItem {
 
         getComponents().set(new FlaskRightClickable());
         getComponents().set(new FlaskInventoryInteractable());
-        getComponents().set(new FlaskActiveAbilityComponent());
+        getComponents().getOrCreateDefault(RPGUComponents.ACTIVE_ABILITY_ITEM).getComponents().set(new ActiveAbilityComponent());
     }
 
     public static class FlaskRightClickable implements RightClickableItem {
@@ -115,13 +118,16 @@ public class Flask extends ConstructableCustomItem {
         }
     }
 
-    public static class FlaskActiveAbilityComponent extends ConstructableActiveAbilityComponent<PlayerItemConsumeEvent> {
-        public FlaskActiveAbilityComponent(){
-            getComponents().set(new AttributeBasedProperty(20, me.udnek.rpgu.component.ComponentTypes.ABILITY_COOLDOWN));
+    public static class ActiveAbilityComponent extends RPGUConstructableActiveAbility<PlayerItemConsumeEvent> {
+
+        public static final ActiveAbilityComponent DEFAULT = new ActiveAbilityComponent();
+
+        public ActiveAbilityComponent(){
+            getComponents().set(new AttributeBasedProperty(20, RPGUComponents.ABILITY_COOLDOWN_TIME));
         }
 
         @Override
-        public @NotNull ActionResult action(@NotNull CustomItem customItem, @NotNull LivingEntity livingEntity, @NotNull Either<UniversalInventorySlot, SingleSlot> universalInventorySlot, @NotNull PlayerItemConsumeEvent event) {
+        public @NotNull ActionResult action(@NotNull CustomItem customItem, @NotNull LivingEntity livingEntity, @NotNull UniversalInventorySlot universalInventorySlot, @NotNull PlayerItemConsumeEvent event) {
             Player player = event.getPlayer();
 
             ItemStack flask = event.getItem();
@@ -145,12 +151,21 @@ public class Flask extends ConstructableCustomItem {
         }
 
         @Override
-        public void getLore(@NotNull LoreBuilder loreBuilder) {}
+        public @Nullable Pair<List<String>, List<String>> getEngAndRuDescription() {
+            return null;//TODO добавить описане
+        }
 
         @Override
+        public void getLore(@NotNull LoreBuilder loreBuilder) {}
+
         public void onConsume(@NotNull CustomItem customItem, @NotNull PlayerItemConsumeEvent event) {
             event.setCancelled(true);
-            activate(customItem, event.getPlayer(), new Either<>(new BaseUniversalSlot(event.getHand()), null), event);
+            activate(customItem, event.getPlayer(), new BaseUniversalSlot(event.getHand()), event);
+        }
+
+        @Override
+        public @NotNull CustomComponentType<? super RPGUActiveItem, ? extends CustomComponent<? super RPGUActiveItem>> getType() {
+            return ComponentTypes.FLASK_ACTIVE_ABILITY;
         }
     }
 

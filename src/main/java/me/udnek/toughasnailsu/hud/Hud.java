@@ -1,7 +1,7 @@
 package me.udnek.toughasnailsu.hud;
 
-import me.udnek.itemscoreu.customhud.CustomHud;
-import me.udnek.itemscoreu.customhud.CustomHudManager;
+import me.udnek.coreu.custom.hud.CustomHud;
+import me.udnek.coreu.custom.hud.CustomHudManager;
 import me.udnek.toughasnailsu.ToughAsNailsU;
 import me.udnek.toughasnailsu.data.Database;
 import me.udnek.toughasnailsu.data.PlayerData;

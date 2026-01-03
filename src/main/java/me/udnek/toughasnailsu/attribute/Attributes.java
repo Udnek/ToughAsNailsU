@@ -1,8 +1,8 @@
 package me.udnek.toughasnailsu.attribute;
 
-import me.udnek.itemscoreu.customattribute.ConstructableReversedCustomAttribute;
-import me.udnek.itemscoreu.customattribute.CustomAttribute;
-import me.udnek.itemscoreu.customregistry.CustomRegistries;
+import me.udnek.coreu.custom.attribute.ConstructableReversedCustomAttribute;
+import me.udnek.coreu.custom.attribute.CustomAttribute;
+import me.udnek.coreu.custom.registry.CustomRegistries;
 import me.udnek.toughasnailsu.ToughAsNailsU;
 
 public class Attributes {

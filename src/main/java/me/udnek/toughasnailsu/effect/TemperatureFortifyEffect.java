@@ -1,8 +1,8 @@
 package me.udnek.toughasnailsu.effect;
 
-import me.udnek.itemscoreu.customattribute.CustomAttributeConsumer;
-import me.udnek.itemscoreu.customattribute.CustomAttributeModifier;
-import me.udnek.itemscoreu.customeffect.ConstructableCustomEffect;
+import me.udnek.coreu.custom.attribute.CustomAttributeConsumer;
+import me.udnek.coreu.custom.attribute.CustomAttributeModifier;
+import me.udnek.coreu.custom.effect.ConstructableCustomEffect;
 import me.udnek.toughasnailsu.attribute.Attributes;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.attribute.AttributeModifier;
