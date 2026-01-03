@@ -1,7 +1,7 @@
 package me.udnek.toughasnailsu.data;
 
-import me.udnek.itemscoreu.serializabledata.SerializableData;
-import me.udnek.itemscoreu.serializabledata.SerializableDataManager;
+import me.udnek.coreu.serializabledata.SerializableData;
+import me.udnek.coreu.serializabledata.SerializableDataManager;
 import me.udnek.toughasnailsu.ToughAsNailsU;
 import me.udnek.toughasnailsu.util.Utils;
 import net.kyori.adventure.text.Component;

@@ -1,8 +1,8 @@
 name: ToughAsNailsU
 version: '${project.version}'
 main: me.udnek.toughasnailsu.ToughAsNailsU
-api-version: '1.21.4'
-depend: [ItemsCoreU]
+api-version: '1.21.11'
+depend: [CoreU]
 softdepend: [RpgU]
 commands:
   tanudebug:

@@ -1,6 +1,6 @@
 package me.udnek.toughasnailsu.item;
 
-import me.udnek.itemscoreu.customitem.CustomItem;
+import me.udnek.coreu.custom.item.CustomItem;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.inventory.*;

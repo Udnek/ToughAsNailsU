@@ -1,6 +1,6 @@
 package me.udnek.toughasnailsu.util;
 
-import me.udnek.itemscoreu.customitem.CustomItem;
+import me.udnek.coreu.custom.item.CustomItem;
 import me.udnek.toughasnailsu.ToughAsNailsU;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;

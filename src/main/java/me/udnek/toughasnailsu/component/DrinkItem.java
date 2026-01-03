@@ -1,17 +1,17 @@
 package me.udnek.toughasnailsu.component;
 
-import me.udnek.itemscoreu.customcomponent.CustomComponent;
-import me.udnek.itemscoreu.customcomponent.CustomComponentType;
-import me.udnek.itemscoreu.customevent.CustomItemGeneratedEvent;
-import me.udnek.itemscoreu.customitem.CustomItem;
-import me.udnek.itemscoreu.util.ComponentU;
-import me.udnek.itemscoreu.util.LoreBuilder;
-import me.udnek.itemscoreu.util.Utils;
+import me.udnek.coreu.custom.component.CustomComponent;
+import me.udnek.coreu.custom.component.CustomComponentType;
+import me.udnek.coreu.custom.event.CustomItemGeneratedEvent;
+import me.udnek.coreu.custom.item.CustomItem;
+import me.udnek.coreu.util.LoreBuilder;
+import me.udnek.coreu.util.Utils;
 import me.udnek.toughasnailsu.data.Database;
 import me.udnek.toughasnailsu.data.PlayerData;
 import me.udnek.toughasnailsu.effect.Effects;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.ShadowColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.entity.Player;
@@ -74,7 +74,7 @@ public class DrinkItem implements CustomComponent<CustomItem> {
         Component thirst = Component.translatable(
                         "lore.toughasnailsu.thirst.level." + getThirstRestoration())
                 .font(font)
-                .color(ComponentU.NO_SHADOW_COLOR)
+                .shadowColor(ShadowColor.none())
                 .decoration(TextDecoration.ITALIC, false);
 
         Component effect = Component.translatable(getTemperatureImpact() > 0 ? "effect.drinkable.heating" : "effect.drinkable.cooling");

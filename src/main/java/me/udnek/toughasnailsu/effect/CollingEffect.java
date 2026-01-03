@@ -1,6 +1,6 @@
 package me.udnek.toughasnailsu.effect;
 
-import me.udnek.itemscoreu.customeffect.ConstructableCustomEffect;
+import me.udnek.coreu.custom.effect.ConstructableCustomEffect;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionEffectTypeCategory;

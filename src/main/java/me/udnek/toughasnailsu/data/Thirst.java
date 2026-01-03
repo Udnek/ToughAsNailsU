@@ -1,11 +1,12 @@
 package me.udnek.toughasnailsu.data;
 
-import me.udnek.itemscoreu.util.ComponentU;
+import me.udnek.coreu.util.ComponentU;
 import me.udnek.toughasnailsu.effect.Effects;
 import me.udnek.toughasnailsu.util.RangedValue;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.ShadowColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.potion.PotionEffect;
@@ -74,11 +75,11 @@ public class Thirst extends RangedValue {
             }
             return ComponentU.textWithNoSpace(
                     10,
-                    BACKGROUND.color(ComponentU.NO_SHADOW_COLOR)
+                    BACKGROUND.shadowColor(ShadowColor.none())
                             .append(text.color(barColor))
                             .append(ICON.color(iconColor))
                             .append(OVERLAY)
-                            .color(ComponentU.NO_SHADOW_COLOR).font(FONT),
+                            .shadowColor(ShadowColor.none()).font(FONT),
                     0);
         }
     }
@@ -92,7 +93,7 @@ public class Thirst extends RangedValue {
             Key font = isThirsty() ? FONT_THIRSTY : FONT_NORMAL;
             return ComponentU.textWithNoSpace(
                     11,
-                    Component.translatable("hud.toughasnailsu.thirst.level."+((int) value)).font(font).color(ComponentU.NO_SHADOW_COLOR),
+                    Component.translatable("hud.toughasnailsu.thirst.level."+((int) value)).font(font).shadowColor(ShadowColor.none()),
                     82
             );
         }
