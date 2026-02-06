@@ -16,11 +16,11 @@ import static me.udnek.coreu.custom.recipe.builder.CookingRecipeBuilder.RecipeTy
 public class RecipeRegistration {
     public static void run(){
         new CookingRecipeBuilder(Items.PURE_WATER_BOTTLE, new RecipeChoice.ExactChoice(List.of(Items.DIRTY_WATER_BOTTLE.getItem(), Items.SEA_WATER_BOTTLE.getItem())))
-                .addRecipeType(FURNACE, SMOKER).build(ToughAsNailsU.getInstance());
+                .addRecipeTypes(FURNACE, SMOKER).build(ToughAsNailsU.getInstance());
         new CookingRecipeBuilder(Items.BOILING_WATER_BOTTLE, new RecipeChoice.ExactChoice(Items.PURE_WATER_BOTTLE.getItem()))
-                .addRecipeType(FURNACE, SMOKER).build(ToughAsNailsU.getInstance());
+                .addRecipeTypes(FURNACE, SMOKER).build(ToughAsNailsU.getInstance());
         new CookingRecipeBuilder(Items.MILK_CACAO_BOTTLE, new RecipeChoice.ExactChoice(Items.RAW_MILK_CACAO_BOTTLE.getItem()))
-                .addRecipeType(FURNACE, SMOKER).build(ToughAsNailsU.getInstance());
+                .addRecipeTypes(FURNACE, SMOKER).build(ToughAsNailsU.getInstance());
 
         new ShapelessRecipeBuilder(Items.AMETHYST_WATER_BOTTLE).addIngredient(Material.AMETHYST_SHARD, 2)
                 .addIngredient(Items.PURE_WATER_BOTTLE, 1).build(ToughAsNailsU.getInstance());
