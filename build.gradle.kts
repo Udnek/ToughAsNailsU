@@ -28,8 +28,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly(files("C:/Users/PC/IdeaProjects/CoreU/build/libs/CoreU-1.0-SNAPSHOT.jar"))
-    compileOnly(files("C:/Users/PC/IdeaProjects/RpgU/build/libs/RpgU-1.0-SNAPSHOT.jar"))
+    compileOnly(files("../CoreU/build/libs/CoreU-1.0-SNAPSHOT.jar"))
+    compileOnly(files("../RpgU/build/libs/RpgU-1.0-SNAPSHOT.jar"))
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT") {
         exclude(group = "org.apache.commons", module = "commons-lang3")
     }
